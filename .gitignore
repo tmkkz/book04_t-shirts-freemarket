@@ -1,0 +1,15 @@
+.DS_Store
+*~
+*.bak
+*.yml.orig
+#*.erb.orig
+rubygems/*
+tmp/*
+flutter-starter-pdf/*
+flutter-starter-md/*
+book04_t-shirts-freemarket-pdf/*
+contents_orig/*
+images_all/*
+images_orig/*
+tmp/*
+node_module/*

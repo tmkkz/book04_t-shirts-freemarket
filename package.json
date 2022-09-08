@@ -1,0 +1,23 @@
+{
+  "name": "book04_t-shirts-freemarket",
+  "version": "1.0.0",
+  "description": "これは Re:VIEW Starter で生成された、Re:VIEW 用プロジェクトです。",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "textlint": "^12.2.1",
+    "textlint-filter-rule-allowlist": "^4.0.0",
+    "textlint-filter-rule-comments": "^1.2.2",
+    "textlint-plugin-review-starter": "^0.1.4",
+    "textlint-rule-preset-ja-spacing": "^2.2.0",
+    "textlint-rule-preset-ja-technical-writing": "^7.0.0",
+    "textlint-rule-prh": "^5.3.0"
+  }
+}
