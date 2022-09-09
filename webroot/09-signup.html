@@ -1,0 +1,602 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>新規登録 | 0円で、モバイルアプリを作ってみるお〜。Vol.1</title>
+    <link rel="stylesheet" type="text/css" href="css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="css/webstyle.css" />
+    <link rel="prev" title="状態管理コントローラーを作る" href="08-auth-controller.html">
+    <meta name="generator" content="Re:VIEW Starter">
+  </head>
+  <body>
+    <div class="page-outer">
+      <nav class="side-content">
+                <div class="rebuild">
+          <a href="javascript:void(0)" onclick="rebuildAndReloadForcedly()">Rebuild and Reload</a>
+        </div>
+                <a class="nav-title" href="index.html">0円で、モバイルアプリを作ってみるお〜。Vol.1</a>
+<ul class="toc toc-1">
+    <li class="toc-chapter"><a href="./00-preface.html">はじめに</a></li>
+    <li class="toc-chapter"><a href="./01-what_is_getx.html">1 状態管理とは？</a></li>
+    <li class="toc-chapter"><a href="./02-firebase.html">2 Firebaseとは？</a></li>
+    <li class="toc-chapter"><a href="./03-authScreen.html">3 アプリケーション認証</a></li>
+    <li class="toc-chapter"><a href="./04-project_start.html">4 プロジェクトスタート</a></li>
+    <li class="toc-chapter"><a href="./05-loginapp-screens.html">5 認証関連画面の作成</a></li>
+    <li class="toc-chapter"><a href="./06-usermodel.html">6 アプリで認証するユーザのデータ型を作成する。</a></li>
+    <li class="toc-chapter"><a href="./07-flutterfire.html">7 Flutter側でFirebaseが使えるようにする。</a></li>
+    <li class="toc-chapter"><a href="./08-auth-controller.html">8 状態管理コントローラーを作る</a></li>
+    <li class="toc-chapter"><a href="./09-signup.html">9 新規登録</a>
+      <ul class="toc toc-2">
+        <li class="toc-section"><a href="#h9-1">9.1 新規登録ができるようにする</a></li>
+        <li class="toc-section"><a href="#h9-2">9.2 新規登録画面の修正</a></li>
+      </ul>
+    </li>
+</ul>
+      </nav>
+      <div class="page-inner">
+        <header class="page-header">
+        </header>
+        <main class="page-main">
+<h1 class="boldlines center twolines"><a id="h9"></a><span class="secno">第9章</span> <br/>新規登録</h1>
+<div class="abstract">
+<p>アカウントの新規作成ができるようにします。</p>
+<p><br /></p>
+<p>新規登録画面から成功すればプロフィール画面へ移動します。</p>
+</div>
+
+
+<h2 class="grayback"><a id="h9-1"></a><span class="secno">9.1</span> 新規登録ができるようにする</h2>
+<p>手順は、</p>
+<ol start="1" type="1">
+<li>新規登録画面の修正と入力データの検証部分の作成</li>
+<li>スプラッシュスクリーンで認証コントローラーを初期化</li>
+<li>新規登録メソッドの実装</li>
+<li>ページ推移のためのRoute作成</li>
+<li>動作確認</li>
+</ol>
+<p>です。</p>
+<p>この章からはGetXの機能にアクセスしますので、アプリケーションがGetXアプリケーションになるようにします。具体的には、「main.dart」ファイルにある「MaterialApp」を「GetMaterialApp」に変更します。</p>
+<div class="caption-code">
+<span class="caption">変更前</span>
+<pre class="list">  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Login UI',
+      theme: ThemeData(
+        primaryColor: _primaryColor,
+        accentColor: _accentColor,
+        scaffoldBackgroundColor: Colors.grey.shade100,
+        primarySwatch: Colors.grey,
+      ),
+      home: SplashScreen(title: 'Flutter Login UI'),
+    );
+  }
+</pre>
+</div>
+<div class="caption-code">
+<span class="caption">変更後</span>
+<pre class="list">  @override
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
+      title: 'Flutter Login UI',
+      theme: ThemeData(
+        primaryColor: _primaryColor,
+        accentColor: _accentColor,
+        scaffoldBackgroundColor: Colors.grey.shade100,
+        primarySwatch: Colors.grey,
+      ),
+      home: SplashScreen(title: 'Flutter Login UI'),
+    );
+  }
+</pre>
+</div>
+
+<h2 class="grayback"><a id="h9-2"></a><span class="secno">9.2</span> 新規登録画面の修正</h2>
+<p>編集対象は、「RegistrationPage（registration_page.dart）」です。</p>
+
+<h3 class="symbol"><a id="h9-2-1"></a><span class="secno">9.2.1</span> 新規登録画面の修正</h3>
+<p>新規登録画面の修正部分は、</p>
+<dl class="desc-list">
+  <dt class="desc">1. ページをStatefulWidgetからStatelessWidgetへ変更</dt>
+  <dd class="desc">
+<p>コントローラーがデータを保持するため、画面では不要になります。</p>
+  </dd>
+  <dt class="desc">2. 各フィールドを日本語化</dt>
+  <dd class="desc">
+<p>フィールド名、プレースホルダーを日本語化します。</p>
+  </dd>
+  <dt class="desc">3. 登録ボタンからコントローラーのメソッドを実行</dt>
+  <dd class="desc">
+<p>登録ボタンにコントローラーの新規登録メソッドを割り当てます。</p>
+  </dd>
+  <dt class="desc">4. 入力データの検証</dt>
+  <dd class="desc">
+<p>登録ボタンクリック後、コントローラーのメソッドを呼ぶ前に各フィールドの入力値を検証します。</p>
+  </dd>
+</dl>
+<p><br /></p>
+<p>それでは、はじめましょう。</p>
+
+<h4><a id="h9-2-1-1"></a>1. StatefulWidgetからStatelessWidgetへ</h4>
+<p>まずは、ページ全体に対し、「StatefuleWidget」から「StatelessWidget」へ変更します。</p>
+
+<h5><a id="h9-2-1-1-1"></a>StatefullWidget -&gt; StatelessWidgetへ</h5>
+<p>下図のように、</p>
+<ul>
+<li>extends の後ろにある「StatefulWidget」を「StatelessWidget」へ変更。
+</li>
+<li>赤ワク部分を削除。
+</li>
+</ul>
+<div id="to_stateless" class="image">
+<img src="images/09-signup/to_stateless.png" alt="" class="img width-070per" />
+<p class="caption">
+図9.1: 
+</p>
+</div>
+<p><br /></p>
+<p>これを行うと、_formKey、setState((){})部分がエラーになるので削除します。</p>
+<div id="to_stateless001" class="image">
+<img src="images/09-signup/to_stateless001.png" alt="" class="img width-070per" />
+<p class="caption">
+図9.2: 
+</p>
+</div>
+<p>Android Studio上でlintの出すエラーがなくなれば、動作確認を行います。新規登録画面を開くことができれば問題ありません。</p>
+<p><br /></p>
+
+<h5><a id="h9-2-1-1-2"></a>各フィールドとコントローラーのTextEditingControllerの対応</h5>
+<p>アカウントの新規登録の際に入力する項目は、</p>
+<ul>
+<li>表示名 -- displayName
+</li>
+<li>氏名　-- name
+</li>
+<li>メールアドレス　-- email
+</li>
+<li>携帯電話番号　-- phoneNumber
+</li>
+<li>パスワード -- password
+</li>
+</ul>
+<p>です。</p>
+<p><br /></p>
+<p>認証コントローラー側のTextEditingControllerには、上記のフィールド名+Controllerで命名してあります。これらコントローラーと画面上のTextFieldを結びつけ、登録ボタンには新規登録メソッドを割り当てます。</p>
+<p><br /></p>
+<p>新規登録ページ（RegistrationPage）に、認証コントローラー（AuthController）をバインドします。ファイル「auth_controller.dart」をインポートし、インスタンスを結びつけます。</p>
+<p><br /></p>
+<p>AuthControllerのインスタンス化は、後ほどスプラッシュスクリーンの起動で行うようにします。</p>
+<div class="caption-code">
+<span class="caption">AuthControllerをバインド</span>
+<pre class="list">import '../controllers/auth_controller.dart';
+import 'profile_page.dart';
+import '../../common/theme_helper.dart';
+import './widgets/header_widget.dart';
+
+class RegistrationPage extends StatelessWidget {
+  bool checkboxValue = false;
+  final AuthController authController = AuthController.to;
+</pre>
+</div>
+<p><br /></p>
+<p>テキストフィールドを「TextFormField」から「TextField」へ変更し、「controller:」プロパティへそれぞれのコントローラーをバインドします。フィールド名、ヒントを日本語にします。</p>
+<div id="text_field01" class="image">
+<img src="images/09-signup/text_field01.png" alt="変更前" class="img width-070per" />
+<p class="caption">
+図9.3: 変更前
+</p>
+</div>
+<div id="text_field02" class="image">
+<img src="images/09-signup/text_field02.png" alt="変更後" class="img width-070per" />
+<p class="caption">
+図9.4: 変更後
+</p>
+</div>
+<p><br /></p>
+<p>残りのフィールドにも同じ作業を行います。</p>
+<p><br /></p>
+<p>メールアドレス入力欄、電話番号入力欄、パスワード入力欄には、入力時のエラーチェック「validator」プロパティがありますが、入力値検証は一カ所にまとめるため削除します。</p>
+<div id="text_field03" class="image">
+<img src="images/09-signup/text_field03.png" alt="" class="img width-070per" />
+<p class="caption">
+図9.5: 
+</p>
+</div>
+<p><br /></p>
+<p>登録ボタンの後ろへソーシャルログインボタンがありますが、これも削除します。</p>
+<div id="text_field04" class="image">
+<img src="images/09-signup/text_field04.png" alt="desc" class="img width-070per" />
+<p class="caption">
+図9.6: desc
+</p>
+</div>
+<p><br /></p>
+<p>続いて、新規登録メソッドが実行される前に、入力されたデータが有効なのかをチェックする関数を作成します。</p>
+
+<h5><a id="h9-2-1-1-3"></a>入力値検証</h5>
+<p>登録ボタンがクリックされコントローラーの新規登録メソッド前に、入力値の検証を行います。</p>
+<p><br /></p>
+<p>エラーは、SnackBarを使って表示します。<br />GetXは、簡単にSnackBarを出すことができます。</p>
+<p><br /></p>
+<p>今後増えて行く画面のことを考慮し、SnackBarを出す便利クラスを作成します。「lib/helper」フォルダを作成し「utility.dart」ファイルを作成します。</p>
+<div class="caption-code">
+<span class="caption">lib/helper/utility.dart</span>
+<pre class="list">import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:hexcolor/hexcolor.dart';
+
+class Utility {
+  static customSnackBar(String title,
+      String message, [
+        String? status,
+      ]) {
+    if (status != null) {
+      late Icon icon;
+      Color backgroundColor = HexColor('#FEEBFC');
+      Color textColor = HexColor('#86468B');
+      Color iconColor = HexColor('#FBC425');
+      switch (status) {
+        case 'success':
+          backgroundColor = HexColor('#28a745');
+          icon = Icon(Icons.task_alt, size: 24.0, color: textColor);
+          break;
+        case 'info':
+          backgroundColor = HexColor('#007bff');
+          icon = Icon(Icons.info_outline_rounded,
+              size: 24.0, color: textColor);
+          break;
+        case 'warn':
+          icon = Icon(Icons.warning_amber, size: 24.0, color: iconColor);
+          break;
+        case 'error':
+          backgroundColor = HexColor('#dc3545');
+          icon = Icon(Icons.error_outline, size: 24.0, color: textColor);
+          break;
+        default:
+          break;
+      }
+      Get.snackbar(title, message,
+          backgroundColor: backgroundColor,
+          colorText: textColor,
+          snackPosition: SnackPosition.BOTTOM,
+          icon: icon,
+          borderRadius: 5.0,
+          borderColor: HexColor('#6c757d'),
+          borderWidth: 2
+      );
+    } else {
+      Get.snackbar(title, message,
+          backgroundColor: Colors.white, snackPosition: SnackPosition.BOTTOM);
+    }
+  }
+}
+</pre>
+</div>
+<p><strong>入力値検証</strong></p>
+<p>新規登録ページ（registration_page.dart）へ以下のコードを追加します。</p>
+<p><br /></p>
+<p>GetXには、データのValidation機能もあります。ここでは、メールアドレスの検証をGetXのValidation機能で行っています。</p>
+<div class="caption-code">
+<span class="caption">入力値検証</span>
+<pre class="list">  /// 送信ボタンクリック時に各入力フィールドをチェック
+  /// エラーの場合は、SnackBarを表示する。
+  bool _validate() {
+    // 表示名
+    if (authController.displayNameController.text.isEmpty) {
+      Utility.customSnackBar('入力確認', '表示名を入力してください。', 'warn');
+      return false;
+    }
+    // 氏名
+    if (authController.nameController.text.isEmpty) {
+      Utility.customSnackBar('入力確認', '氏名を入力してください。', 'warn');
+      return false;
+    }
+    // 表示名
+    String val = authController.emailController.text.trim();
+    if (val.isEmpty || !GetUtils.isEmail(val)) {
+      Utility.customSnackBar('入力確認', '有効なメールアドレスを入力してください。', 'warn');
+      return false;
+    }
+    // 携帯電話番号
+    val = authController.phoneNumberController.text;
+    if (!RegExp(r&quot;^0[5789]0-[0-9]{4}-[0-9]{4}$&quot;).hasMatch(val)) {
+      Utility.customSnackBar('入力確認', 'xxx-xxxx-xxxxで入力してください。。', 'warn');
+      return false;
+    }
+
+    // パスワード
+    RegExp passValid = RegExp(r&quot;(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)&quot;);
+    val = authController.passwordController.text.trim();
+    if (!passValid.hasMatch(val) || val.length &lt; 8) {
+      Utility.customSnackBar('入力確認', '8文字a
+      で新規登録画面の修正は完了です。、半角で英数大文字・小文字・数字・記号が各1文字以上', 'warn');
+      return false;
+    }
+    // 利用規約同意
+    if (!checkboxValue.value) {
+      Utility.customSnackBar(&quot;入力確認&quot;, '利用規約同意が必要です。', 'warn');
+      return false;
+    }
+    return true;
+  }
+
+</pre>
+</div>
+<p><br /></p>
+<p>利用規約同意のチェックボックスの値が更新されたときにチェックボックスWidgetが再描画されるように、チェックボックスの値である「checkboxValue」をGetXを使って監視対象にします。</p>
+<p>「bool checkboxValue = false;」<br />　　　　　↓<br />「final Rx&lt;bool&gt; checkboxValue = false.obs;」</p>
+<p>に変更します。</p>
+<p><br /></p>
+<p>変更しますと、checkboxValueの値は、「checkboxValue.value」でアクセスします。lintがエラーを出している部分を修正します。</p>
+<p><br /></p>
+<p>チェックボックスの値が変更されたときに再描画されるように、GetXのWidgetで「Checkbox」を囲みます。</p>
+<div id="chckbox" class="image">
+<img src="images/09-signup/chckbox.png" alt="" class="img width-070per" />
+<p class="caption">
+図9.7: 
+</p>
+</div>
+<p><strong>GetXのValidator</strong></p>
+<p>GetXのUtilityクラスでは、</p>
+<ul>
+<li>isNull
+</li>
+<li>isNullOrBlank
+</li>
+<li>isBlank
+</li>
+<li>isNum
+</li>
+<li>isNumericOnly
+</li>
+<li>isAlphabetOnly
+</li>
+<li>hasCapitalletter
+</li>
+<li>isBool
+</li>
+<li>isVideo
+</li>
+<li>isImage
+</li>
+</ul>
+<p><br /></p>
+<p>など、たくさんのValidationがありますが厳密に検査していないものあります。使うか使わないかは<a href="https://github.com/jonataslaw/getx/blob/master/lib/get_utils/src/get_utils/get_utils.dart" class="link">ソースコード</a>を見て決めてください。</p>
+<p><b>登録ボタン</b></p>
+<p>入力値検証後、認証コントローラーの新規登録メソッドを呼ぶようにします。認証コントローラーの「signup」メソッドは未作成ですので、現時点ではエラーになります。</p>
+<div class="caption-code">
+<span class="caption">認証後、新規登録メソッドを呼ぶ</span>
+<pre class="list">  void _submit() {
+    if (_validate()) {
+      authController.signUp();
+    }
+  }
+</pre>
+</div>
+<p><br /></p>
+<p>最後に、ボタンに上記関数を呼ぶように変更します。</p>
+<div id="submit" class="image">
+<img src="images/09-signup/submit.png" alt="" class="img width-070per" />
+<p class="caption">
+図9.8: 
+</p>
+</div>
+<p>以上で新規登録画面の修正は完了です。</p>
+
+<h3 class="symbol"><a id="h9-2-2"></a><span class="secno">9.2.2</span> スプラッシュスクリーンで認証コントローラーを初期化</h3>
+<p>アプリケーション起動時に表示されるページである「スプラッシュスクリーン」へ認証コントローラー（AuthController）のインスタンス化を行うようコードを追加します。</p>
+<p><br /></p>
+<p>認証コントローラーは、アプリケーションが起動した後、どのページへ推移するかを決めるため、Firebaseを初期化したようにアプリケーションの最初でも構いません。</p>
+<p><br /></p>
+<p>GetXのパッケージ、auth_controller.dartのインポートを行い、</p>
+<p><br /></p>
+<p>　　　AuthController authController = Get.put(Authcontroller());</p>
+<p><br /></p>
+<p>で、インスタンス化を行います。一度インスタンス化を行うと、他のページからは「to」に指定した「Get.find()」でインスタンスにアクセスできます。</p>
+<div id="authcontroller_instance" class="image">
+<img src="images/09-signup/authcontroller_instance.png" alt="" class="img width-070per" />
+<p class="caption">
+図9.9: 
+</p>
+</div>
+<p>スプラッシュスクリーンでは、「accentColor」に取り消し線がついています。これは、近い将来のバージョンで消えるプロパティを意味します。</p>
+<div id="accentColor" class="image">
+<img src="images/09-signup/accentColor.png" alt="accentcolorに取り消し線" class="img width-070per" />
+<p class="caption">
+図9.10: accentcolorに取り消し線
+</p>
+</div>
+<p><a href="https://docs.flutter.dev/release/breaking-changes/theme-data-accent-properties" class="link">公式サイト</a>に対処法があります。</p>
+<p>「main.dart」を以下のように修正します。</p>
+<div class="caption-code">
+<span class="caption">修正前</span>
+<pre class="list">      theme: ThemeData(
+        primaryColor: _primaryColor,
+        accentColor: _accentColor,
+        scaffoldBackgroundColor: Colors.grey.shade100,
+        primarySwatch: Colors.grey,
+      ),
+</pre>
+</div>
+<div class="caption-code">
+<span class="caption">修正後</span>
+<pre class="list">      theme: ThemeData(
+        primaryColor: _primaryColor,
+        colorScheme: ColorScheme.fromSwatch().copyWith(secondary: _accentColor),
+        scaffoldBackgroundColor: Colors.grey.shade100,
+        primarySwatch: Colors.grey,
+      ),
+</pre>
+</div>
+<p><br /></p>
+<p>スプラッシュスクリーン側は、</p>
+<p><br /></p>
+<p>　　　　　colors: [Theme.of(context).accentColor, Theme.of(context).primaryColor],<br />　　　　　　　　↓<br />　　　　　colors: [Theme.of(context).colorScheme.secondary, Theme.of(context).primaryColor],</p>
+<p><br /></p>
+<p>に変更します。その他のファイルにも「accentColor」が使われていますので同じく修正してください。</p>
+
+<h3 class="symbol"><a id="h9-2-3"></a><span class="secno">9.2.3</span> 新規登録メソッドの実装</h3>
+<p>最後に、認証コントローラーに新規登録メソッドを作成します。</p>
+<p>Firebase認証でのメール/パスワードでのログインを行うためには、新規ユーザ作成メソッドとして「createUserWithEmailAndPassword()」が提供されています。</p>
+<p><br /></p>
+<p>詳細は、<a href="https://firebase.google.com/docs/auth/flutter/password-auth?hl=ja&amp;authuser=0" class="link">公式サイト</a>を確認してください。</p>
+<p>公式サイトにあるコードをそのままですが、以下のように「singup()」メソッドを実装します。</p>
+<div id="singup" class="image">
+<img src="images/09-signup/singup.png" alt="" class="img width-070per" />
+<p class="caption">
+図9.11: 
+</p>
+</div>
+<p><br /></p>
+<p>認証コントローラー（auth_controller.dart）へ以下のコードを追加します。</p>
+<div class="caption-code">
+<span class="caption">signupメソッド</span>
+<pre class="list">  /// Error発生時にログイン状態を変更しSnackBarを表示
+  void setAuthErrorMessage(String message) {
+    Utility.customSnackBar('エラー', message);
+  }
+
+  /// アカウント新規作成
+  Future&lt;void&gt; signUp() async {
+    try {
+      await _auth.createUserWithEmailAndPassword(
+          email: emailController.text, password: passwordController.text);
+      firebaseUser.value = _auth.currentUser;
+    } on FirebaseAuthException catch(e) {
+      if (e.code == 'email-already-in-use' {
+        setAuthErrorMessage('このメールアドレスはすでに使用されています。');
+      });
+    } catch (error) {
+      setAuthErrorMessage(error.toString());
+    }
+  }
+</pre>
+</div>
+<p>「singup()」メソッドを実装しましたので、「RegistrationPage」のエラーも解消されています。</p>
+
+<h3 class="symbol"><a id="h9-2-4"></a><span class="secno">9.2.4</span> ページ推移のためのRoute作成</h3>
+<p>ページの移動もGetXで管理することができます。</p>
+<p><br /></p>
+<p>「lib/route」フォルダを作成し「app_route.dart」ファイルを作成します。</p>
+<div class="caption-code">
+<span class="caption">app_route.dart</span>
+<pre class="list">import 'package:get/get.dart';
+
+import '../pages/profile_page.dart';
+import '../pages/splash_screen.dart';
+
+class AppRoutes {
+  AppRoutes._();
+  static final routes = [
+    GetPage(name: '/', page: () =&gt; SplashScreen(title: &quot;&quot;)),
+    GetPage(name: '/profile', page: () =&gt; ProfilePage()),
+  ];
+}
+</pre>
+</div>
+<p><br /></p>
+<p>ここで作成したRoutesをGetMaterialAppに登録します。</p>
+<div class="caption-code">
+<span class="caption">main.dart</span>
+<pre class="list">    @override
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
+      title: 'Flutter Login UI',
+      theme: ThemeData(
+        primaryColor: _primaryColor,
+        colorScheme: ColorScheme.fromSwatch().copyWith(secondary: _accentColor),
+        scaffoldBackgroundColor: Colors.grey.shade100,
+        primarySwatch: Colors.grey,
+      ),
+      initialRoute: '/',
+      getPages: AppRoutes.routes,
+    );
+  }
+</pre>
+</div>
+<p>スプラッシュスクリーンには、タイマーでログインページに移動するようになっていますが、GetXのRouteを使うように変更します。</p>
+<div class="caption-code">
+<span class="caption">SplashPage変更前</span>
+<pre class="list">class _SplashScreenState extends State&lt;SplashScreen&gt; {
+  bool _isVisible = false;
+
+  AuthController authController = Get.put(AuthController());
+  _SplashScreenState(){
+
+    new Timer(const Duration(milliseconds: 2000), (){
+      setState(() {
+        Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) =&gt; LoginPage()), (route) =&gt; false);
+      });
+    });
+</pre>
+</div>
+<div class="caption-code">
+<span class="caption">変更後</span>
+<pre class="list">class _SplashScreenState extends State&lt;SplashScreen&gt; {
+  bool _isVisible = false;
+
+  AuthController authController = Get.put(AuthController());
+  _SplashScreenState(){
+
+    new Timer(const Duration(milliseconds: 2000), (){
+      setState(() {
+        Get.toNamed('/login');
+      });
+    });
+</pre>
+</div>
+<p><br /></p>
+<p>ログインページをRouteへ登録します。</p>
+<div class="caption-code">
+<span class="caption">lib/route/app_route.dart</span>
+<pre class="list">class AppRoutes {
+  AppRoutes._();
+  static final routes = [
+    GetPage(name: '/', page: () =&gt; SplashScreen(title: &quot;&quot;)),
+    GetPage(name: '/login', page: () =&gt; const LoginPage()),
+    GetPage(name: '/profile', page: () =&gt; ProfilePage()),
+  ];
+}
+</pre>
+</div>
+
+<h3 class="symbol"><a id="h9-2-5"></a><span class="secno">9.2.5</span> 動作確認</h3>
+<p>実装が完了しましたので、動作確認を行います。メールアドレスは確認されませんので、テスト目的であればメールアドレスの書式さえ合っていれば「example@example.com」でもユーザ登録できます。</p>
+<p>以下のように、新規登録ができました。入力エラー、登録エラーも表示されています。</p>
+<div id="testresult" class="image">
+<img src="images/09-signup/testresult.png" alt="動作確認" class="img width-070per" />
+<p class="caption">
+図9.12: 動作確認
+</p>
+</div>
+<p><br /></p>
+<p>Firebase側も登録されています。</p>
+<p><br /></p>
+<div id="firebase_auth01" class="image">
+<img src="images/09-signup/firebase_auth01.png" alt="Firebase認証" class="img width-070per" />
+<p class="caption">
+図9.13: Firebase認証
+</p>
+</div>
+
+        </main>
+        <nav class="page-navi">
+          <a href="08-auth-controller.html" class="page-prev">&#9664;</a>
+        </nav>
+        <footer>
+        </footer>
+      </div>
+    </div>
+    <script>
+function rebuildAndReloadForcedly() {
+  fetch('/rebuild.js').then((resp)=>{
+    resp.text().then((text)=>{ eval(text); });
+  });
+}
+    </script>
+    <script src="/rebuild.js?file=09-signup.re"></script>
+  </body>
+</html>
+<!-- layout.html5.erb -->

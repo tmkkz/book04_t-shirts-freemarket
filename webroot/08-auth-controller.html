@@ -6,6 +6,7 @@
     <title>状態管理コントローラーを作る | 0円で、モバイルアプリを作ってみるお〜。Vol.1</title>
     <link rel="stylesheet" type="text/css" href="css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="css/webstyle.css" />
+    <link rel="next" title="新規登録" href="09-signup.html">
     <link rel="prev" title="Flutter側でFirebaseが使えるようにする。" href="07-flutterfire.html">
     <meta name="generator" content="Re:VIEW Starter">
   </head>
@@ -27,9 +28,11 @@
     <li class="toc-chapter"><a href="./07-flutterfire.html">7 Flutter側でFirebaseが使えるようにする。</a></li>
     <li class="toc-chapter"><a href="./08-auth-controller.html">8 状態管理コントローラーを作る</a>
       <ul class="toc toc-2">
-        <li class="toc-section"><a href="#h8-1">8.1 認証コントローラーの作成</a></li>
+        <li class="toc-section"><a href="#h8-1">8.1 GetXコントローラー</a></li>
+        <li class="toc-section"><a href="#h8-2">8.2 認証コントローラーの作成</a></li>
       </ul>
     </li>
+    <li class="toc-chapter"><a href="./09-signup.html">9 新規登録</a></li>
 </ul>
       </nav>
       <div class="page-inner">
@@ -43,11 +46,12 @@
 <p>コントローラーには、管理するデータとデータを変更するメソッドがあります。</p>
 </div>
 
-<h1 class="boldlines center twolines"><a id="h8"></a><span class="secno">第8章</span> <br/>GetXコントローラー</h1>
+
+<h2 class="grayback"><a id="h8-1"></a><span class="secno">8.1</span> GetXコントローラー</h2>
 <p>公式サイトhttps://pub.dev/packages/get</p>
 <p>GitHubhttps://github.com/jonataslaw/getx</p>
 
-<h4><a id="h8-0-0-1"></a>インストール</h4>
+<h4><a id="h8-1-0-1"></a>インストール</h4>
 <p>ターミナルに「flutter pub add get」と入力しエンターキーを押します。</p>
 <div class="cmd-code">
 <span class="caption">GetXのインストール</span>
@@ -98,7 +102,7 @@
 </p>
 </div>
 
-<h2 class="grayback"><a id="h8-1"></a><span class="secno">8.1</span> 認証コントローラーの作成</h2>
+<h2 class="grayback"><a id="h8-2"></a><span class="secno">8.2</span> 認証コントローラーの作成</h2>
 <p>認証コントローラー（authController）は、以下のようなフローで動作します。</p>
 <ul>
 <li>画面のテキストフィールドは、コントローラーが持つ。
@@ -121,11 +125,11 @@
 </p>
 </div>
 
-<h3 class="symbol"><a id="h8-1-1"></a><span class="secno">8.1.1</span> GetXControllerについて</h3>
+<h3 class="symbol"><a id="h8-2-1"></a><span class="secno">8.2.1</span> GetXControllerについて</h3>
 <p>GetXController作成前に、もう少しGetXControllerについて知っておくことがあります。</p>
 <p><br /></p>
 
-<h4><a id="h8-1-1-1"></a>GetXコントローラーはライフサイクルがある。</h4>
+<h4><a id="h8-2-1-1"></a>GetXコントローラーはライフサイクルがある。</h4>
 <p>GetXコントローラーには、ライフサイクルがあり以下のイベント発生時にメソッド呼び出しができます。</p>
 <ul>
 <li>onInit 初期化されたとき
@@ -161,7 +165,7 @@
 </div>
 <p>では、いよいよ認証コントローラーの作成に入ります。</p>
 
-<h3 class="symbol"><a id="h8-1-2"></a><span class="secno">8.1.2</span> AuthControllerの作成</h3>
+<h3 class="symbol"><a id="h8-2-2"></a><span class="secno">8.2.2</span> AuthControllerの作成</h3>
 <p>コントローラーは今後もアプリ内で増えていきますので、lib/controllersフォルダを作成し、「auth_controller.dart」ファイルを作成します。</p>
 <p><br /></p>
 <p>コード内容は、</p>
@@ -294,6 +298,7 @@ class AuthController extends GetxController {
         </main>
         <nav class="page-navi">
           <a href="07-flutterfire.html" class="page-prev">&#9664;</a>
+          <a href="09-signup.html" class="page-next">&#9654;</a>
         </nav>
         <footer>
         </footer>

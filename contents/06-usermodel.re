@@ -80,3 +80,10 @@ class UserModel {
   }
 }
 //}
+
+
+//note[ここまでのソースコード]{
+//terminal[][GitHub]{
+　>git clone -b 02_login_screens_import https://github.com/risingforce9zz/tfreemarket.git
+//}
+//}

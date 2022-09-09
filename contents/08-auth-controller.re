@@ -9,7 +9,7 @@
 
 //makechaptitlepage[toc=on]
 
-= GetXコントローラー
+== GetXコントローラー
 
 公式サイト
 https://pub.dev/packages/get
