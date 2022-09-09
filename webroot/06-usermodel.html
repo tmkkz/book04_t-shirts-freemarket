@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>アプリで認証するユーザのデータ型を作成する。 | 0円で、モバイルアプリを作ってみるお〜。Vol.1</title>
+    <link rel="stylesheet" type="text/css" href="css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="css/webstyle.css" />
+    <link rel="next" title="Flutter側でFirebaseが使えるようにする。" href="07-flutterfire.html">
+    <link rel="prev" title="認証関連画面の作成" href="05-loginapp-screens.html">
+    <meta name="generator" content="Re:VIEW Starter">
+  </head>
+  <body>
+    <div class="page-outer">
+      <nav class="side-content">
+                <div class="rebuild">
+          <a href="javascript:void(0)" onclick="rebuildAndReloadForcedly()">Rebuild and Reload</a>
+        </div>
+                <a class="nav-title" href="index.html">0円で、モバイルアプリを作ってみるお〜。Vol.1</a>
+<ul class="toc toc-1">
+    <li class="toc-chapter"><a href="./00-preface.html">はじめに</a></li>
+    <li class="toc-chapter"><a href="./01-what_is_getx.html">1 状態管理とは？</a></li>
+    <li class="toc-chapter"><a href="./02-firebase.html">2 Firebaseとは？</a></li>
+    <li class="toc-chapter"><a href="./03-authScreen.html">3 アプリケーション認証</a></li>
+    <li class="toc-chapter"><a href="./04-project_start.html">4 プロジェクトスタート</a></li>
+    <li class="toc-chapter"><a href="./05-loginapp-screens.html">5 認証関連画面の作成</a></li>
+    <li class="toc-chapter"><a href="./06-usermodel.html">6 アプリで認証するユーザのデータ型を作成する。</a>
+      <ul class="toc toc-2">
+        <li class="toc-section"><a href="#h6-1">6.1 ユーザモデルの作成</a></li>
+      </ul>
+    </li>
+    <li class="toc-chapter"><a href="./07-flutterfire.html">7 Flutter側でFirebaseが使えるようにする。</a></li>
+</ul>
+      </nav>
+      <div class="page-inner">
+        <header class="page-header">
+        </header>
+        <main class="page-main">
+<h1 class="boldlines center twolines"><a id="h6"></a><span class="secno">第6章</span> <br/>アプリで認証するユーザのデータ型を作成する。</h1>
+<div class="abstract">
+<p>アプリで認証するユーザー(Firebaseを使用するユーザとは別)のデータ型を作成します。</p>
+</div>
+
+
+<h2 class="grayback"><a id="h6-1"></a><span class="secno">6.1</span> ユーザモデルの作成</h2>
+<p>アプリで認証するユーザ（今回は、オンライン・フリーマーケットの出店者兼購入者）の必要な情報を検討しデータ型を作成します。</p>
+<p>libフォルダ内に「models」フォルダを作成し、「user_model.dart」ファイルを作成します。内容は以下となります。</p>
+<div class="caption-code">
+<span class="caption">ユーザモデル型</span>
+<pre class="list">class UserModel {
+
+  String id ='';
+  String name = '';
+  String displayName = '';
+  String email = '';
+  String phoneNumber = '';
+  String profilePic = '';
+  String storeDescription = '';
+
+  UserModel({
+    required this.id,
+    required this.name,
+    required this.displayName,
+    required this.email,
+    required this.phoneNumber,
+    required this.profilePic,
+    required this.storeDescription,
+  });
+
+  Map&lt;String, dynamic&gt; toMap() {
+    return {
+      'id': id,
+      'name': name,
+      'displayName': displayName,
+      'email': email,
+      'phoneNumber': phoneNumber,
+      'profilePic': profilePic,
+      'storeDescription': storeDescription,
+    };
+  }
+
+  UserModel.fromMap(Map&lt;dynamic, dynamic&gt;? map) {
+    if (map == null) {
+      return;
+    }
+    id = map[&quot;id&quot;];
+    name = map['name'];
+    displayName = map['displayName'];
+    email = map['email'];
+    phoneNumber = map['phoneNumber'];
+    profilePic = map['profilePic'];
+    storeDescription = map['storeDescription'];
+  }
+
+  UserModel copyWith({
+    String? id,
+    String? name,
+    String? displayName,
+    String? email,
+    String? phoneNumber,
+    String? profilePic,
+    String? storeDescription,
+  }) {
+    return UserModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      displayName: displayName ?? this.displayName,
+      email: email ?? this.email,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      profilePic: profilePic ?? this.profilePic,
+      storeDescription: storeDescription ?? this.storeDescription,
+    );
+  }
+}
+</pre>
+</div>
+
+        </main>
+        <nav class="page-navi">
+          <a href="05-loginapp-screens.html" class="page-prev">&#9664;</a>
+          <a href="07-flutterfire.html" class="page-next">&#9654;</a>
+        </nav>
+        <footer>
+        </footer>
+      </div>
+    </div>
+    <script>
+function rebuildAndReloadForcedly() {
+  fetch('/rebuild.js').then((resp)=>{
+    resp.text().then((text)=>{ eval(text); });
+  });
+}
+    </script>
+    <script src="/rebuild.js?file=06-usermodel.re"></script>
+  </body>
+</html>
+<!-- layout.html5.erb -->

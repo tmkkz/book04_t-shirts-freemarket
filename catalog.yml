@@ -15,7 +15,8 @@ CHAPS:
   - 03-authScreen.re
   - 04-project_start.re
   - 05-loginapp-screens.re
-##  - 06-bestpractice.re
+  - 06-usermodel.re
+  - 07-flutterfire.re
 
 ## 付録
 APPENDIX:
