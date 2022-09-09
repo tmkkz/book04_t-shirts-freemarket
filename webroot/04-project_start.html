@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>プロジェクトスタート | 0円で、モバイルアプリを作ってみるお〜。Vol.1</title>
+    <link rel="stylesheet" type="text/css" href="css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="css/webstyle.css" />
+    <link rel="next" title="認証関連画面の作成" href="05-loginapp-screens.html">
+    <link rel="prev" title="アプリケーション認証" href="03-authScreen.html">
+    <meta name="generator" content="Re:VIEW Starter">
+  </head>
+  <body>
+    <div class="page-outer">
+      <nav class="side-content">
+                <div class="rebuild">
+          <a href="javascript:void(0)" onclick="rebuildAndReloadForcedly()">Rebuild and Reload</a>
+        </div>
+                <a class="nav-title" href="index.html">0円で、モバイルアプリを作ってみるお〜。Vol.1</a>
+<ul class="toc toc-1">
+    <li class="toc-chapter"><a href="./00-preface.html">はじめに</a></li>
+    <li class="toc-chapter"><a href="./01-what_is_getx.html">1 状態管理とは？</a></li>
+    <li class="toc-chapter"><a href="./02-firebase.html">2 Firebaseとは？</a></li>
+    <li class="toc-chapter"><a href="./03-authScreen.html">3 アプリケーション認証</a></li>
+    <li class="toc-chapter"><a href="./04-project_start.html">4 プロジェクトスタート</a>
+      <ul class="toc toc-2">
+        <li class="toc-section"><a href="#h4-1">4.1 新規プロジェクトの作成</a></li>
+      </ul>
+    </li>
+    <li class="toc-chapter"><a href="./05-loginapp-screens.html">5 認証関連画面の作成</a></li>
+</ul>
+      </nav>
+      <div class="page-inner">
+        <header class="page-header">
+        </header>
+        <main class="page-main">
+<h1 class="boldlines center twolines"><a id="h4"></a><span class="secno">第4章</span> <br/>プロジェクトスタート</h1>
+<div class="abstract">
+<p>Andoroid Studioにて新規Flutterプロジェクトを作成します。</p>
+<p>わずか数クリックで実際に実機でも動作するアプリケーションができることに驚きます。</p>
+</div>
+
+
+<h2 class="grayback"><a id="h4-1"></a><span class="secno">4.1</span> 新規プロジェクトの作成</h2>
+<p>Android Studioを起動し、[New Flutter Project]ボタンをクリックします。</p>
+<div id="android_studio01" class="image">
+<img src="images/04-project_start/android_studio01.png" alt="" class="img width-070per" />
+<p class="caption">
+図4.1: 
+</p>
+</div>
+<p>Flutter SDKの場所を訊かれますので、指定するか選択します。</p>
+<div id="android_studio02" class="image">
+<img src="images/04-project_start/android_studio02.png" alt="" class="img width-070per" />
+<p class="caption">
+図4.2: 
+</p>
+</div>
+<p>プロジェクトの名前などを設定します。</p>
+<ul>
+<li>プロジェクト名はハイフンを入れるとメンドウになるのでアンダースコアで。
+</li>
+<li>Organizationですが、Appleデベロッパーに登録しているIDを使いましょう。
+</li>
+<li>Platformの選択です。
+</li>
+</ul>
+<p>以上が完了しましたら、[Finish]ボタンをクリックします。</p>
+<div id="android_studio03" class="image">
+<img src="images/04-project_start/android_studio03.png" alt="" class="img width-070per" />
+<p class="caption">
+図4.3: 
+</p>
+</div>
+<p>プロジェクトが作成され表示されます。iPhoneシミュレータを起動しデバッグモードで起動します。また、作成したAndroidエミュレータでもデバッグしてみます。</p>
+<div id="android_studio04" class="image">
+<img src="images/04-project_start/android_studio04.png" alt="" class="img width-070per" />
+<p class="caption">
+図4.4: 
+</p>
+</div>
+<p>ここまでは、出来ましたでしょうか？</p>
+
+        </main>
+        <nav class="page-navi">
+          <a href="03-authScreen.html" class="page-prev">&#9664;</a>
+          <a href="05-loginapp-screens.html" class="page-next">&#9654;</a>
+        </nav>
+        <footer>
+        </footer>
+      </div>
+    </div>
+    <script>
+function rebuildAndReloadForcedly() {
+  fetch('/rebuild.js').then((resp)=>{
+    resp.text().then((text)=>{ eval(text); });
+  });
+}
+    </script>
+    <script src="/rebuild.js?file=04-project_start.re"></script>
+  </body>
+</html>
+<!-- layout.html5.erb -->

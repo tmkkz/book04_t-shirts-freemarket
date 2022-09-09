@@ -10,11 +10,11 @@ PREDEF:
 
 ## 本文
 CHAPS:
-##  - 01-install.re
-##  - 02-tutorial.re
-##  - 03-syntax.re
-##  - 04-customize.re
-##  - 05-faq.re
+  - 01-what_is_getx.re
+  - 02-firebase.re
+  - 03-authScreen.re
+  - 04-project_start.re
+  - 05-loginapp-screens.re
 ##  - 06-bestpractice.re
 
 ## 付録

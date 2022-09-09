@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>認証関連画面の作成 | 0円で、モバイルアプリを作ってみるお〜。Vol.1</title>
+    <link rel="stylesheet" type="text/css" href="css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="css/webstyle.css" />
+    <link rel="prev" title="プロジェクトスタート" href="04-project_start.html">
+    <meta name="generator" content="Re:VIEW Starter">
+  </head>
+  <body>
+    <div class="page-outer">
+      <nav class="side-content">
+                <div class="rebuild">
+          <a href="javascript:void(0)" onclick="rebuildAndReloadForcedly()">Rebuild and Reload</a>
+        </div>
+                <a class="nav-title" href="index.html">0円で、モバイルアプリを作ってみるお〜。Vol.1</a>
+<ul class="toc toc-1">
+    <li class="toc-chapter"><a href="./00-preface.html">はじめに</a></li>
+    <li class="toc-chapter"><a href="./01-what_is_getx.html">1 状態管理とは？</a></li>
+    <li class="toc-chapter"><a href="./02-firebase.html">2 Firebaseとは？</a></li>
+    <li class="toc-chapter"><a href="./03-authScreen.html">3 アプリケーション認証</a></li>
+    <li class="toc-chapter"><a href="./04-project_start.html">4 プロジェクトスタート</a></li>
+    <li class="toc-chapter"><a href="./05-loginapp-screens.html">5 認証関連画面の作成</a>
+      <ul class="toc toc-2">
+        <li class="toc-section"><a href="#h5-1">5.1 UIについて</a></li>
+        <li class="toc-section"><a href="#h5-2">5.2 ログインプログラム</a></li>
+      </ul>
+    </li>
+</ul>
+      </nav>
+      <div class="page-inner">
+        <header class="page-header">
+        </header>
+        <main class="page-main">
+<h1 class="boldlines center twolines"><a id="h5"></a><span class="secno">第5章</span> <br/>認証関連画面の作成</h1>
+<div class="abstract">
+<p>Flutterで作成するUI部分は、すべてWidgetと呼ばれる部品を組み合わせて作成します。</p>
+<p><br /></p>
+<p>HTMLでは、&lt;div&gt;タグの中に複数のHTMLタグを入れてUIを組み立てます。入れ子になったHTMLタグもあります。</p>
+<p><br /></p>
+<p>Flutterも同じようにWidgetを組合せてUIを構築します。</p>
+</div>
+
+
+<h2 class="grayback"><a id="h5-1"></a><span class="secno">5.1</span> UIについて</h2>
+<p>本書では、一画面に表示されるもの全体を指してページと呼びます。</p>
+<p><br /></p>
+<p>概要でも少し説明していますが、ページはWidgetと呼ぶ部品を組み合わせて作成します。Flutterの公式（SDKに含まれている）Widgetもありますし、世界中の開発者が作成したもが集めてあるサイトもあります。</p>
+<p><br /></p>
+<p>もちろん自分で作成することもできます。</p>
+<p><br /></p>
+<p>色、形、ドロップシャドウなどのデザインに関するものは、ThemeData（HTMLで言えば、全体に適用されるCSS）が適用され、個別のWidgetでもスタイルを適用できます。</p>
+<p><br /></p>
+<p>下記のサイト「<a href="https://flutterawesome.com/" class="link">Flutter Awesome</a>」では、UIやアプリが沢山公開されており、そのほどんどはGitHubなどでソースコードを入手できます。実際に手元で動かし、変更を加えてみればWidgetの使い方も理解が進みます。</p>
+<div id="flutterawesome" class="image">
+<img src="images/05-loginapp-screens/flutterawesome.png" alt="" class="img width-070per" />
+<p class="caption">
+図5.1: 
+</p>
+</div>
+
+<h2 class="grayback"><a id="h5-2"></a><span class="secno">5.2</span> ログインプログラム</h2>
+<p>今回使用するのは、上記FlutterAwesomeで見つけたログイン関連のアプリ<a href="https://flutterawesome.com/flutter-login-ui-with-splash-screen-and-multiple-color-support/" class="link">Flutter Login UI</a> です。</p>
+<div id="flutterawesome02" class="image">
+<img src="images/05-loginapp-screens/flutterawesome02.png" alt="" class="img width-070per" />
+<p class="caption">
+図5.2: 
+</p>
+</div>
+<p>このサイトは、Videoチュートリアルのリンクもあり、クリックするとYoutubeで作成過程を見ることができます。YoutubeのVideoチュートリアルの詳細には、同じデザインですが別のGitHubへのリンクがありました。</p>
+<p><br /></p>
+<p>今回は、<a href="https://github.com/FlutterTutorialNet/flutter_login_ui" class="link">こちら</a>を使うことにします。</p>
+
+<h3 class="symbol"><a id="h5-2-1"></a><span class="secno">5.2.1</span> 元プロジェクトの確認</h3>
+<p><br /></p>
+<p>クローンして魔改造しても良いのですが、勉強も兼ねて写経することにします。Android Studioでコードを書くと、linterがエラー（インストールされていないパッケージのWidgetなど）がでます。そのため、元プロジェクトの「pubspec.yaml」を開きインストールされているパッケージを確認します。</p>
+<div class="caption-code">
+<span class="caption">pubspec.yaml</span>
+<pre class="list">dependencies:
+  flutter:
+    sdk: flutter
+
+
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^1.0.2
+  hexcolor: ^2.0.4
+  font_awesome_flutter: ^9.1.0
+  otp_text_field: ^1.1.1
+</pre>
+</div>
+<p><br /></p>
+<p>使用されているプラグインは、</p>
+<ul>
+<li>hexcolor -- https://pub.dev/packages/hexcolor
+</li>
+<li>font_awesome_flutter -- https://pub.dev/packages/font_awesome_flutter
+</li>
+<li>otp_text_field -- https://pub.dev/packages/otp_text_field
+</li>
+</ul>
+<p>の3つです。</p>
+
+<h3 class="symbol"><a id="h5-2-2"></a><span class="secno">5.2.2</span> プロジェクトへ適用</h3>
+<p>それでは、元プロジェクトをパクっていきましょう。</p>
+<p><br /></p>
+<p>最初にプラグインをインストールします。</p>
+<div class="cmd-code">
+<span class="caption">プラグインのインストール</span>
+<pre class="list"> &gt; flutter pub add hexcolor font_awesome_flutter otp_text_field
+Resolving dependencies...
++ flutter_web_plugins 0.0.0 from sdk flutter
++ font_awesome_flutter 10.2.1
++ hexcolor 2.0.7
++ js 0.6.4
+  material_color_utilities 0.1.5 (0.2.0 available)
++ otp_text_field 1.1.3
+  source_span 1.9.0 (1.9.1 available)
+  test_api 0.4.12 (0.4.13 available)
+  vector_math 2.1.2 (2.1.3 available)
+Downloading font_awesome_flutter 10.2.1...
+Changed 5 dependencies!
+
+</pre>
+</div>
+<p>後は、写経するか、コピペするかでファイルを作成します。フォルダ、ファイルの位置は後々変更することとし、今は元プロジェクトと同じにしておきます。</p>
+<div id="project_files" class="image">
+<img src="images/05-loginapp-screens/project_files.png" alt="" class="img width-050per" />
+<p class="caption">
+図5.3: 
+</p>
+</div>
+<p><br /></p>
+<p>lintでWarningが沢山出ていますが、コントローラーを追加した後すべてのページを、</p>
+<ul>
+<li>StatefulWidgetからStatelessWidgetへ変更
+</li>
+<li>タイトル、入力フィールドなどの文字を日本語化
+</li>
+</ul>
+<p><br /></p>
+<p>しましので、そのときに修正します。</p>
+<p><br /></p>
+<p>エミュレータで確認すると、以下のように取り入れることが出来ました。</p>
+<div id="base_project" class="image">
+<img src="images/05-loginapp-screens/base_project.png" alt="desc" class="img width-080per" />
+<p class="caption">
+図5.4: desc
+</p>
+</div>
+<p><br /></p>
+<p>ここまでのコードは、以下から取得できます。</p>
+<div class="note">
+<h5>ここまでのソースコード</h5>
+<div class="cmd-code">
+<span class="caption">GitHub</span>
+<pre class="list">　&gt;git clone -b 01_login_screens_import https://github.com/risingforce9zz/tfreemarket.git
+</pre>
+</div>
+</div>
+
+        </main>
+        <nav class="page-navi">
+          <a href="04-project_start.html" class="page-prev">&#9664;</a>
+        </nav>
+        <footer>
+        </footer>
+      </div>
+    </div>
+    <script>
+function rebuildAndReloadForcedly() {
+  fetch('/rebuild.js').then((resp)=>{
+    resp.text().then((text)=>{ eval(text); });
+  });
+}
+    </script>
+    <script src="/rebuild.js?file=05-loginapp-screens.re"></script>
+  </body>
+</html>
+<!-- layout.html5.erb -->

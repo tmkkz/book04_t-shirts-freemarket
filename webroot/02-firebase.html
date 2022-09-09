@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Firebaseとは？ | 0円で、モバイルアプリを作ってみるお〜。Vol.1</title>
+    <link rel="stylesheet" type="text/css" href="css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="css/webstyle.css" />
+    <link rel="next" title="アプリケーション認証" href="03-authScreen.html">
+    <link rel="prev" title="状態管理とは？" href="01-what_is_getx.html">
+    <meta name="generator" content="Re:VIEW Starter">
+  </head>
+  <body>
+    <div class="page-outer">
+      <nav class="side-content">
+                <div class="rebuild">
+          <a href="javascript:void(0)" onclick="rebuildAndReloadForcedly()">Rebuild and Reload</a>
+        </div>
+                <a class="nav-title" href="index.html">0円で、モバイルアプリを作ってみるお〜。Vol.1</a>
+<ul class="toc toc-1">
+    <li class="toc-chapter"><a href="./00-preface.html">はじめに</a></li>
+    <li class="toc-chapter"><a href="./01-what_is_getx.html">1 状態管理とは？</a></li>
+    <li class="toc-chapter"><a href="./02-firebase.html">2 Firebaseとは？</a>
+      <ul class="toc toc-2">
+        <li class="toc-section"><a href="#h2-1">2.1 Firebaeを使ってみる</a></li>
+      </ul>
+    </li>
+    <li class="toc-chapter"><a href="./03-authScreen.html">3 アプリケーション認証</a></li>
+    <li class="toc-chapter"><a href="./04-project_start.html">4 プロジェクトスタート</a></li>
+    <li class="toc-chapter"><a href="./05-loginapp-screens.html">5 認証関連画面の作成</a></li>
+</ul>
+      </nav>
+      <div class="page-inner">
+        <header class="page-header">
+        </header>
+        <main class="page-main">
+<h1 class="boldlines center twolines"><a id="h2"></a><span class="secno">第2章</span> <br/>Firebaseとは？</h1>
+<div class="abstract">
+<p>もともとは、オンラインチャット機能をWebサイトに統合するAPIを提供していたスタートアップEnvolveが、ユーザがチャットではなくゲームデータをリアルタイムに交換しているのをみて、別会社Firebaseを設立しiOS、Android、Webでアプリケーションデータを同期する「Firebase Realtime Database」を発表する。</p>
+<p><br /></p>
+<p>この製品を中心とし、「Firebase Hosting」、「Firbase Authentication」を合わせモバイル・バックエンドサービスを提供していた。</p>
+<p><br /></p>
+<p>ネットの世界では、スタートアップはツブされるか買収されるかの2択なので、結局Googleに買収されてしまう。</p>
+<p><br /></p>
+<p>Googleは、更にサービスを追加しモバイル・バックエンド・サービス、サーバーレス・アーキテクチャの勝者となります。</p>
+</div>
+
+
+<h2 class="grayback"><a id="h2-1"></a><span class="secno">2.1</span> Firebaeを使ってみる</h2>
+<p>Firebaseは、個別にたくさんのサービスを提供しています。いきなりFirebaseを使うと言っても、どのサービスを使ってよいものかもわかりません。</p>
+<p><br /></p>
+<p>使い方は、</p>
+<ul>
+<li>プロジェクトをを開始し、
+</li>
+<li>その都度、必要なサービスを追加
+</li>
+</ul>
+<p>します。</p>
+<p><br /></p>
+<p>Googleアカウントがあれば、スグに使い始めることが出来ますし、ある程度の使用量は無償です。</p>
+<div id="firebase00" class="image">
+<img src="images/02-firebase/firebase00.png" alt="" class="img width-070per" />
+<p class="caption">
+図2.1: 
+</p>
+</div>
+<p>料金については、</p>
+<p>Firebase Authentication（認証）では、以下のようにアクティブユーザが月間5万人まで無料です。</p>
+<div id="firebase00-1" class="image">
+<img src="images/02-firebase/firebase00-1.png" alt="" class="img width-070per" />
+<p class="caption">
+図2.3: 
+</p>
+</div>
+<p>Realtime Databaseでは、保存するデータが1GBまで無料です。ただし、ダウンロードされるデータは10GBまでです。</p>
+<p><br /></p>
+<p>実際に作成してデータをみていただくと、Reatime Databaseに保存されるデータは、巨大なJSONファイルですので文字列で1GBとなると、相当量です。</p>
+<div id="firebase00-1" class="image">
+<img src="images/02-firebase/firebase00-1.png" alt="" class="img width-070per" />
+<p class="caption">
+図2.3: 
+</p>
+</div>
+<p>無料から有料へは、いつでも切り替えることが出来ますし、使用量が減れば無料プランへ戻ることもできます。</p>
+
+<h3 class="symbol"><a id="h2-1-1"></a><span class="secno">2.1.1</span> Firebaseコンソールへ</h3>
+<p>「コンソールへ移動」をクリックすると、Firebaseコンソールトップへ移動します。ここで「+プロジェクトを追加」をクリックして新規プロジェクトを作成します。</p>
+<div id="id_03_firebase02" class="image">
+<img src="images/02-firebase/03_firebase02.png" alt="" class="img width-070per" />
+<p class="caption">
+図2.4: 
+</p>
+</div>
+<p>最初にプロジェクトに名前を付けます。使える文字は半角英数、スペース、-!'&quot;の記号4つです。[続行]ボタンをクリックします。</p>
+<div id="id_03_firebase03" class="image">
+<img src="images/02-firebase/03_firebase03.png" alt="" class="img width-070per" />
+<p class="caption">
+図2.5: 
+</p>
+</div>
+<p>Googleアナリティクスの画面になります。使う場合にはAndorid向けSDKのバージョンが19となります。</p>
+<div id="id_03_firebase04" class="image">
+<img src="images/02-firebase/03_firebase04.png" alt="" class="img width-070per" />
+<p class="caption">
+図2.6: 
+</p>
+</div>
+<p>アナリティクスのアカウントを選択するか、作成します。[プロジェクトを作成]ボタンをクリックすると作成開始します。</p>
+<div id="id_03_firebase05" class="image">
+<img src="images/02-firebase/03_firebase05.png" alt="" class="img width-070per" />
+<p class="caption">
+図2.7: 
+</p>
+</div>
+<p>作成中です。</p>
+<div id="id_03_firebase06" class="image">
+<img src="images/02-firebase/03_firebase06.png" alt="" class="img width-070per" />
+<p class="caption">
+図2.8: 
+</p>
+</div>
+<p>プロジェクトが出来上がりました。</p>
+<div id="id_03_firebase07" class="image">
+<img src="images/02-firebase/03_firebase07.png" alt="" class="img width-070per" />
+<p class="caption">
+図2.9: 
+</p>
+</div>
+<p>サイドバーにある[構築]ドロップダウンを開くと、追加できるサービスが表示されます。</p>
+<div id="id_03_firebase08" class="image">
+<img src="images/02-firebase/03_firebase08.png" alt="" class="img width-070per" />
+<p class="caption">
+図2.10: 
+</p>
+</div>
+<p>最初に、「Authentication」をクリックし認証サービスを追加します。</p>
+<div id="id_03_firebase09" class="image">
+<img src="images/02-firebase/03_firebase09.png" alt="" class="img width-070per" />
+<p class="caption">
+図2.11: 
+</p>
+</div>
+<p>認証サービスのトップ画面に移動します。[始める]ボタンをクリックします。</p>
+<div id="id_03_firebase10" class="image">
+<img src="images/02-firebase/03_firebase10.png" alt="" class="img width-070per" />
+<p class="caption">
+図2.12: 
+</p>
+</div>
+<p>ログイン方法（ログインプロバイダ）の選択画面になります。最初は、「メール/パスワード」を選択します。</p>
+<div id="id_03_firebase11" class="image">
+<img src="images/02-firebase/03_firebase11.png" alt="" class="img width-070per" />
+<p class="caption">
+図2.13: 
+</p>
+</div>
+<p>「メール/パスワード」を有効にし[保存]ボタンをクリックします。</p>
+<div id="id_03_firebase12" class="image">
+<img src="images/02-firebase/03_firebase12.png" alt="" class="img width-070per" />
+<p class="caption">
+図2.14: 
+</p>
+</div>
+<p>「新しいプロバイダ追加」ボタンをクリックします。</p>
+<div id="id_03_firebase13" class="image">
+<img src="images/02-firebase/03_firebase13.png" alt="" class="img width-070per" />
+<p class="caption">
+図2.15: 
+</p>
+</div>
+<p>以上で「メール/パスワード」での認証が可能になりました。</p>
+
+<h3 class="symbol"><a id="h2-1-2"></a><span class="secno">2.1.2</span> Firebase認証とは？</h3>
+<p>作成したプロジェクトに対して、</p>
+<ul>
+<li>メール/パスワードでのアカウント新規作成・ログイン
+</li>
+<li>Googleアカウントでのログイン
+</li>
+<li>twitter、AppleID、GitHubなどのSNSサービスでのログイン
+</li>
+</ul>
+<p>が出来ます。</p>
+<p>ログイン状態になると、そのプロジェクトに追加したサービスの細かなアクセス制限ができます。</p>
+<p><br /></p>
+<p>通常のアプリケーションで認証サービスを実現しようとすると、セキュリティが問題になりますがFirebase Authenticationで解放されます。</p>
+<p><br /></p>
+<p>また、クライアントプログラムも各言語用のライブラリが提供されています。</p>
+<p>次の章からは、オンライン・フリーマーケットの認証部分を作成していきます。</p>
+
+        </main>
+        <nav class="page-navi">
+          <a href="01-what_is_getx.html" class="page-prev">&#9664;</a>
+          <a href="03-authScreen.html" class="page-next">&#9654;</a>
+        </nav>
+        <footer>
+        </footer>
+      </div>
+    </div>
+    <script>
+function rebuildAndReloadForcedly() {
+  fetch('/rebuild.js').then((resp)=>{
+    resp.text().then((text)=>{ eval(text); });
+  });
+}
+    </script>
+    <script src="/rebuild.js?file=02-firebase.re"></script>
+  </body>
+</html>
+<!-- layout.html5.erb -->

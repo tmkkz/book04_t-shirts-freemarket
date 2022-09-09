@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>状態管理とは？ | 0円で、モバイルアプリを作ってみるお〜。Vol.1</title>
+    <link rel="stylesheet" type="text/css" href="css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="css/webstyle.css" />
+    <link rel="next" title="Firebaseとは？" href="02-firebase.html">
+    <link rel="prev" title="はじめに" href="00-preface.html">
+    <meta name="generator" content="Re:VIEW Starter">
+  </head>
+  <body>
+    <div class="page-outer">
+      <nav class="side-content">
+                <div class="rebuild">
+          <a href="javascript:void(0)" onclick="rebuildAndReloadForcedly()">Rebuild and Reload</a>
+        </div>
+                <a class="nav-title" href="index.html">0円で、モバイルアプリを作ってみるお〜。Vol.1</a>
+<ul class="toc toc-1">
+    <li class="toc-chapter"><a href="./00-preface.html">はじめに</a></li>
+    <li class="toc-chapter"><a href="./01-what_is_getx.html">1 状態管理とは？</a>
+      <ul class="toc toc-2">
+        <li class="toc-section"><a href="#h1-1">1.1 状態管理とは？</a></li>
+        <li class="toc-section"><a href="#h1-2">1.2 状態管理ライブラリ</a></li>
+        <li class="toc-section"><a href="#h1-3">1.3 GetXを使っての状態管理の解説</a></li>
+      </ul>
+    </li>
+    <li class="toc-chapter"><a href="./02-firebase.html">2 Firebaseとは？</a></li>
+    <li class="toc-chapter"><a href="./03-authScreen.html">3 アプリケーション認証</a></li>
+    <li class="toc-chapter"><a href="./04-project_start.html">4 プロジェクトスタート</a></li>
+    <li class="toc-chapter"><a href="./05-loginapp-screens.html">5 認証関連画面の作成</a></li>
+</ul>
+      </nav>
+      <div class="page-inner">
+        <header class="page-header">
+        </header>
+        <main class="page-main">
+<h1 class="boldlines center twolines"><a id="h1"></a><span class="secno">第1章</span> <br/>状態管理とは？</h1>
+<div class="abstract">
+<p>今回、状態管理で使用するのはGetX(状態管理だけではないですが・・・)です。</p>
+<p>では、「状態管理」とは一体何を指していて、なぜ必要なのでしょうか？</p>
+</div>
+
+
+<h2 class="grayback"><a id="h1-1"></a><span class="secno">1.1</span> 状態管理とは？</h2>
+<p>IT業界での状態管理（英語では-State Management-）の「状態（State）」は、アプリケーションの一部であり、たとえば、</p>
+<ul>
+<li>データベースで管理しているデータ
+</li>
+<li>ブラウザで発生するイベント、表示している色、形
+</li>
+</ul>
+<p>です。それらは、バックエンド、データベース、フロントエンドのコンポーネントなど、アプリケーションのどこにでもあります。</p>
+<p>たとえば、スマートフォンで表示しているボタンの色や形状などです。</p>
+<p><br /></p>
+<p>それでは、状態を管理する「状態管理」とは何なのでしょうか？</p>
+<p><br /></p>
+<p>「State-Management」とは、デザインパターンによる実装であり、アプリケーションのあちこちに散らばる状態をすべてのコンポーネントで状態を同期させ、「サービスの実装」や「データベースからのデータの取扱」を楽にすること。</p>
+<p><br /></p>
+<p>だ、そうです。</p>
+<p><br /></p>
+<p>上記の例ですと、ボタンの形を変えるためにAモジュールにアクセスし、色を変えるためにBモジュールにアクセスするような実装ではなくボタンの状態を管理するモジュールがあれば、そこにアクセスするだけで良いとする実装を指します。</p>
+
+<h2 class="grayback"><a id="h1-2"></a><span class="secno">1.2</span> 状態管理ライブラリ</h2>
+<p>Reactでも同様ですが状態を管理するライブラリは、たいていの場合、戦国時代の武将のように湧いてきて、戦いの後は、「ひとりの絶大な勝者」と「2〜3人ほどの生き残り」となります。その後時間が経過すると、この状況に不満をもつ新興勢力が台頭してきます。</p>
+<p><br /></p>
+<p>Flutterの世界も同様で、現在は戦いの終盤戦に近づいているのではないでしょうか？</p>
+<p><br /></p>
+<p>Flutterの公式サイトでも<a href="https://docs.flutter.dev/development/data-and-backend/state-mgmt/options" class="link">状態管理のライブラリ</a>を公開しています。しかし、公式サイトですので、どれが良いなどとは口が裂けても言えない状況にあります。</p>
+<p><br /></p>
+<p>コードを書く人は、たいていの場合どのライブラリが良いかを議論しません。過去の経験から「宗教戦争」になると心得ているからです。しかし、内心では、「状態管理と言えば、XXX一択！」と思っています。</p>
+<p><br /></p>
+<p>本書では、GetXを使いますが、Riverpod推しやProvider推しの方はお許しください。</p>
+
+<h2 class="grayback"><a id="h1-3"></a><span class="secno">1.3</span> GetXを使っての状態管理の解説</h2>
+<p>それでは、Flutterのスタートアッププロジェクトを使って説明します。</p>
+
+<h3 class="symbol"><a id="h1-3-1"></a><span class="secno">1.3.1</span> スタートアッププロジェクト</h3>
+<p><br /></p>
+<p>下図は、Android Studioで新規プロジェクトを作成しエミュレータでデバッグしているところです。</p>
+<div id="ch01_01_state_management" class="image">
+<img src="images/01-what_is_getx/ch01_01_state_management.png" alt="" class="img width-070per" />
+<p class="caption">
+図1.1: 
+</p>
+</div>
+<p>おなじみのスタートアッププロジェクトが作成されており、FAB（フローティング・アクション・ボタン）をクリックすると表示されているカウンターが増えていきます。</p>
+<p><br /></p>
+<p>コードを見ると、</p>
+<ul>
+<li>状態を保持するStateを継承した状態管理setStateを使用
+</li>
+<li>データである「_counter」を持っている
+</li>
+<li>データを操作する「_incrementCounter」ビジネスロジックを持っている。
+</li>
+<li>データを表示する「Text Widget」を持っている。
+</li>
+</ul>
+<p>つまり、表示用コード、データ、ビジネスロジックが同居しています。別なページから、このデータにアクセスするためにはどのようにするのでしょうか？</p>
+
+<h3 class="symbol"><a id="h1-3-2"></a><span class="secno">1.3.2</span> GetXを導入</h3>
+<p>GetX（あくまで本書では）を導入し状態管理を行います。</p>
+<p><br /></p>
+<p>ご覧のように、データ、ビジネスロジックとも外部に移動しています。</p>
+<div id="ch01_02_state_management" class="image">
+<img src="images/01-what_is_getx/ch01_02_state_management.png" alt="" class="img width-070per" />
+<p class="caption">
+図1.2: 
+</p>
+</div>
+<p>データ表示部にエラーが出ているのは、表示部分に状態管理を適用していないためです。</p>
+<div id="ch01_03_state_management" class="image">
+<img src="images/01-what_is_getx/ch01_03_state_management.png" alt="" class="img width-070per" />
+<p class="caption">
+図1.3: 
+</p>
+</div>
+<p>表示部に状態管理「GetBuilder」を適用するとデータが表示されています。実は、GetBuilder自体は、StatefulWidgetを継承していてGetBuilder自体が状態を保持しています。</p>
+<div class="caption-code">
+<span class="caption">GetBuilderの正体</span>
+<pre class="list">  class GetBuilder&lt;T extends GetxController&gt; extends StatefulWidget {
+  final GetControllerBuilder&lt;T&gt; builder;
+  final bool global;
+  final Object? id;
+  final String? tag;
+  final bool autoRemove;
+  final bool assignId;
+  final Object Function(T value)? filter;
+  final void Function(GetBuilderState&lt;T&gt; state)? initState,
+      dispose,
+      didChangeDependencies;
+  final void Function(GetBuilder oldWidget, GetBuilderState&lt;T&gt; state)?
+      didUpdateWidget;
+  final T? init;
+
+  const GetBuilder({
+    Key? key,
+    this.init,
+    this.global = true,
+    required this.builder,
+    this.autoRemove = true,
+    this.assignId = false,
+    this.initState,
+    this.filter,
+    this.tag,
+    this.dispose,
+    this.id,
+    this.didChangeDependencies,
+    this.didUpdateWidget,
+  }) : super(key: key);
+</pre>
+</div>
+<p><br /></p>
+
+<h4><a id="h1-3-2-1"></a>状態管理をしているコントローラー</h4>
+<p>状態管理をしているコントローラーは、こんな風になっています。</p>
+<div id="ch01_04_state_management" class="image">
+<img src="images/01-what_is_getx/ch01_04_state_management.png" alt="" class="img width-070per" />
+<p class="caption">
+図1.4: 
+</p>
+</div>
+<p>コントローラーは、「GetXコントローラー」を継承し、データとビジネスロジックを持っています。ビジネスロジック「increment」に「update()」が含まれているのは、「GetBuilder」に、</p>
+<p><br /></p>
+<p>　　状態が変化したので表示を書き換えてね。お願いっ！</p>
+<p><br /></p>
+<p>と通知するためです。</p>
+<p><br /></p>
+<p>状態が変化すると、自動で再描画する「GetX&lt;&gt;」、「Obx()」のような優秀なのもいます。しかし、優秀なのは、それなりにメモリを使う・CPUを使うなどリソースを使います。</p>
+<p><br /></p>
+
+<h4><a id="h1-3-2-2"></a>何がうれしいのか？</h4>
+<p>では、状態管理コントローラーを導入したメリットは何でしょうか？</p>
+<ol start="1" type="1">
+<li>データとビジネスロジックを一カ所にまとめたので、変更があっても一カ所。</li>
+<li>状態管理コントローラーを増やしても、表示部のコード変更は最小です。</li>
+<li>別なページにデータを簡単に渡せる。</li>
+<li>データと表示ページには関連がないので、ページを再表示してもデータ再取得がない。</li>
+</ol>
+<p>と、たくさんのメリットがあります。</p>
+<p><br /></p>
+
+<h5><a id="h1-3-2-2-1"></a>表示を増やしてみた</h5>
+<p>表示部を2つ、それぞれを操作するボタンを2つにしましたが、状態管理コントローラーをひとつ増やしただけです。こちらには、優秀な「GetX&lt;コントローラー型&gt;」を使って表示しています。</p>
+<div id="ch01_05_state_management" class="image">
+<img src="images/01-what_is_getx/ch01_05_state_management.png" alt="" class="img width-070per" />
+<p class="caption">
+図1.5: 
+</p>
+</div>
+<p><br /></p>
+
+<h4><a id="h1-3-2-3"></a>状態管理コントローラーの別インスタンス</h4>
+<p>同じデータ型、同じビジネスロジックを持つのであれば、状態管理コントローラーの別インスタンスで管理できます。インスタンスが別ですので、それぞれの操作で、それぞれのデータを管理できます。</p>
+<div id="ch01_06_state_management" class="image">
+<img src="images/01-what_is_getx/ch01_06_state_management.png" alt="" class="img width-070per" />
+<p class="caption">
+図1.6: 
+</p>
+</div>
+<p><br /></p>
+
+<h4><a id="h1-3-2-4"></a>別ページでも同じ状態管理コントローラーへアクセス</h4>
+<p>ページ移動を行っても、アプリケーション全体で状態管理コントローラーは動作していますので、状態管理コントローラーへアクセスすれば、先ほどまでのデータを取得できます。</p>
+<div id="ch01_07_state_management" class="image">
+<img src="images/01-what_is_getx/ch01_07_state_management.png" alt="" class="img width-070per" />
+<p class="caption">
+図1.7: 
+</p>
+</div>
+<div id="ch01_09_state_management_second_page" class="image">
+<img src="images/01-what_is_getx/ch01_09_state_management_second_page.png" alt="" class="img width-070per" />
+<p class="caption">
+図1.8: 
+</p>
+</div>
+<p>ここでデータを操作し変化させます。</p>
+<div id="ch01_10_state_management_second_page" class="image">
+<img src="images/01-what_is_getx/ch01_10_state_management_second_page.png" alt="" class="img width-070per" />
+<p class="caption">
+図1.9: 
+</p>
+</div>
+<p>元ページに戻っても、アクセスしている状態管理コントローラーのデータを取得しますので、データは最新です。</p>
+<div id="ch01_11_state_management_back_page" class="image">
+<img src="images/01-what_is_getx/ch01_11_state_management_back_page.png" alt="" class="img width-070per" />
+<p class="caption">
+図1.10: 
+</p>
+</div>
+
+<h4><a id="h1-3-2-5"></a>FABはひとつ。</h4>
+<p>Flutterで推奨されているMaterial Designでは、FABが複数あることを推奨していません。今回は、状態管理の解説のため簡易的にです。</p>
+<div id="ch01_08_state_management_fab_error" class="image">
+<img src="images/01-what_is_getx/ch01_08_state_management_fab_error.png" alt="" class="img width-070per" />
+<p class="caption">
+図1.11: 
+</p>
+</div>
+
+        </main>
+        <nav class="page-navi">
+          <a href="00-preface.html" class="page-prev">&#9664;</a>
+          <a href="02-firebase.html" class="page-next">&#9654;</a>
+        </nav>
+        <footer>
+        </footer>
+      </div>
+    </div>
+    <script>
+function rebuildAndReloadForcedly() {
+  fetch('/rebuild.js').then((resp)=>{
+    resp.text().then((text)=>{ eval(text); });
+  });
+}
+    </script>
+    <script src="/rebuild.js?file=01-what_is_getx.re"></script>
+  </body>
+</html>
+<!-- layout.html5.erb -->
