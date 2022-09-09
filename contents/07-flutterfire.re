@@ -23,8 +23,7 @@
 
 //blankline
 公式サイト
-https://firebase.google.com/docs/cli?hl=ja#install-cli-mac-linux
-
+https://firebase.google.com/docs/flutter/setup?platform=ios#available-plugins
 //blankline
 インストールは、ターミナルを開き、
 

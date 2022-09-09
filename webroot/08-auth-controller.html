@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>状態管理コントローラーを作る | 0円で、モバイルアプリを作ってみるお〜。Vol.1</title>
+    <link rel="stylesheet" type="text/css" href="css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="css/webstyle.css" />
+    <link rel="prev" title="Flutter側でFirebaseが使えるようにする。" href="07-flutterfire.html">
+    <meta name="generator" content="Re:VIEW Starter">
+  </head>
+  <body>
+    <div class="page-outer">
+      <nav class="side-content">
+                <div class="rebuild">
+          <a href="javascript:void(0)" onclick="rebuildAndReloadForcedly()">Rebuild and Reload</a>
+        </div>
+                <a class="nav-title" href="index.html">0円で、モバイルアプリを作ってみるお〜。Vol.1</a>
+<ul class="toc toc-1">
+    <li class="toc-chapter"><a href="./00-preface.html">はじめに</a></li>
+    <li class="toc-chapter"><a href="./01-what_is_getx.html">1 状態管理とは？</a></li>
+    <li class="toc-chapter"><a href="./02-firebase.html">2 Firebaseとは？</a></li>
+    <li class="toc-chapter"><a href="./03-authScreen.html">3 アプリケーション認証</a></li>
+    <li class="toc-chapter"><a href="./04-project_start.html">4 プロジェクトスタート</a></li>
+    <li class="toc-chapter"><a href="./05-loginapp-screens.html">5 認証関連画面の作成</a></li>
+    <li class="toc-chapter"><a href="./06-usermodel.html">6 アプリで認証するユーザのデータ型を作成する。</a></li>
+    <li class="toc-chapter"><a href="./07-flutterfire.html">7 Flutter側でFirebaseが使えるようにする。</a></li>
+    <li class="toc-chapter"><a href="./08-auth-controller.html">8 状態管理コントローラーを作る</a>
+      <ul class="toc toc-2">
+        <li class="toc-section"><a href="#h8-1">8.1 認証コントローラーの作成</a></li>
+      </ul>
+    </li>
+</ul>
+      </nav>
+      <div class="page-inner">
+        <header class="page-header">
+        </header>
+        <main class="page-main">
+<h1 class="boldlines center twolines"><a id="h8"></a><span class="secno">第8章</span> <br/>状態管理コントローラーを作る</h1>
+<div class="abstract">
+<p>認証状態を管理する状態コントローラーを作成します。</p>
+<p><br /></p>
+<p>コントローラーには、管理するデータとデータを変更するメソッドがあります。</p>
+</div>
+
+<h1 class="boldlines center twolines"><a id="h8"></a><span class="secno">第8章</span> <br/>GetXコントローラー</h1>
+<p>公式サイトhttps://pub.dev/packages/get</p>
+<p>GitHubhttps://github.com/jonataslaw/getx</p>
+
+<h4><a id="h8-0-0-1"></a>インストール</h4>
+<p>ターミナルに「flutter pub add get」と入力しエンターキーを押します。</p>
+<div class="cmd-code">
+<span class="caption">GetXのインストール</span>
+<pre class="list"> ❯ flutter pub add get
+ Resolving dependencies...
+ + get 4.6.5
+   material_color_utilities 0.1.5 (0.2.0 available)
+   source_span 1.9.0 (1.9.1 available)
+   test_api 0.4.12 (0.4.13 available)
+   vector_math 2.1.2 (2.1.3 available)
+ Changed 1 dependency!
+
+</pre>
+</div>
+<p>GetXは、状態管理以外にもできることが多くあります。その機能が必要になった時点で個別に説明しますが、</p>
+<ul>
+<li>State management 状態管理
+</li>
+<li>dependency_anagement 依存管理
+</li>
+<li>route management ルート管理
+</li>
+</ul>
+<p>が、大きな機能です。</p>
+<p><br /></p>
+<p>その他にも、国際化対応、検証（validation）などがあります。</p>
+<p>GetXの特徴は、下図のように、</p>
+<ul>
+<li>コントローラーは、データとデータ更新用メソッドを持つ。
+</li>
+<li>表示は、GetXのWidgetにコントローラーのデータを表示させる。
+</li>
+<li>ボタンなど操作部は、コントローラーのメソッドを呼び出す。
+</li>
+</ul>
+<p>と配置され、</p>
+<ol start="1" type="1">
+<li>操作部からコントローラーのメソッドが呼ばれる。</li>
+<li>コントローラー内でメソッドが実行され、データ更新。</li>
+<li>GetXの仕組みで表示用Widgetにデータ変更の通知。</li>
+<li>表示用Widgetが再描画。</li>
+</ol>
+<p>と、流れます。</p>
+<div id="getx_flow" class="image">
+<img src="images/08-auth-controller/getx_flow.png" alt="" class="img width-050per" />
+<p class="caption">
+図8.1: 
+</p>
+</div>
+
+<h2 class="grayback"><a id="h8-1"></a><span class="secno">8.1</span> 認証コントローラーの作成</h2>
+<p>認証コントローラー（authController）は、以下のようなフローで動作します。</p>
+<ul>
+<li>画面のテキストフィールドは、コントローラーが持つ。
+</li>
+<li>サインインなどのメソッドもコントローラーが持つ。
+</li>
+<li>コントローラーは、Firebase Userデータを持つ。
+</li>
+<li>Firebase Userデータは、認証状態が変わると通知を受ける。
+</li>
+<li>GetXには、イベント発生時にコールバックを呼び出すWorkerがある。
+</li>
+<li>コールバックで表示ページを切り替える。
+</li>
+</ul>
+<div id="auth_controller01" class="image">
+<img src="images/08-auth-controller/auth_controller01.png" alt="" class="img width-070per" />
+<p class="caption">
+図8.2: 
+</p>
+</div>
+
+<h3 class="symbol"><a id="h8-1-1"></a><span class="secno">8.1.1</span> GetXControllerについて</h3>
+<p>GetXController作成前に、もう少しGetXControllerについて知っておくことがあります。</p>
+<p><br /></p>
+
+<h4><a id="h8-1-1-1"></a>GetXコントローラーはライフサイクルがある。</h4>
+<p>GetXコントローラーには、ライフサイクルがあり以下のイベント発生時にメソッド呼び出しができます。</p>
+<ul>
+<li>onInit 初期化されたとき
+</li>
+<li>onReady 準備完了したとき
+</li>
+<li>onClose 終了するとき
+</li>
+</ul>
+<p><br /></p>
+<p>GetXコントローラーには、Workerと呼ばれる仕組みがあり、監視対象が変更されるとコールバックを呼び出せる。</p>
+<ul>
+<li>ever(監視対象, コールバック)　監視対象が更新されるたびにコールバックされる。
+</li>
+<li>once((監視対象, コールバック)　監視対象が更新と一度だけコールバックされる。 
+</li>
+<li>debounce(監視対象, コールバック, time:時間の長さ)　監視対象が更新され、経過時間後にコールバックされる。
+</li>
+<li>interval(監視対象, コールバック, time:時間の長さ)　指定した時間内の監視対象が更新は無視する。
+</li>
+</ul>
+<p><br /></p>
+<p>GetXコントローラーが持つデータは、監視対象(更新されると通知する)と通常の変数がある。</p>
+<div class="caption-code">
+<span class="caption">監視対象</span>
+<pre class="list">
+  // 監視対象のデータに「.obs」を付ける。
+  var checkBoxVal = false.obs;
+
+  // Rx、Rxnと型で作り初期化する。
+  final userName = Rx&lt;String&gt;('');
+</pre>
+</div>
+<p>では、いよいよ認証コントローラーの作成に入ります。</p>
+
+<h3 class="symbol"><a id="h8-1-2"></a><span class="secno">8.1.2</span> AuthControllerの作成</h3>
+<p>コントローラーは今後もアプリ内で増えていきますので、lib/controllersフォルダを作成し、「auth_controller.dart」ファイルを作成します。</p>
+<p><br /></p>
+<p>コード内容は、</p>
+<ul>
+<li>新規登録・メール/パスワードサインイン画面のテキストフィールドコントロールを定義
+</li>
+<li>監視対象データ「firebaseUser」を定義し、nullで初期化
+</li>
+<li>コントローラーの初期化イベントでテキストフィールドコントロールをインスタンス化
+</li>
+<li>onReadyイベントで、firebaseUserの状態に更新があれば「hundleAuthChanged」呼び出しWorker作成
+</li>
+<li>onReadyイベントで、firebaseUserをFirebaseから通知を受けるよう設定。
+</li>
+<li>onCloseイベントでテキストフィールドコントロールを削除
+</li>
+<li>handleAuthChangedが呼ばれると、firebaseUserが「null」であれば「/login」へ
+</li>
+</ul>
+<p><br /></p>
+<p>現時点では、アプリを起動してもAuthControllerはどこからも参照されていないので何も起こりません。</p>
+<div class="caption-code">
+<span class="caption">lib/auth_controller.dart</span>
+<pre class="list">import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+enum TextEditingControllerStatus { init, clear, dispose }
+
+class AuthController extends GetxController {
+  static AuthController get to =&gt; Get.find();
+
+  /// 新規作成画面、サインイン画面で使用するTextEditingController
+  late TextEditingController nameController;
+  late TextEditingController displayNameController;
+  late TextEditingController emailController;
+  late TextEditingController passwordController;
+  late TextEditingController phoneNumberController;
+  late TextEditingController profilePicController;
+  late TextEditingController storeDescriptionController;
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  /// firebaseのユーザ firebase_authで定義されている。
+  Rxn&lt;User&gt; firebaseUser = Rxn&lt;User&gt;();
+
+  @override
+  void onInit() {
+    nameController = TextEditingController();
+    displayNameController = TextEditingController();
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
+    phoneNumberController = TextEditingController();
+    profilePicController = TextEditingController();
+    storeDescriptionController = TextEditingController();
+    super.onInit();
+  }
+
+  @override
+  void onReady() {
+    /// getXのworker、監視対象(引数1)に変化があった場合、引数2のコールバックを呼び出す。
+    /// everは毎回。
+    ever(firebaseUser, handleAuthChanged);
+    firebaseUser.bindStream(_auth.authStateChanges());
+    super.onReady();
+  }
+
+  @override
+  void onClose() {
+    handleTextEditingControllers(TextEditingControllerStatus.dispose);
+    super.onClose();
+  }
+
+  /// textEditingControllerの初期化、終了処理
+  void handleTextEditingControllers(TextEditingControllerStatus status) {
+    List&lt;TextEditingController&gt; textEditingControllers = [
+      nameController,
+      displayNameController,
+      emailController,
+      passwordController,
+      phoneNumberController,
+      profilePicController,
+      storeDescriptionController,
+    ];
+
+    switch (status) {
+      case TextEditingControllerStatus.clear:
+        for (var controller in textEditingControllers) {
+          controller.clear();
+        }
+        break;
+      case TextEditingControllerStatus.dispose:
+        for (var controller in textEditingControllers) {
+          controller.dispose();
+        }
+        break;
+      default:
+        break;
+    }
+  }
+
+  /// firebaseUserの状態が変化したときに呼ばれる
+  handleAuthChanged(_firebaseUser) async {
+    if (_firebaseUser == null) {
+      handleTextEditingControllers(TextEditingControllerStatus.clear);
+      if (Get.currentRoute != '/login') {
+        Get.toNamed('/login');
+      }
+    } else {
+      if (Get.currentRoute != '/profile') {
+        Get.toNamed('/profile');
+      }
+    }
+  }
+}
+
+</pre>
+</div>
+<p>以上で、認証コントローラーの根本ができました。次の章からユーザ新規登録ができるようにします。</p>
+<p><br /></p>
+<div class="note">
+<h5>ここまでのソースコード</h5>
+<div class="cmd-code">
+<span class="caption">GitHub</span>
+<pre class="list">　&gt;git clone -b 03_flutterfire_setup https://github.com/risingforce9zz/tfreemarket.git
+</pre>
+</div>
+</div>
+
+        </main>
+        <nav class="page-navi">
+          <a href="07-flutterfire.html" class="page-prev">&#9664;</a>
+        </nav>
+        <footer>
+        </footer>
+      </div>
+    </div>
+    <script>
+function rebuildAndReloadForcedly() {
+  fetch('/rebuild.js').then((resp)=>{
+    resp.text().then((text)=>{ eval(text); });
+  });
+}
+    </script>
+    <script src="/rebuild.js?file=08-auth-controller.re"></script>
+  </body>
+</html>
+<!-- layout.html5.erb -->

@@ -17,6 +17,8 @@ CHAPS:
   - 05-loginapp-screens.re
   - 06-usermodel.re
   - 07-flutterfire.re
+  - 08-auth-controller.re
+  - 09-signup.re
 
 ## 付録
 APPENDIX:
