@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
-    <title>状態管理コントローラーを作る | 0円で、モバイルアプリを作ってみるお〜。Vol.1</title>
+    <title>状態管理コントローラを作る | 0円で、モバイルアプリを作ってみるお〜。Vol.1</title>
     <link rel="stylesheet" type="text/css" href="css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="css/webstyle.css" />
     <link rel="next" title="新規登録" href="09-signup.html">
@@ -24,12 +24,12 @@
     <li class="toc-chapter"><a href="./03-authScreen.html">3 アプリケーション認証</a></li>
     <li class="toc-chapter"><a href="./04-project_start.html">4 プロジェクトスタート</a></li>
     <li class="toc-chapter"><a href="./05-loginapp-screens.html">5 認証関連画面の作成</a></li>
-    <li class="toc-chapter"><a href="./06-usermodel.html">6 アプリで認証するユーザのデータ型を作成する。</a></li>
+    <li class="toc-chapter"><a href="./06-usermodel.html">6 アプリで認証するユーザーのデータ型を作成する。</a></li>
     <li class="toc-chapter"><a href="./07-flutterfire.html">7 Flutter側でFirebaseが使えるようにする。</a></li>
-    <li class="toc-chapter"><a href="./08-auth-controller.html">8 状態管理コントローラーを作る</a>
+    <li class="toc-chapter"><a href="./08-auth-controller.html">8 状態管理コントローラを作る</a>
       <ul class="toc toc-2">
-        <li class="toc-section"><a href="#h8-1">8.1 GetXコントローラー</a></li>
-        <li class="toc-section"><a href="#h8-2">8.2 認証コントローラーの作成</a></li>
+        <li class="toc-section"><a href="#h8-1">8.1 GetXコントローラ</a></li>
+        <li class="toc-section"><a href="#h8-2">8.2 認証コントローラの作成</a></li>
       </ul>
     </li>
     <li class="toc-chapter"><a href="./09-signup.html">9 新規登録</a></li>
@@ -40,15 +40,15 @@
         <header class="page-header">
         </header>
         <main class="page-main">
-<h1 class="boldlines center twolines"><a id="h8"></a><span class="secno">第8章</span> <br/>状態管理コントローラーを作る</h1>
+<h1 class="boldlines center twolines"><a id="h8"></a><span class="secno">第8章</span> <br/>状態管理コントローラを作る</h1>
 <div class="abstract">
-<p>認証状態を管理する状態コントローラーを作成します。</p>
+<p>認証状態を管理する状態コントローラを作成します。</p>
 <p><br /></p>
-<p>コントローラーには、管理するデータとデータを変更するメソッドがあります。</p>
+<p>コントローラには、管理するデータとデータを変更するメソッドがあります。</p>
 </div>
 
 
-<h2 class="grayback"><a id="h8-1"></a><span class="secno">8.1</span> GetXコントローラー</h2>
+<h2 class="grayback"><a id="h8-1"></a><span class="secno">8.1</span> GetXコントローラ</h2>
 <p>公式サイトhttps://pub.dev/packages/get</p>
 <p>GitHubhttps://github.com/jonataslaw/getx</p>
 
@@ -78,21 +78,21 @@
 </ul>
 <p>が、大きな機能です。</p>
 <p><br /></p>
-<p>その他にも、国際化対応、検証（validation）などがあります。</p>
+<p>そのほかにも、国際化対応、検証（validation）などがあります。</p>
 <p>GetXの特徴は、下図のように、</p>
 <ul>
-<li>コントローラーは、データとデータ更新用メソッドを持つ。
+<li>コントローラは、データとデータ更新用メソッドをもつ。
 </li>
-<li>表示は、GetXのWidgetにコントローラーのデータを表示させる。
+<li>表示は、GetXのWidgetにコントローラのデータを表示させる。
 </li>
-<li>ボタンなど操作部は、コントローラーのメソッドを呼び出す。
+<li>ボタンなど操作部は、コントローラのメソッドを呼び出す。
 </li>
 </ul>
 <p>と配置され、</p>
 <ol start="1" type="1">
-<li>操作部からコントローラーのメソッドが呼ばれる。</li>
-<li>コントローラー内でメソッドが実行され、データ更新。</li>
-<li>GetXの仕組みで表示用Widgetにデータ変更の通知。</li>
+<li>操作部からコントローラのメソッドが呼ばれる。</li>
+<li>コントローラ内でメソッドが実行され、データ更新。</li>
+<li>GetXのしくみで表示用Widgetにデータ変更の通知。</li>
 <li>表示用Widgetが再描画。</li>
 </ol>
 <p>と、流れます。</p>
@@ -103,14 +103,14 @@
 </p>
 </div>
 
-<h2 class="grayback"><a id="h8-2"></a><span class="secno">8.2</span> 認証コントローラーの作成</h2>
-<p>認証コントローラー（authController）は、以下のようなフローで動作します。</p>
+<h2 class="grayback"><a id="h8-2"></a><span class="secno">8.2</span> 認証コントローラの作成</h2>
+<p>認証コントローラ（authController）は、以下のようなフローで動作します。</p>
 <ul>
-<li>画面のテキストフィールドは、コントローラーが持つ。
+<li>画面のテキストフィールドは、コントローラがもつ。
 </li>
-<li>サインインなどのメソッドもコントローラーが持つ。
+<li>サインインなどのメソッドもコントローラがもつ。
 </li>
-<li>コントローラーは、Firebase Userデータを持つ。
+<li>コントローラは、Firebase Userデータをもつ。
 </li>
 <li>Firebase Userデータは、認証状態が変わると通知を受ける。
 </li>
@@ -130,8 +130,8 @@
 <p>GetXController作成前に、もう少しGetXControllerについて知っておくことがあります。</p>
 <p><br /></p>
 
-<h4><a id="h8-2-1-1"></a>GetXコントローラーはライフサイクルがある。</h4>
-<p>GetXコントローラーには、ライフサイクルがあり以下のイベント発生時にメソッド呼び出しができます。</p>
+<h4><a id="h8-2-1-1"></a>GetXコントローラはライフサイクルがある。</h4>
+<p>GetXコントローラには、ライフサイクルがあり以下のイベント発生時にメソッド呼び出しができます。</p>
 <ul>
 <li>onInit 初期化されたとき
 </li>
@@ -141,19 +141,19 @@
 </li>
 </ul>
 <p><br /></p>
-<p>GetXコントローラーには、Workerと呼ばれる仕組みがあり、監視対象が変更されるとコールバックを呼び出せる。</p>
+<p>GetXコントローラには、Workerと呼ばれるしくみがあり、監視対象が変更されるとコールバックを呼び出せる。</p>
 <ul>
-<li>ever(監視対象, コールバック)　監視対象が更新されるたびにコールバックされる。
+<li>ever（監視対象, コールバック）　監視対象が更新されるたびにコールバックされる。
 </li>
-<li>once((監視対象, コールバック)　監視対象が更新と一度だけコールバックされる。 
+<li>once（(監視対象, コールバック）　監視対象が更新と一度だけコールバックされる。
 </li>
-<li>debounce(監視対象, コールバック, time:時間の長さ)　監視対象が更新され、経過時間後にコールバックされる。
+<li>debounce（監視対象, コールバック, time:時間の長さ）　監視対象が更新され、経過時間後にコールバックされる。
 </li>
-<li>interval(監視対象, コールバック, time:時間の長さ)　指定した時間内の監視対象が更新は無視する。
+<li>interval（監視対象, コールバック, time:時間の長さ）　指定した時間内の監視対象が更新は無視する。
 </li>
 </ul>
 <p><br /></p>
-<p>GetXコントローラーが持つデータは、監視対象(更新されると通知する)と通常の変数がある。</p>
+<p>GetXコントローラがもつデータは、監視対象（更新されると通知する）と通常の変数がある。</p>
 <div class="caption-code">
 <span class="caption">監視対象</span>
 <pre class="list">
@@ -164,10 +164,10 @@
   final userName = Rx&lt;String&gt;('');
 </pre>
 </div>
-<p>では、いよいよ認証コントローラーの作成に入ります。</p>
+<p>では、いよいよ認証コントローラの作成に入ります。</p>
 
 <h3 class="symbol"><a id="h8-2-2"></a><span class="secno">8.2.2</span> AuthControllerの作成</h3>
-<p>コントローラーは今後もアプリ内で増えていきますので、lib/controllersフォルダを作成し、「auth_controller.dart」ファイルを作成します。</p>
+<p>コントローラは今後もアプリ内で増えていきますので、lib/controllersフォルダを作成し、「auth_controller.dart」ファイルを作成します。</p>
 <p><br /></p>
 <p>コード内容は、</p>
 <ul>
@@ -175,7 +175,7 @@
 </li>
 <li>監視対象データ「firebaseUser」を定義し、nullで初期化
 </li>
-<li>コントローラーの初期化イベントでテキストフィールドコントロールをインスタンス化
+<li>コントローラの初期化イベントでテキストフィールドコントロールをインスタンス化
 </li>
 <li>onReadyイベントで、firebaseUserの状態に更新があれば「hundleAuthChanged」呼び出しWorker作成
 </li>
@@ -285,7 +285,7 @@ class AuthController extends GetxController {
 
 </pre>
 </div>
-<p>以上で、認証コントローラーの根本ができました。次の章からユーザ新規登録ができるようにします。</p>
+<p>以上で、認証コントローラの根本ができました。次の章からユーザー新規登録ができるようにします。</p>
 <p><br /></p>
 <div class="note">
 <h5>ここまでのソースコード</h5>

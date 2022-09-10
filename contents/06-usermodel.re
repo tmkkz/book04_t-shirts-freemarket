@@ -1,19 +1,19 @@
-= アプリで認証するユーザのデータ型を作成する。
+= アプリで認証するユーザーのデータ型を作成する。
 
 //abstract{
-  アプリで認証するユーザー(Firebaseを使用するユーザとは別)のデータ型を作成します。
+  アプリで認証するユーザー（Firebaseを使用するユーザーとは別）のデータ型を作成します。
 //}
 
 //makechaptitlepage[toc=on]
 
-== ユーザモデルの作成
+== ユーザーモデルの作成
 
-アプリで認証するユーザ（今回は、オンライン・フリーマーケットの出店者兼購入者）の必要な情報を
+アプリで認証するユーザー（今回は、オンライン・フリーマーケットの出店者で、なおかつ購入者）の必要な情報を
 検討しデータ型を作成します。
 
 libフォルダ内に「models」フォルダを作成し、「user_model.dart」ファイルを作成します。内容は以下となります。
 
-//list[][ユーザモデル型]{
+//list[][ユーザーモデル型]{
 class UserModel {
 
   String id ='';
@@ -81,9 +81,10 @@ class UserModel {
 }
 //}
 
-
+#@# textlint-disable
 //note[ここまでのソースコード]{
 //terminal[][GitHub]{
 　>git clone -b 02_login_screens_import https://github.com/risingforce9zz/tfreemarket.git
 //}
 //}
+#@# textlint-enable

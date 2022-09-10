@@ -23,18 +23,20 @@
     <li class="toc-chapter"><a href="./03-authScreen.html">3 アプリケーション認証</a></li>
     <li class="toc-chapter"><a href="./04-project_start.html">4 プロジェクトスタート</a></li>
     <li class="toc-chapter"><a href="./05-loginapp-screens.html">5 認証関連画面の作成</a></li>
-    <li class="toc-chapter"><a href="./06-usermodel.html">6 アプリで認証するユーザのデータ型を作成する。</a></li>
+    <li class="toc-chapter"><a href="./06-usermodel.html">6 アプリで認証するユーザーのデータ型を作成する。</a></li>
     <li class="toc-chapter"><a href="./07-flutterfire.html">7 Flutter側でFirebaseが使えるようにする。</a></li>
-    <li class="toc-chapter"><a href="./08-auth-controller.html">8 状態管理コントローラーを作る</a></li>
+    <li class="toc-chapter"><a href="./08-auth-controller.html">8 状態管理コントローラを作る</a></li>
     <li class="toc-chapter"><a href="./09-signup.html">9 新規登録</a></li>
     <li class="toc-chapter"><a href="./10-email-signin.html">10 メール/パスワードでのサインイン</a>
       <ul class="toc toc-2">
-        <li class="toc-section"><a href="#h10-1">10.1 サインイン選択画面を作成</a></li>
-        <li class="toc-section"><a href="#h10-2">10.2 LoginPageの修正</a></li>
-        <li class="toc-section"><a href="#h10-3">10.3 ForgotPasswordPageの修正</a></li>
-        <li class="toc-section"><a href="#h10-4">10.4 サインアウトの実装</a></li>
-        <li class="toc-section"><a href="#h10-5">10.5 認証コントローラーにメソッドの実装</a></li>
-        <li class="toc-section"><a href="#h10-6">10.6 動作確認</a></li>
+        <li class="toc-section"><a href="#h10-1">10.1 メール/パスワードでサインインできるようになるまで</a></li>
+        <li class="toc-section"><a href="#h10-2">10.2 サインイン選択画面を作成</a></li>
+        <li class="toc-section"><a href="#h10-3">10.3 LoginPageの修正</a></li>
+        <li class="toc-section"><a href="#h10-4">10.4 ForgotPasswordPageの修正</a></li>
+        <li class="toc-section"><a href="#h10-5">10.5 サインアウトの実装</a></li>
+        <li class="toc-section"><a href="#h10-6">10.6 パスワード・リセット要求完了ページ</a></li>
+        <li class="toc-section"><a href="#h10-7">10.7 認証コントローラーにメソッドの実装</a></li>
+        <li class="toc-section"><a href="#h10-8">10.8 動作確認</a></li>
       </ul>
     </li>
 </ul>
@@ -50,13 +52,40 @@
 </div>
 
 
-<h2 class="grayback"><a id="h10-1"></a><span class="secno">10.1</span> サインイン選択画面を作成</h2>
-<p>今回のアプリケーションは、SNS認証を含め4つのサインイン方法を提供しています。メール/パスワード認証は入力画面が必要ですが、SNS認証はボタンのみ実装できます。仮に、SNS実装が増えてもボタンをひとつ増やし、認証コントローラーにログインメソッドを実装するだけになります。</p>
+<h2 class="grayback"><a id="h10-1"></a><span class="secno">10.1</span> メール/パスワードでサインインできるようになるまで</h2>
+<p>メール/パスワードでサインインするためには、</p>
+<ul>
+<li>ログイン画面
+</li>
+<li>ログイン成功時に表示するページ
+</li>
+<li>パスワード・リセットの要求ページ
+</li>
+<li>パスワード・リセット要求完了ページ
+</li>
+</ul>
+<p><br /></p>
+<p>が必要になります。</p>
+<p><br /></p>
+<p>幸い、元プロジェクトには必要なページが含まれていますので修正して使います。</p>
+<p><br /></p>
+<p>また、サンプルアプリケーションとしての拡張を考え、SNS認証の種類を増やせるようにログイン方法選択画面を追加します。</p>
+
+<h2 class="grayback"><a id="h10-2"></a><span class="secno">10.2</span> サインイン選択画面を作成</h2>
+<p>今回のアプリケーションは、SNS認証を含め4つのサインイン方法を提供しています。</p>
+<p><br /></p>
+<p>メール/パスワード認証は入力画面が必要ですが、SNS認証はボタンのみ実装できます。仮に、SNS実装が増えてもボタンをひとつ増やし、認証コントローラーにログイン・メソッドを実装するだけになります。</p>
 <p><br /></p>
 <p>Firebase認証は、</p>
 <p>今回実装する、「Twitter」、「Google」、「Apple」だけでなく「Facebook」、「GitHub」、「Microsoft」、「米Yahoo!」などのSNSログインに対応しています。</p>
 <p><br /></p>
 <p>将来的に、ログイン方法を増やすことが容易になるよう新しく「ログイン方法選択画面」を作成します。</p>
+<div id="id_03_test01-min" class="image">
+<img src="images/10-email-signin/03_test01-min.jpg" alt="作成する画面" class="img width-040per" />
+<p class="caption">
+図10.1: 作成する画面
+</p>
+</div>
 <p><br /></p>
 <p>「lib/pages」フォルダに「select_signin_page.dart」ファイルを作成します。</p>
 <div class="caption-code">
@@ -223,8 +252,24 @@ class SelectSignInPage extends StatelessWidget{
 }
 </pre>
 </div>
+<p><br /></p>
+<div class="caption-code">
+<span class="caption">スプラッシュスクリーンの移動先の変更</span>
+<pre class="list">class _SplashScreenState extends State&lt;SplashScreen&gt; {
+  bool _isVisible = false;
 
-<h2 class="grayback"><a id="h10-2"></a><span class="secno">10.2</span> LoginPageの修正</h2>
+  AuthController authController = Get.put(AuthController());
+  _SplashScreenState(){
+
+    new Timer(const Duration(milliseconds: 2000), (){
+      setState(() {
+        Get.toNamed('/select-signin');　<span class="balloon">← ログイン方法選択画面へ</span>
+      });
+    });
+</pre>
+</div>
+
+<h2 class="grayback"><a id="h10-3"></a><span class="secno">10.3</span> LoginPageの修正</h2>
 <p>ログインページの修正を行います。</p>
 <ul>
 <li>StatelessWidgetへの変更
@@ -237,16 +282,16 @@ class SelectSignInPage extends StatelessWidget{
 </li>
 </ul>
 
-<h3 class="symbol"><a id="h10-2-1"></a><span class="secno">10.2.1</span> StatelessWigdetへの変更</h3>
-<p>LoginPage（lib/pages/login_page.dart）を開き、赤ワク部分を削除する。「extends」後の継承元を「StatefulWidget」から「StatelessWidget」へ変更する。</p>
+<h3 class="symbol"><a id="h10-3-1"></a><span class="secno">10.3.1</span> StatelessWigdetへの変更</h3>
+<p>LoginPage（lib/pages/login_page.dart）を開き、赤ワク部分を削除します。「extends」後の継承元を「StatefulWidget」から「StatelessWidget」へ変更します。</p>
 <div id="id_01_login01" class="image">
 <img src="images/10-email-signin/01_login01.png" alt="" class="img width-070per" />
 <p class="caption">
-図10.1: 
+図10.2: 
 </p>
 </div>
 
-<h3 class="symbol"><a id="h10-2-2"></a><span class="secno">10.2.2</span> 入力フィールドと認証コントローラーの結びつけ</h3>
+<h3 class="symbol"><a id="h10-3-2"></a><span class="secno">10.3.2</span> 入力フィールドと認証コントローラーの結びつけ</h3>
 <p>認証コントローラーをLoginPageにバインドします。</p>
 <div class="caption-code">
 <span class="caption">LoginPageへ認証コントローラーをバインド</span>
@@ -262,21 +307,37 @@ class SelectSignInPage extends StatelessWidget{
 <div id="id_01_login02" class="image">
 <img src="images/10-email-signin/01_login02.png" alt="変更前" class="img width-070per" />
 <p class="caption">
-図10.2: 変更前
+図10.3: 変更前
 </p>
 </div>
 <div id="id_01_login03" class="image">
 <img src="images/10-email-signin/01_login03.png" alt="変更後" class="img width-070per" />
 <p class="caption">
-図10.3: 変更後
+図10.4: 変更後
 </p>
 </div>
 
-<h3 class="symbol"><a id="h10-2-3"></a><span class="secno">10.2.3</span> パスワード忘れへのページ推移</h3>
+<h3 class="symbol"><a id="h10-3-3"></a><span class="secno">10.3.3</span> パスワード忘れへのページ推移</h3>
 <p>ページのナビゲーションをGetXに変更します。Routeは既に追加してあります。</p>
+<div class="caption-code">
+<span class="caption">ナビゲーションの変更</span>
+<pre class="list">  Container(
+    margin: EdgeInsets.fromLTRB(10, 0, 10, 20),
+    alignment: Alignment.topRight,
+    child: GestureDetector(
+      onTap: () {
+        Get.toNamed('/forgotpassword');
+      },
+      child: Text(&quot;パスワードを忘れましたか?&quot;,
+        style: TextStyle(color: Colors.grey,),
+      ),
+    ),
+  ),
+</pre>
+</div>
 
-<h2 class="grayback"><a id="h10-3"></a><span class="secno">10.3</span> ForgotPasswordPageの修正</h2>
-<p>パスワードを忘れたページを修正します。</p>
+<h2 class="grayback"><a id="h10-4"></a><span class="secno">10.4</span> ForgotPasswordPageの修正</h2>
+<p>パスワード・リセット要求のページを修正します。</p>
 <ul>
 <li>StatelessWidgetへ変更
 </li>
@@ -292,16 +353,16 @@ class SelectSignInPage extends StatelessWidget{
 </li>
 </ul>
 
-<h3 class="symbol"><a id="h10-3-1"></a><span class="secno">10.3.1</span> StatelessWidgetへ変更</h3>
+<h3 class="symbol"><a id="h10-4-1"></a><span class="secno">10.4.1</span> StatelessWidgetへ変更</h3>
 <p>赤ワク内を削除し、「StatefulWidget」を「StatelessWidget」へ変更します。</p>
 <div id="id_02_forgotpass01" class="image">
 <img src="images/10-email-signin/02_forgotpass01.png" alt="StatelessWidgetへ" class="img width-070per" />
 <p class="caption">
-図10.4: StatelessWidgetへ
+図10.5: StatelessWidgetへ
 </p>
 </div>
 
-<h3 class="symbol"><a id="h10-3-2"></a><span class="secno">10.3.2</span> 認証コントローラーのバンドル</h3>
+<h3 class="symbol"><a id="h10-4-2"></a><span class="secno">10.4.2</span> 認証コントローラーのバンドル</h3>
 <div class="caption-code">
 <span class="caption">認証コントローラーのバンドル</span>
 <pre class="list">class ForgotPasswordPage extends StatelessWidget {
@@ -321,11 +382,11 @@ class SelectSignInPage extends StatelessWidget{
 <div id="id_02_forgotpass02" class="image">
 <img src="images/10-email-signin/02_forgotpass02.png" alt="" class="img width-070per" />
 <p class="caption">
-図10.5: 
+図10.6: 
 </p>
 </div>
 
-<h3 class="symbol"><a id="h10-3-3"></a><span class="secno">10.3.3</span> LoginPageへ戻るナビゲーション</h3>
+<h3 class="symbol"><a id="h10-4-3"></a><span class="secno">10.4.3</span> LoginPageへ戻るナビゲーション</h3>
 <p>戻るリンクのナビゲーションをGetXにします。Routeには既にあります。</p>
 <div class="caption-code">
 <span class="caption">ナビゲーションリンク</span>
@@ -349,7 +410,7 @@ class SelectSignInPage extends StatelessWidget{
 </pre>
 </div>
 
-<h3 class="symbol"><a id="h10-3-4"></a><span class="secno">10.3.4</span> 送信ボタンへパスワードリセットメソッドをバインド</h3>
+<h3 class="symbol"><a id="h10-4-4"></a><span class="secno">10.4.4</span> 送信ボタンへパスワードリセットメソッドをバインド</h3>
 <p>メールアドレス欄に入力された値を検証し、問題なければ認証コントローラーの「パスワードリセット」メソッドを実行します。</p>
 <div class="caption-code">
 <span class="caption">入力欄の検証とメソッド実行</span>
@@ -374,10 +435,40 @@ class SelectSignInPage extends StatelessWidget{
 
 </pre>
 </div>
+<p><br /></p>
+<p>送信ボタンへメソッドの割当をします。</p>
+<p><br /></p>
+<div class="caption-code">
+<span class="caption">パスワード・リセット要求メソッドの割当</span>
+<pre class="list">    Container(
+      decoration: ThemeHelper().buttonBoxDecoration(context),
+      child: ElevatedButton(
+        style: ThemeHelper().buttonStyle(),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(
+              40, 10, 40, 10),
+          child: Text(
+            &quot;送信&quot;,
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+        ),
+        onPressed: () {
+            _submit();
+        },
+      ),
+    ),
+</pre>
+</div>
 
-<h2 class="grayback"><a id="h10-4"></a><span class="secno">10.4</span> サインアウトの実装</h2>
-<p>サインインが出来ると当然ですがサインアウトも必要です。</p>
-<p>次の号でドロワーを実装し、ドロワーにサインアウトを置きます。どのページからもサインアウトができるようになります。それまでは、サインイン後にページ推移するプロフィールページにサインアウトボタンを置きます。</p>
+<h2 class="grayback"><a id="h10-5"></a><span class="secno">10.5</span> サインアウトの実装</h2>
+<p>サインインが出来ると当然ですがサインアウトの機能も必要です。</p>
+<p>次の号でドロワーを実装し、ドロワーにサインアウトできる機能を置く予定です。ログイン後にアクセスする全ページにドロワーがありますので、どのページからもサインアウトができるようになります。</p>
+<p><br /></p>
+<p>それまでは、サインイン後にページ推移するプロフィールページにサインアウトボタンを置きます。</p>
 <p>サインアウト・メソッドは、認証コントローラーが持っていますので、バインドします。</p>
 <div class="caption-code">
 <span class="caption">認証コントローラーのバインド</span>
@@ -389,7 +480,7 @@ class SelectSignInPage extends StatelessWidget{
 
 </pre>
 </div>
-<p>サインアウトボタンを追加し、サインアウト・メソッドの呼び出しを行います。</p>
+<p>プロフィールページ（profile_page.dart）へサインアウトボタンを追加し、サインアウト・メソッドの呼び出しを行います。</p>
 <div id="label" class="caption-code">
 <span class="caption">リスト10.1: リスト10.1: desc</span>
 <pre class="list">  // 
@@ -416,7 +507,125 @@ class SelectSignInPage extends StatelessWidget{
 </pre>
 </div>
 
-<h2 class="grayback"><a id="h10-5"></a><span class="secno">10.5</span> 認証コントローラーにメソッドの実装</h2>
+<h2 class="grayback"><a id="h10-6"></a><span class="secno">10.6</span> パスワード・リセット要求完了ページ</h2>
+<p>Firebase認証で使うメール/パスワードでのサインインでのパスワード・リセットは、</p>
+<ol start="1" type="1">
+<li>パスワード・リセットの要求。</li>
+<li>Firebaseから登録メールアドレスへリセット用リンクをメールで送信。</li>
+<li>リンクをクリックし表示されるページで新パスワードの登録。</li>
+</ol>
+<p>となります。</p>
+<p><br /></p>
+<p>パスワード・リセット要求ページは出来ましたので、要求成功時に表示されるページを用意します。</p>
+<p><br /></p>
+<p>元プロジェクトには、「forgot_password_valification_page.dart」がありますので、これを利用します。</p>
+<p><br /></p>
+<p>以下が、「forgot_password_valification_page.dart」の変更後になります。</p>
+<div class="caption-code">
+<span class="caption">パスワード・リセット要求完了ページ</span>
+<pre class="list">import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:otp_text_field/otp_field.dart';
+import 'package:otp_text_field/style.dart';
+
+import 'profile_page.dart';
+import 'widgets/header_widget.dart';
+import '../../common/theme_helper.dart';
+
+class ForgotPasswordVerificationPage extends StatelessWidget {
+  const ForgotPasswordVerificationPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    double _headerHeight = 300;
+
+    return Scaffold(
+        backgroundColor: Colors.white,
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                height: _headerHeight,
+                child: HeaderWidget(
+                    _headerHeight, true, Icons.privacy_tip_outlined),
+              ),
+              SafeArea(
+                child: Container(
+                  margin: EdgeInsets.fromLTRB(25, 10, 25, 10),
+                  padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                  child: Column(
+                    children: [
+                      Container(
+                        alignment: Alignment.topLeft,
+                        margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'パスワードリセット',
+                              style: TextStyle(
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black54),
+                              // textAlign: TextAlign.center,
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              '入力したメールアドレス宛にパスワードリセットリンクを送りました。',
+                              style: TextStyle(
+                                  // fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black54),
+                              // textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 40.0),
+                      Column(
+                        children: &lt;Widget&gt;[
+                          SizedBox(height: 50.0),
+                          SizedBox(height: 40.0),
+                          Container(
+                            decoration: ThemeHelper().buttonBoxDecoration(
+                                context, &quot;#AAAAAA&quot;, &quot;#757575&quot;),
+                            child: ElevatedButton(
+                                style: ThemeHelper().buttonStyle(),
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(40, 10, 40, 10),
+                                  child: Text(
+                                    &quot;戻る&quot;,
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                                onPressed: () {
+                                  Get.toNamed('/select-signin');
+                                }),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+        ));
+  }
+}
+</pre>
+</div>
+
+<h2 class="grayback"><a id="h10-7"></a><span class="secno">10.7</span> 認証コントローラーにメソッドの実装</h2>
 <p>上記の修正で必要になりましたメソッドを、認証コントローラーに、</p>
 <ul>
 <li>メール/パスワードでのサインイン・メソッド
@@ -428,7 +637,7 @@ class SelectSignInPage extends StatelessWidget{
 </ul>
 <p>実装します。</p>
 
-<h3 class="symbol"><a id="h10-5-1"></a><span class="secno">10.5.1</span> メール/パスワードサインイン・メソッド</h3>
+<h3 class="symbol"><a id="h10-7-1"></a><span class="secno">10.7.1</span> メール/パスワードサインイン・メソッド</h3>
 <p>認証コントローラーに、メール/パスワードでサインインするメソッドを追加します。</p>
 <div class="caption-code">
 <span class="caption">サインイン・メソッド</span>
@@ -451,7 +660,7 @@ class SelectSignInPage extends StatelessWidget{
 </pre>
 </div>
 
-<h3 class="symbol"><a id="h10-5-2"></a><span class="secno">10.5.2</span> サインアウト・メソッド</h3>
+<h3 class="symbol"><a id="h10-7-2"></a><span class="secno">10.7.2</span> サインアウト・メソッド</h3>
 <p>認証コントローラーに、サインインアウトするメソッドを追加します。</p>
 <div class="caption-code">
 <span class="caption">サインアウト・メソッド</span>
@@ -463,7 +672,7 @@ class SelectSignInPage extends StatelessWidget{
 </pre>
 </div>
 
-<h3 class="symbol"><a id="h10-5-3"></a><span class="secno">10.5.3</span> パスワードリセット・メソッド</h3>
+<h3 class="symbol"><a id="h10-7-3"></a><span class="secno">10.7.3</span> パスワードリセット・メソッド</h3>
 <p>認証コントローラーに、パスワードリセットメソッドを追加します。</p>
 <div class="caption-code">
 <span class="caption">パスワードリセット・メソッド</span>
@@ -471,6 +680,7 @@ class SelectSignInPage extends StatelessWidget{
   Future&lt;void&gt; passwordReset() async {
     try {
       await _auth.sendPasswordResetEmail(email: emailController.text);
+      Get.offAll('./select-signin');
     } catch (error) {
       setAuthErrorMessage('パスワードリセットでエラーが発生しました。');
     }
@@ -478,44 +688,58 @@ class SelectSignInPage extends StatelessWidget{
 </pre>
 </div>
 
-<h2 class="grayback"><a id="h10-6"></a><span class="secno">10.6</span> 動作確認</h2>
+<h2 class="grayback"><a id="h10-8"></a><span class="secno">10.8</span> 動作確認</h2>
 <p>実装が完了しましたので、動作確認を行います。</p>
 
-<h3 class="symbol"><a id="h10-6-1"></a><span class="secno">10.6.1</span> Route</h3>
+<h3 class="symbol"><a id="h10-8-1"></a><span class="secno">10.8.1</span> Route</h3>
 <p>リンクが正常に機能しているか？</p>
 <div id="route" class="image">
 <img src="images/10-email-signin/route.png" alt="ナビゲーションテスト" class="img width-070per" />
 <p class="caption">
-図10.6: ナビゲーションテスト
+図10.7: ナビゲーションテスト
 </p>
 </div>
 
-<h3 class="symbol"><a id="h10-6-2"></a><span class="secno">10.6.2</span> メール/パスワードでのサインイン</h3>
+<h3 class="symbol"><a id="h10-8-2"></a><span class="secno">10.8.2</span> メール/パスワードでのサインイン</h3>
 <p>Firebaseに登録されていないメールアドレスでエラーは表示されるか？</p>
 <div id="id_03_test05-min" class="image">
 <img src="images/10-email-signin/03_test05-min.jpg" alt="登録メールアドレスなしテスト" class="img width-040per" />
 <p class="caption">
-図10.7: 登録メールアドレスなしテスト
+図10.8: 登録メールアドレスなしテスト
 </p>
 </div>
 <p>正常にログインできるか？</p>
 <div id="test_login" class="image">
 <img src="images/10-email-signin/test_login.png" alt="ログインテスト" class="img width-070per" />
 <p class="caption">
-図10.8: ログインテスト
+図10.9: ログインテスト
 </p>
 </div>
 
-<h3 class="symbol"><a id="h10-6-3"></a><span class="secno">10.6.3</span> サインアウト</h3>
+<h3 class="symbol"><a id="h10-8-3"></a><span class="secno">10.8.3</span> サインアウト</h3>
 <p>「サインアウト」ボタンで、サインアウトし「ログイン選択画面」へ戻るか？</p>
 <div id="signout" class="image">
 <img src="images/10-email-signin/signout.png" alt="サインアウトテスト" class="img width-070per" />
 <p class="caption">
-図10.9: サインアウトテスト
+図10.10: サインアウトテスト
 </p>
 </div>
 
-<h3 class="symbol"><a id="h10-6-4"></a><span class="secno">10.6.4</span> パスワード・リセット</h3>
+<h3 class="symbol"><a id="h10-8-4"></a><span class="secno">10.8.4</span> パスワード・リセット</h3>
+<p>パスワード・リセットの動作確認です。問題無く動作しています。</p>
+<div id="passreset" class="image">
+<img src="images/10-email-signin/passreset.png" alt="パスワード・リセット" class="img width-070per" />
+<p class="caption">
+図10.11: パスワード・リセット
+</p>
+</div>
+<p>メールも届きます。</p>
+<div id="resetmail" class="image">
+<img src="images/10-email-signin/resetmail.png" alt="パスワード・リセット用メール" class="img width-070per" />
+<p class="caption">
+図10.12: パスワード・リセット用メール
+</p>
+</div>
 
         </main>
         <nav class="page-navi">

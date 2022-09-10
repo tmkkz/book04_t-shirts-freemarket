@@ -28,9 +28,9 @@
     </li>
     <li class="toc-chapter"><a href="./04-project_start.html">4 プロジェクトスタート</a></li>
     <li class="toc-chapter"><a href="./05-loginapp-screens.html">5 認証関連画面の作成</a></li>
-    <li class="toc-chapter"><a href="./06-usermodel.html">6 アプリで認証するユーザのデータ型を作成する。</a></li>
+    <li class="toc-chapter"><a href="./06-usermodel.html">6 アプリで認証するユーザーのデータ型を作成する。</a></li>
     <li class="toc-chapter"><a href="./07-flutterfire.html">7 Flutter側でFirebaseが使えるようにする。</a></li>
-    <li class="toc-chapter"><a href="./08-auth-controller.html">8 状態管理コントローラーを作る</a></li>
+    <li class="toc-chapter"><a href="./08-auth-controller.html">8 状態管理コントローラを作る</a></li>
     <li class="toc-chapter"><a href="./09-signup.html">9 新規登録</a></li>
     <li class="toc-chapter"><a href="./10-email-signin.html">10 メール/パスワードでのサインイン</a></li>
 </ul>
@@ -48,7 +48,7 @@
 
 
 <h2 class="grayback"><a id="h3-1"></a><span class="secno">3.1</span> 認証フロー</h2>
-<p>下図のように認証を行います。</p>
+<p>下図のように画面移動します。</p>
 <div id="flow" class="image">
 <img src="images/03-authScreen/flow.png" alt="" class="img width-050per" />
 <p class="caption">
@@ -71,7 +71,7 @@
 </li>
 </ul>
 <p>が選択できます。</p>
-<p>「メール/パスワード」でのサインインは、新規登録を行うことで有効になります。</p>
+<p>「メール/パスワード」でのサインインは、新規登録をすることで有効になります。</p>
 <div id="splash_login" class="image">
 <img src="images/03-authScreen/splash_login.png" alt="" class="img width-070per" />
 <p class="caption">
@@ -82,7 +82,7 @@
 <h3 class="symbol"><a id="h3-1-2"></a><span class="secno">3.1.2</span> 新規登録</h3>
 <p>　メールアドレス、パスワードなど必要な情報を入力しアカウントを作成します。作成後は、プロフィール画面が表示されます。</p>
 <p><br /></p>
-<p>アバターの画像は、初回ランダムに選択しています。プロフィール画面で編集することができます。</p>
+<p>アバターの画像は、初回ランダムに選択しています。プロフィール画面で編集できます。</p>
 <div id="id_02_regist-min" class="image">
 <img src="images/03-authScreen/02_regist-min.jpg" alt="" class="img width-030per" />
 <p class="caption">
@@ -91,7 +91,7 @@
 </div>
 
 <h3 class="symbol"><a id="h3-1-3"></a><span class="secno">3.1.3</span> メール/パスワード</h3>
-<p>新規登録が完了すると次回からはメール/パスワードデサインインすることができます。パスワードを忘れた場合の復旧方法は、メールアドレス入力後、送られて来た認証コードを入力することで復旧します。</p>
+<p>新規登録が完了すると次回からはメール/パスワードデサインインできます。パスワードを忘れた場合の復旧方法は、メールアドレス入力後、送られて来た認証コードを入力することで復旧します。</p>
 <div id="mail_valify" class="image">
 <img src="images/03-authScreen/mail_valify.png" alt="desc" class="img width-080per" />
 <p class="caption">

@@ -1,7 +1,7 @@
 = Flutter側でFirebaseが使えるようにする。
 
 //abstract{
-  Firebase関連のプラグインの導入と設定を行います。
+  Firebase関連のプラグインの導入と設定をします。
 
 //}
 
@@ -15,7 +15,7 @@
  * Firebase側が自動作成したファイルを、Android用、iOS用にダウンロード・配置をし、
  * Firebaseのサービス毎にプラグインのインストール
 
-が必要でした(プラグインのインストールは今でも必要)。
+が必要でした（プラグインのインストールは今でも必要）。
 
 //blankline
 しかし、最近は「Firebase CLI」があります。これは、ターミナルからコマンドで設定が完了する優れもので、
@@ -52,7 +52,7 @@ https://firebase.google.com/docs/flutter/setup?platform=ios#available-plugins
 これで、プロジェクトへFirebase関連の設定のほとんどをコマンドで行うことができます。
 
 //blankline
-fluttrefireコマンドが有効になりましたので、早速使ってみます。
+fluttrefireコマンドが有効になりましたので、さっそく使ってみます。
 
 //terminal[][flutterfireコマンド]{
  > flutterfire configure
@@ -88,17 +88,19 @@ Built flutterfire_cli:flutterfire.
 Installed executable flutterfire.
 Warning: Pub installs executables into $HOME/.pub-cache/bin, which is not on your path.
 You can fix that by adding this to your shell's config file (.bashrc, .bash_profile, etc.):
-    
+
     export PATH="$PATH":"$HOME/.pub-cache/bin"
-    
+
 
 Activated flutterfire_cli 0.2.4.
 //}
 
 //blankline
-最後に、パスを通すように指示されましたので、エディッタで「~/.zshrc」を開き
+最後に、パスを通すように指示されましたので、エディッタで「~/.zshrc」を開き、
 //blankline
+#@# textlint-disable
 　　　export PATH="$PATH":"$HOME/.pub-cache/bin"
+#@# textlint-enable
 //blankline
 を追加して保存してください。
 
@@ -135,13 +137,13 @@ Changed 4 dependencies!
 //}
 
 //blankline
-「flutterfireコマンド」で設定を行います。ターミナルに「flutterfire configure」と入力しエンターキーを押します。
+「flutterfireコマンド」で設定します。ターミナルに「flutterfire configure」と入力しエンターキーを押します。
 
 //blankline
 コマンドが実行され、
 
  * Firebaseコンソールに登録されたプロジェクト名が表示されるので、設定先を選択する。
- * 
+ *
 
 //terminal[][flutterfireコマンド]{
 ❯ flutterfire configure
@@ -181,14 +183,14 @@ Learn more about using this file and next steps from the documentation:
 これで、
 
  * アクセス情報の入った「lig/firebase_options.dart」
- * Android用設定ファイル「android/app/google-services.json」
+ * Android用設定ファイル「Android/app/google-services.json」
  * iOS用設定ファイル「ios/Runner/GoogleServie-info.plist」
  * macOS用設定ファイル「macos/firebase_app_id_file.json」
 
 が、ダウンロードされます。
 
 //blankline
-Firebaseサービス用のFlutterプラグインをインストールする度に設定を行う必要があるので、Firebase系のプラグインは一度でインストールします。
+Firebaseサービス用のFlutterプラグインをインストールする度に再設定の必要があるので、Firebase系のプラグインは一度でインストールします。
 
 == Firebaseサービス用Flutterプラグインのインストール
 続いて、Firebaseを使用するためのコアプラグイン、サービス毎のプラグインをインストールします。
@@ -212,12 +214,14 @@ https://firebase.google.com/docs/flutter/setup?platform=ios#available-plugins
 
 ターミナルに、
 //blankline
- flutter pub add firebase_analytics firebase_auth cloud_firestore firebase_messaging firebase_storage firebase_database
+ flutter pub add firebase_analytics firebase_auth cloud_firestore\
+  firebase_messaging firebase_storage firebase_database
 //blankline
 を入力しエンターキーを押します。
 
 //terminal[][Firebaseサービスプラグインのインストール]{
-> flutter pub add firebase_analytics firebase_auth cloud_firestore firebase_messaging firebase_storage firebase_database
+> flutter pub add firebase_analytics firebase_auth cloud_firestore\
+   firebase_messaging firebase_storage firebase_database
 ...
 Changed 22 dependencies!
 //}
@@ -239,13 +243,13 @@ Changed 22 dependencies!
 4世代前を仕様とします。
 
 //blankline
-「android/app/src/buld.gradle」ファイルの以下の項目の下から4行目にある「minSdkVersion」を直接してします。
-編集は、コメントアウト・新規行の追加をおこないます。
+「Android/app/src/buld.gradle」ファイルの以下の項目の下から4行目にある「minSdkVersion」を直接してします。
+編集は、コメントアウト・新規行の追加を行ます。
 
 //blankline
 2行目の「compleSdkVersion」を「33」にします。
 
-//list[][android/app/src/build.gradle]{
+//list[][Android/app/src/build.gradle]{
   android {
     compileSdkVersion 33
     ndkVersion flutter.ndkVersion
@@ -303,10 +307,12 @@ void main() async {
 }
 //}
 
-編集が完了すると、エミュレータでデバッグします。問題無く起動しましたので次に進みます。
+編集が完了すると、エミュレータでデバッグします。問題なく起動しましたので次に進みます。
 
+#@# textlint-disable
 //note[ここまでのソースコード]{
 //terminal[][GitHub]{
 　>git clone -b 03_flutterfire_setup https://github.com/risingforce9zz/tfreemarket.git
 //}
 //}
+#@# textlint-enable

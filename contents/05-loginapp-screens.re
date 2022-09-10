@@ -7,7 +7,7 @@ Flutterで作成するUI部分は、すべてWidgetと呼ばれる部品を組�
 HTMLでは、<div>タグの中に複数のHTMLタグを入れてUIを組み立てます。入れ子になったHTMLタグもあります。
 
 //blankline
-Flutterも同じようにWidgetを組合せてUIを構築します。
+Flutterも同じようにWidgetを組み合わせてUIを構築します。
 
 //}
 
@@ -21,27 +21,26 @@ Flutterも同じようにWidgetを組合せてUIを構築します。
 世界中の開発者が作成したもが集めてあるサイトもあります。
 
 //blankline
-もちろん自分で作成することもできます。
+もちろん自分で作成し世界中へ公開できます。
 
 //blankline
-色、形、ドロップシャドウなどのデザインに関するものは、ThemeData（HTMLで言えば、全体に適用されるCSS）が適用され、
+色、形、ドロップシャドウなどのデザインに関するものは、ThemeData（HTMLでいえば、全体に適用されるCSS）が適用され、
 個別のWidgetでもスタイルを適用できます。
 
 //blankline
-下記のサイト「
-@<href>{https://flutterawesome.com/, Flutter Awesome}」では、UIやアプリが沢山公開されており、そのほどんどはGitHubなどでソースコードを入手できます。
+下記のサイト「@<href>{https://flutterawesome.com/, Flutter Awesome}」では、UIやアプリがたくさん公開されており、そのほどんどはGitHubなどでソースコードを入手できます。
 実際に手元で動かし、変更を加えてみればWidgetの使い方も理解が進みます。
 //image[flutterawesome][][scale=0.7, pos=H]
 
 
 == ログインプログラム
-今回使用するのは、上記FlutterAwesomeで見つけたログイン関連のアプリ
+今回使用するのは、上記FlutterAwesomeで見付け足ログイン関連のアプリ
 @<href>{https://flutterawesome.com/flutter-login-ui-with-splash-screen-and-multiple-color-support/, Flutter Login UI} です。
 
 //image[flutterawesome02][][scale=0.7, pos=H]
 
-このサイトは、Videoチュートリアルのリンクもあり、クリックするとYoutubeで作成過程を見ることができます。
-YoutubeのVideoチュートリアルの詳細には、同じデザインですが別のGitHubへのリンクがありました。
+このサイトは、Videoチュートリアルのリンクもあり、クリックするとYouTubeで作成過程を見ることができます。
+YouTubeのVideoチュートリアルの詳細には、同じデザインですが別のGitHubへのリンクがありました。
 
 //blankline
 今回は、
@@ -101,13 +100,13 @@ Changed 5 dependencies!
 
 //}
 
-後は、写経するか、コピペするかでファイルを作成します。フォルダ、ファイルの位置は後々変更することとし、今は元プロジェクトと同じにしておきます。
+後は、写経するか、コピペするかでファイルを作成します。フォルダ、ファイルの位置はあとあと変更することとし、今は元プロジェクトと同じにしておきます。
 
 //image[project_files][][scale=0.5, pos=H]
 
 
 //blankline
-lintでWarningが沢山出ていますが、コントローラーを追加した後すべてのページを、
+lintでWarningがたくさん出ていますが、コントローラを追加した後すべてのページを、
 
  * StatefulWidgetからStatelessWidgetへ変更
  * タイトル、入力フィールドなどの文字を日本語化
@@ -116,14 +115,16 @@ lintでWarningが沢山出ていますが、コントローラーを追加した
 しましので、そのときに修正します。
 
 //blankline
-エミュレータで確認すると、以下のように取り入れることが出来ました。
+エミュレータで確認すると、以下のように取り入れることができました。
 //image[base_project][desc][scale=0.8, pos=H]
 
 //blankline
 ここまでのコードは、以下から取得できます。
 
+#@# textlint-disable
 //note[ここまでのソースコード]{
 //terminal[][GitHub]{
 　>git clone -b 01_login_screens_import https://github.com/risingforce9zz/tfreemarket.git
 //}
 //}
+#@# textlint-enable

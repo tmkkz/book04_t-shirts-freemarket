@@ -14,14 +14,14 @@
 手順は、
 
  1. 新規登録画面の修正と入力データの検証部分の作成
- 2. スプラッシュスクリーンで認証コントローラーを初期化
+ 2. スプラッシュスクリーンで認証コントローラを初期化
  3. 新規登録メソッドの実装
  4. ページ推移のためのRoute作成
- 5. 動作確認 
+ 5. 動作確認
 
 です。
 
-この章からはGetXの機能にアクセスしますので、アプリケーションがGetXアプリケーションになるようにします。具体的には、
+本章からはGetXの機能をつかいますので、アプリケーションがGetXアプリケーションとして動作するように変更を加えます。具体的には、
 「main.dart」ファイルにある「MaterialApp」を「GetMaterialApp」に変更します。
 
 //list[][変更前]{
@@ -72,7 +72,7 @@
 //desc[2. 各フィールドを日本語化]{
   フィールド名、プレースホルダーを日本語化します。
 //}
-//desc[3. 登録ボタンからコントローラーのメソッドを実行]{
+//desc[3. 登録ボタンからコントローラのメソッドを実行]{
   登録ボタンにコントローラーの新規登録メソッドを割り当てます。
 //}
 //desc[4. 入力データの検証]{
@@ -81,7 +81,7 @@
 //}
 
 //blankline
-それでは、はじめましょう。
+それでは、始めましょう。
 
 ==== 1. StatefulWidgetからStatelessWidgetへ
 まずは、ページ全体に対し、「StatefuleWidget」から「StatelessWidget」へ変更します。
@@ -95,15 +95,16 @@
 //image[to_stateless][][scale=0.7, pos=H]
 
 //blankline
-これを行うと、_formKey、setState((){})部分がエラーになるので削除します。
-
+#@# textlint-disable
+これを行うと、_formKey、setState（(）{})部分がエラーになるので削除します。
+#@# textlint-enable
 //image[to_stateless001][][scale=0.7, pos=H]
 
 Android Studio上でlintの出すエラーがなくなれば、動作確認を行います。新規登録画面を開くことができれば問題ありません。
 
 //blankline
 
-===== 各フィールドとコントローラーのTextEditingControllerの対応
+===== 各フィールドとコントローラのTextEditingControllerの対応
 アカウントの新規登録の際に入力する項目は、
 
  * 表示名 -- displayName
@@ -115,15 +116,15 @@ Android Studio上でlintの出すエラーがなくなれば、動作確認を�
 です。
 
 //blankline
-認証コントローラー側のTextEditingControllerには、上記のフィールド名+Controllerで命名してあります。
-これらコントローラーと画面上のTextFieldを結びつけ、登録ボタンには新規登録メソッドを割り当てます。
+認証コントローラ側のTextEditingControllerには、上記のフィールド名+Controllerで命名してあります。
+これらコントローラと画面上のTextFieldを結び付け、登録ボタンには新規登録メソッドを割り当てます。
 
 //blankline
-新規登録ページ（RegistrationPage）に、認証コントローラー（AuthController）をバインドします。ファイル「auth_controller.dart」を
-インポートし、インスタンスを結びつけます。
+新規登録ページ（RegistrationPage）に、認証コントローラ（AuthController）をバインドします。ファイル「auth_controller.dart」を
+インポートし、インスタンスを結び付けます。
 
 //blankline
-AuthControllerのインスタンス化は、後ほどスプラッシュスクリーンの起動で行うようにします。
+AuthControllerのインスタンス化は、のちほどスプラッシュスクリーンの起動で行うようにします。
 
 //list[][AuthControllerをバインド]{
 import '../controllers/auth_controller.dart';
@@ -138,17 +139,17 @@ class RegistrationPage extends StatelessWidget {
 
 //blankline
 テキストフィールドを「TextFormField」から「TextField」へ変更し、「controller:」プロパティへ
-それぞれのコントローラーをバインドします。フィールド名、ヒントを日本語にします。
+それぞれのコントローラをバインドします。フィールド名、ヒントを日本語にします。
 
 //image[text_field01][変更前][scale=0.7, pos=H]
 //image[text_field02][変更後][scale=0.7, pos=H]
 
 //blankline
-残りのフィールドにも同じ作業を行います。
+残りのフィールドにも同じ作業をします。
 
 //blankline
-メールアドレス入力欄、電話番号入力欄、パスワード入力欄には、入力時のエラーチェック「validator」プロパティがありますが、
-入力値検証は一カ所にまとめるため削除します。
+メールアドレス入力欄、電話番号の入力欄、パスワードの入力欄には、入力時のエラーチェック「validator」プロパティがありますが、
+入力値検証は一ヵ所にまとめるため削除します。
 
 //image[text_field03][][scale=0.7, pos=H]
 
@@ -161,7 +162,7 @@ class RegistrationPage extends StatelessWidget {
 続いて、新規登録メソッドが実行される前に、入力されたデータが有効なのかをチェックする関数を作成します。
 
 ===== 入力値検証
-登録ボタンがクリックされコントローラーの新規登録メソッド前に、入力値の検証を行います。
+登録ボタンがクリックされコントローラの新規登録メソッド前に、入力値の検証をします。
 
 //blankline
 エラーは、SnackBarを使って表示します。@<br>{}
@@ -278,10 +279,12 @@ GetXには、データのValidation機能もあります。ここでは、メー
 
 //blankline
 利用規約同意のチェックボックスの値が更新されたときにチェックボックスWidgetが再描画されるように、
-チェックボックスの値である「checkboxValue」をGetXを使って監視対象にします。
+チェックボックスの値の「checkboxValue」をGetXを使って監視対象にします。
 
 「bool checkboxValue = false;」
+#@# textlint-disable
 @<br>{}　　　　　↓@<br>{}
+#@# textlint-enable
 「final Rx<bool> checkboxValue = false.obs;」
 
 に変更します。
@@ -317,7 +320,7 @@ GetXのUtilityクラスでは、
 
 @<b>{登録ボタン}
 
-入力値検証後、認証コントローラーの新規登録メソッドを呼ぶようにします。認証コントローラーの「signup」メソッドは未作成ですので、現時点ではエラーになります。
+入力値検証後、認証コントローラの新規登録メソッドを呼ぶようにします。認証コントローラの「signup」メソッドは未作成ですので、現時点ではエラーになります。
 
 //list[][認証後、新規登録メソッドを呼ぶ]{
   void _submit() {
@@ -335,18 +338,20 @@ GetXのUtilityクラスでは、
 
 以上で新規登録画面の修正は完了です。
 
-=== スプラッシュスクリーンで認証コントローラーを初期化
-アプリケーション起動時に表示されるページである「スプラッシュスクリーン」へ認証コントローラー（AuthController）のインスタンス化を行うようコードを追加します。
+=== スプラッシュスクリーンで認証コントローラを初期化
+アプリケーション起動時に表示されるページの「スプラッシュスクリーン」へ認証コントローラ（AuthController）のインスタンス化を行うようコードを追加します。
 
 //blankline
-認証コントローラーは、アプリケーションが起動した後、どのページへ推移するかを決めるため、Firebaseを初期化したようにアプリケーションの最初でも構いません。
+認証コントローラは、アプリケーションが起動した後、どのページへ推移するかを決めるため、Firebaseを初期化したようにアプリケーションの最初でもかまいません。
 
 //blankline
 GetXのパッケージ、auth_controller.dartのインポートを行い、
 //blankline
-　　　AuthController authController = Get.put(Authcontroller());
+#@# textlint-disable
+　　　AuthController authController = Get.put（Authcontroller());
+#@# textlint-enable
 //blankline
-で、インスタンス化を行います。一度インスタンス化を行うと、他のページからは「to」に指定した「Get.find()」でインスタンスにアクセスできます。
+で、インスタンス化を行います。一度インスタンス化を行うと、ほかのページからは「to」に指定した「Get.find()」でインスタンスにアクセスできます。
 
 //image[authcontroller_instance][][scale=0.7, pos=H]
 
@@ -381,17 +386,20 @@ GetXのパッケージ、auth_controller.dartのインポートを行い、
 //blankline
 スプラッシュスクリーン側は、
 //blankline
-　　　　　colors: [Theme.of(context).accentColor, Theme.of(context).primaryColor],
-@<br>{}　　　　　　　　↓@<br>{}
-　　　　　colors: [Theme.of(context).colorScheme.secondary, Theme.of(context).primaryColor],
+#@# textlint-disable
+　　　　　colors:[Theme.of（context）.accentColor, Theme.of（context）.primaryColor],
 
+@<br>{}　　　　　　　　↓@<br>{}
+
+　　　　　colors:[Theme.of（context）.colorScheme.secondary, Theme.of（context）.primaryColor],
+#@# textlint-enable
 //blankline
-に変更します。その他のファイルにも「accentColor」が使われていますので同じく修正してください。
+に変更します。そのほかのファイルにも「accentColor」が使われていますので同じく修正してください。
 
 === 新規登録メソッドの実装
-最後に、認証コントローラーに新規登録メソッドを作成します。
+最後に、認証コントローラに新規登録メソッドを作成します。
 
-Firebase認証でのメール/パスワードでのログインを行うためには、新規ユーザ作成メソッドとして
+Firebase認証でのメール/パスワードでログインを行うためには、新規ユーザー作成メソッドとして
 「createUserWithEmailAndPassword()」が提供されています。
 
 //blankline
@@ -402,7 +410,7 @@ Firebase認証でのメール/パスワードでのログインを行うため�
 //image[singup][][scale=0.7, pos=H]
 
 //blankline
-認証コントローラー（auth_controller.dart）へ以下のコードを追加します。
+認証コントローラ（auth_controller.dart）へ以下のコードを追加します。
 
 //list[][signupメソッド]{
   /// Error発生時にログイン状態を変更しSnackBarを表示
@@ -429,7 +437,7 @@ Firebase認証でのメール/パスワードでのログインを行うため�
 「singup()」メソッドを実装しましたので、「RegistrationPage」のエラーも解消されています。
 
 === ページ推移のためのRoute作成
-ページの移動もGetXで管理することができます。
+ページの移動もGetXで管理できます。
 
 //blankline
 「lib/route」フォルダを作成し「app_route.dart」ファイルを作成します。
@@ -472,7 +480,7 @@ class AppRoutes {
   }
 //}
 
-スプラッシュスクリーンには、タイマーでログインページに移動するようになっていますが、GetXのRouteを使うように変更します。
+スプラッシュスクリーンは、タイマーでログインページに移動するよう設定されていますが、GetXのRouteを使うように変更します。
 
 //list[][SplashPage変更前]{
 class _SplashScreenState extends State<SplashScreen> {
@@ -521,8 +529,8 @@ class AppRoutes {
 
 === 動作確認
 
-実装が完了しましたので、動作確認を行います。メールアドレスは確認されませんので、テスト目的であればメールアドレスの書式さえ合っていれば
-「example@example.com」でもユーザ登録できます。
+実装が完了しましたので、動作確認を行います。メールアドレスは確認されませんので、テスト目的ならメールアドレスの書式さえ合っていれば
+「example@example.com」でもユーザー登録できます。
 
 以下のように、新規登録ができました。入力エラー、登録エラーも表示されています。
 
@@ -537,7 +545,9 @@ Firebase側も登録されています。
 //blankline
 //blankline
 //note[ここまでのソースコード]{
+#@# textlint-disable
 //terminal[][GitHub]{
 　>git clone -b 05_signup https://github.com/risingforce9zz/tfreemarket.git
 //}
 //}
+#@# textlint-enable

@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
-    <title>アプリで認証するユーザのデータ型を作成する。 | 0円で、モバイルアプリを作ってみるお〜。Vol.1</title>
+    <title>アプリで認証するユーザーのデータ型を作成する。 | 0円で、モバイルアプリを作ってみるお〜。Vol.1</title>
     <link rel="stylesheet" type="text/css" href="css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="css/webstyle.css" />
     <link rel="next" title="Flutter側でFirebaseが使えるようにする。" href="07-flutterfire.html">
@@ -24,13 +24,13 @@
     <li class="toc-chapter"><a href="./03-authScreen.html">3 アプリケーション認証</a></li>
     <li class="toc-chapter"><a href="./04-project_start.html">4 プロジェクトスタート</a></li>
     <li class="toc-chapter"><a href="./05-loginapp-screens.html">5 認証関連画面の作成</a></li>
-    <li class="toc-chapter"><a href="./06-usermodel.html">6 アプリで認証するユーザのデータ型を作成する。</a>
+    <li class="toc-chapter"><a href="./06-usermodel.html">6 アプリで認証するユーザーのデータ型を作成する。</a>
       <ul class="toc toc-2">
-        <li class="toc-section"><a href="#h6-1">6.1 ユーザモデルの作成</a></li>
+        <li class="toc-section"><a href="#h6-1">6.1 ユーザーモデルの作成</a></li>
       </ul>
     </li>
     <li class="toc-chapter"><a href="./07-flutterfire.html">7 Flutter側でFirebaseが使えるようにする。</a></li>
-    <li class="toc-chapter"><a href="./08-auth-controller.html">8 状態管理コントローラーを作る</a></li>
+    <li class="toc-chapter"><a href="./08-auth-controller.html">8 状態管理コントローラを作る</a></li>
     <li class="toc-chapter"><a href="./09-signup.html">9 新規登録</a></li>
     <li class="toc-chapter"><a href="./10-email-signin.html">10 メール/パスワードでのサインイン</a></li>
 </ul>
@@ -39,17 +39,17 @@
         <header class="page-header">
         </header>
         <main class="page-main">
-<h1 class="boldlines center twolines"><a id="h6"></a><span class="secno">第6章</span> <br/>アプリで認証するユーザのデータ型を作成する。</h1>
+<h1 class="boldlines center twolines"><a id="h6"></a><span class="secno">第6章</span> <br/>アプリで認証するユーザーのデータ型を作成する。</h1>
 <div class="abstract">
-<p>アプリで認証するユーザー(Firebaseを使用するユーザとは別)のデータ型を作成します。</p>
+<p>アプリで認証するユーザー（Firebaseを使用するユーザーとは別）のデータ型を作成します。</p>
 </div>
 
 
-<h2 class="grayback"><a id="h6-1"></a><span class="secno">6.1</span> ユーザモデルの作成</h2>
-<p>アプリで認証するユーザ（今回は、オンライン・フリーマーケットの出店者兼購入者）の必要な情報を検討しデータ型を作成します。</p>
+<h2 class="grayback"><a id="h6-1"></a><span class="secno">6.1</span> ユーザーモデルの作成</h2>
+<p>アプリで認証するユーザー（今回は、オンライン・フリーマーケットの出店者で、なおかつ購入者）の必要な情報を検討しデータ型を作成します。</p>
 <p>libフォルダ内に「models」フォルダを作成し、「user_model.dart」ファイルを作成します。内容は以下となります。</p>
 <div class="caption-code">
-<span class="caption">ユーザモデル型</span>
+<span class="caption">ユーザーモデル型</span>
 <pre class="list">class UserModel {
 
   String id ='';

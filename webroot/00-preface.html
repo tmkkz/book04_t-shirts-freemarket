@@ -23,9 +23,9 @@
     <li class="toc-chapter"><a href="./03-authScreen.html">3 アプリケーション認証</a></li>
     <li class="toc-chapter"><a href="./04-project_start.html">4 プロジェクトスタート</a></li>
     <li class="toc-chapter"><a href="./05-loginapp-screens.html">5 認証関連画面の作成</a></li>
-    <li class="toc-chapter"><a href="./06-usermodel.html">6 アプリで認証するユーザのデータ型を作成する。</a></li>
+    <li class="toc-chapter"><a href="./06-usermodel.html">6 アプリで認証するユーザーのデータ型を作成する。</a></li>
     <li class="toc-chapter"><a href="./07-flutterfire.html">7 Flutter側でFirebaseが使えるようにする。</a></li>
-    <li class="toc-chapter"><a href="./08-auth-controller.html">8 状態管理コントローラーを作る</a></li>
+    <li class="toc-chapter"><a href="./08-auth-controller.html">8 状態管理コントローラを作る</a></li>
     <li class="toc-chapter"><a href="./09-signup.html">9 新規登録</a></li>
     <li class="toc-chapter"><a href="./10-email-signin.html">10 メール/パスワードでのサインイン</a></li>
 </ul>
@@ -37,7 +37,7 @@
 <h1 class="none center"><a id="h"></a><br/>はじめに</h1>
 <p>このたびは、「0円で、モバイルアプリ作るお〜！」を手にしていただき、誠にありがとうございます。</p>
 <p><br /></p>
-<p>今回も、tkg様の開発された「AAスレ作成アプリAAストーリーボード」を使わせていただいます。tkg様はじめたくさんのAAを投稿されている皆様へ感謝しています。</p>
+<p>今回も、tkg様の開発された「AAスレ作成アプリAAストーリーボード」を使わせていただいます。tkg様始めたくさんのAAを投稿されている皆様へ感謝しています。</p>
 <div id="r401" class="image">
 <img src="images/00-preface/r401.png" alt="" class="img width-040per" />
 <p class="caption">
@@ -45,7 +45,7 @@
 </p>
 </div>
 <p><br /></p>
-<p>今回紹介させていただいている「Flutter」ですが、驚くほど簡単にモバイルアプリを作成することができます。「Flutter」がどんなものかをサクッと知りたい方は、以下の<a href="https://youtu.be/5fH6__PAi6A" class="link">Youtube動画</a>がおすすめです。10分ほどの動画ですが「Flutter」の概要が分かります。</p>
+<p>今回紹介させていただいている「Flutter」ですが、驚くほど簡単にモバイルアプリを作成できます。「Flutter」がどんなものかをサクッと知りたい方は、以下の<a href="https://youtu.be/5fH6__PAi6A" class="link">Youtube動画</a>がお勧めです。10分ほどの動画ですが「Flutter」の概要が分かります。</p>
 <div id="flutter_youtube" class="image">
 <img src="images/00-preface/flutter_youtube.jpg" alt="" class="img width-050per" />
 <p class="caption">
@@ -56,7 +56,7 @@
 <p><br /></p>
 <p>いえ、別に「ReactNative」をディスるつもりはありません。</p>
 <p><br /></p>
-<p>誰でもが簡単にモバイルアプリを作成できるようになり、面白いアプリが世の中にあふれるといいですね。</p>
+<p>誰でもが簡単にモバイルアプリを作成できるようになり、おもしろいアプリが世の中に溢れるとよいですね。</p>
 <p><br /></p>
 <p>本書は、</p>
 <ul>
@@ -80,27 +80,27 @@
 </ol>
 <p>と、なります。</p>
 <p><br /></p>
-<p>とても難しそうですが、FlutterはGoogleがオープンソースで公開している開発フレームワークです。そのため世界中の開発者が</p>
+<p>とても難しそうですが、FlutterはGoogleがオープンソースで公開している開発フレームワークです。そのため世界中の開発者が、</p>
 <ul>
 <li>GitHubなどでアプリのソース公開
 </li>
-<li>Youtubeでの解説
+<li>YouTubeでの解説
 </li>
 <li>Qiita.com、zenn.devなどでの情報
 </li>
 </ul>
 <p><br /></p>
-<p>を発信していますので、助けになるものが多くあります。日本語情報も増えていますが、英語でも動画やGitHubでのコードであれば何とかなります。ちょっとだけ頑張れば、あなたもモバイルアプリ作れます。</p>
+<p>を発信していますので、助けになるものが多くあります。日本語情報も増えていますが、英語でも動画やGitHubでのコードだと何とか理解できます。ちょっとだけ頑張れば、あなたもモバイルアプリ作れます。</p>
 <p><br /></p>
 <p>本書で扱うオンライン・フリーマーケットもゼロからの開発ではなく、GitHubなどで公開されているアプリを魔改造していきます。出典元や情報サイトなども提示していますので参考にしてください。</p>
 <p><br /></p>
-<p>本書のソースコードはGitHubにあります。章毎にブランチを分けていますので、どの章からでも始めていただけます。出来る限り図解していますのでページ数も膨大になりますが、ご容赦ください。</p>
+<p>本書のソースコードはGitHubにあります。章毎にブランチを分けていますので、どの章からでも始めていただけます。できる限り図解していますのでページ数も膨大になりますが、ご容赦ください。</p>
 <p><br /></p>
-<p>また、Flutter開発環境の作成については本書では扱っていません。別途、無償配布しています「Flutter開発環境の作成 Mac編」、「Flutter開発環境の作成 Windows編」を参照してください。</p>
+<p>また、Flutter開発環境の作成については本書では扱っていません。別途、無償配布しています「Flutter開発環境の作成Mac編」、「Flutter開発環境の作成Windows編」を参照してください。</p>
 <p><br /></p>
 <p>最後になりますが、本書での「間違い」、「認識不足」、「誤字脱字」、「参照元のリンク切れ」などありましたら、<a href="https://github.com/risingforce9zz/book04_t-shirts-freemarket/blob/main/README.md" class="link">本書サポートサイト</a>にてissueを発行していただけませんでしょうか？</p>
 <p><br /></p>
-<p>よろしくお願いいたします。最後まで楽しんでいただけることを願っています。</p>
+<p>よろしくお願します。最後まで楽しんでいただけることを願っています。</p>
 
         </main>
         <nav class="page-navi">

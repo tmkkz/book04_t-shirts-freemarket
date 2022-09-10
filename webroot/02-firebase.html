@@ -28,9 +28,9 @@
     <li class="toc-chapter"><a href="./03-authScreen.html">3 アプリケーション認証</a></li>
     <li class="toc-chapter"><a href="./04-project_start.html">4 プロジェクトスタート</a></li>
     <li class="toc-chapter"><a href="./05-loginapp-screens.html">5 認証関連画面の作成</a></li>
-    <li class="toc-chapter"><a href="./06-usermodel.html">6 アプリで認証するユーザのデータ型を作成する。</a></li>
+    <li class="toc-chapter"><a href="./06-usermodel.html">6 アプリで認証するユーザーのデータ型を作成する。</a></li>
     <li class="toc-chapter"><a href="./07-flutterfire.html">7 Flutter側でFirebaseが使えるようにする。</a></li>
-    <li class="toc-chapter"><a href="./08-auth-controller.html">8 状態管理コントローラーを作る</a></li>
+    <li class="toc-chapter"><a href="./08-auth-controller.html">8 状態管理コントローラを作る</a></li>
     <li class="toc-chapter"><a href="./09-signup.html">9 新規登録</a></li>
     <li class="toc-chapter"><a href="./10-email-signin.html">10 メール/パスワードでのサインイン</a></li>
 </ul>
@@ -41,13 +41,13 @@
         <main class="page-main">
 <h1 class="boldlines center twolines"><a id="h2"></a><span class="secno">第2章</span> <br/>Firebaseとは？</h1>
 <div class="abstract">
-<p>もともとは、オンラインチャット機能をWebサイトに統合するAPIを提供していたスタートアップEnvolveが、ユーザがチャットではなくゲームデータをリアルタイムに交換しているのをみて、別会社Firebaseを設立しiOS、Android、Webでアプリケーションデータを同期する「Firebase Realtime Database」を発表する。</p>
+<p>もともとは、オンラインチャット機能をWebサイトに統合するAPIを提供していたスタートアップEnvolveが、ユーザーがチャットではなくゲームデータをリアルタイムに交換しているのをみて、別会社Firebaseを設立しiOS、Android、Webでアプリケーションデータを同期する「Firebase Realtime Database」を発表する。</p>
 <p><br /></p>
 <p>この製品を中心とし、「Firebase Hosting」、「Firbase Authentication」を合わせモバイル・バックエンドサービスを提供していた。</p>
 <p><br /></p>
-<p>ネットの世界では、スタートアップはツブされるか買収されるかの2択なので、結局Googleに買収されてしまう。</p>
+<p>ネットの世界では、スタートアップはツブされるか買収されるかの2択ですので、結局Googleに買収されてしまう。</p>
 <p><br /></p>
-<p>Googleは、更にサービスを追加しモバイル・バックエンド・サービス、サーバーレス・アーキテクチャの勝者となります。</p>
+<p>Googleは、さらにサービスを追加しモバイル・バックエンド・サービス、サーバレス・アーキテクチャの勝者となります。</p>
 </div>
 
 
@@ -56,14 +56,14 @@
 <p><br /></p>
 <p>使い方は、</p>
 <ul>
-<li>プロジェクトをを開始し、
+<li>プロジェクトを開始し、
 </li>
 <li>その都度、必要なサービスを追加
 </li>
 </ul>
 <p>します。</p>
 <p><br /></p>
-<p>Googleアカウントがあれば、スグに使い始めることが出来ますし、ある程度の使用量は無償です。</p>
+<p>Googleアカウントがあれば、スグに使い始めることができますし、ある程度の使用量は無償です。</p>
 <div id="firebase00" class="image">
 <img src="images/02-firebase/firebase00.png" alt="" class="img width-070per" />
 <p class="caption">
@@ -71,14 +71,14 @@
 </p>
 </div>
 <p>料金については、</p>
-<p>Firebase Authentication（認証）では、以下のようにアクティブユーザが月間5万人まで無料です。</p>
+<p>Firebase Authentication（認証）では、以下のようにアクティブユーザーが月間5万人まで無料です。</p>
 <div id="firebase00-1" class="image">
 <img src="images/02-firebase/firebase00-1.png" alt="" class="img width-070per" />
 <p class="caption">
 図2.3: 
 </p>
 </div>
-<p>Realtime Databaseでは、保存するデータが1GBまで無料です。ただし、ダウンロードされるデータは10GBまでです。</p>
+<p>Realtime Databaseでは、保存するデータが1GBまで無料です。ただし、ダウンロードされるデータは10GBまです。</p>
 <p><br /></p>
 <p>実際に作成してデータをみていただくと、Reatime Databaseに保存されるデータは、巨大なJSONファイルですので文字列で1GBとなると、相当量です。</p>
 <div id="firebase00-1" class="image">
@@ -87,7 +87,7 @@
 図2.3: 
 </p>
 </div>
-<p>無料から有料へは、いつでも切り替えることが出来ますし、使用量が減れば無料プランへ戻ることもできます。</p>
+<p>無料から有料へは、いつでも切り替えることができますし、使用量が減れば無料プランへ戻ることもできます。</p>
 
 <h3 class="symbol"><a id="h2-1-1"></a><span class="secno">2.1.1</span> Firebaseコンソールへ</h3>
 <p>「コンソールへ移動」をクリックすると、Firebaseコンソールトップへ移動します。ここで「+プロジェクトを追加」をクリックして新規プロジェクトを作成します。</p>
@@ -97,7 +97,7 @@
 図2.4: 
 </p>
 </div>
-<p>最初にプロジェクトに名前を付けます。使える文字は半角英数、スペース、-!'&quot;の記号4つです。[続行]ボタンをクリックします。</p>
+<p>最初にプロジェクトの名前を付けます。使える文字は半角英数、スペース、-!'&quot;の記号4つです。[続行]ボタンをクリックします。</p>
 <div id="id_03_firebase03" class="image">
 <img src="images/02-firebase/03_firebase03.png" alt="" class="img width-070per" />
 <p class="caption">
@@ -125,7 +125,7 @@
 図2.8: 
 </p>
 </div>
-<p>プロジェクトが出来上がりました。</p>
+<p>プロジェクトができあがりました。</p>
 <div id="id_03_firebase07" class="image">
 <img src="images/02-firebase/03_firebase07.png" alt="" class="img width-070per" />
 <p class="caption">
@@ -183,10 +183,10 @@
 </li>
 <li>Googleアカウントでのログイン
 </li>
-<li>twitter、AppleID、GitHubなどのSNSサービスでのログイン
+<li>Twitter、AppleID、GitHubなどのSNSサービスでのログイン
 </li>
 </ul>
-<p>が出来ます。</p>
+<p>ができます。</p>
 <p>ログイン状態になると、そのプロジェクトに追加したサービスの細かなアクセス制限ができます。</p>
 <p><br /></p>
 <p>通常のアプリケーションで認証サービスを実現しようとすると、セキュリティが問題になりますがFirebase Authenticationで解放されます。</p>

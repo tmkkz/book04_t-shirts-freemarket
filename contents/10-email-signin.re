@@ -8,10 +8,32 @@
 //}
 
 //makechaptitlepage[toc=on]
+== メール/パスワードでサインインできるようになるまで
+
+メール/パスワードでサインインするためには、
+
+ * ログイン画面
+ * ログイン成功時に表示するページ
+ * パスワード・リセットの要求ページ
+ * パスワード・リセット要求完了ページ
+
+//blankline
+が必要になります。
+
+//blankline
+幸い、元プロジェクトには必要なページが含まれていますので修正して使います。
+
+//blankline
+また、サンプルアプリケーションとしての拡張を考え、SNS認証の種類を増やせるように
+ログイン方法選択画面を追加します。
 
 == サインイン選択画面を作成
-今回のアプリケーションは、SNS認証を含め4つのサインイン方法を提供しています。メール/パスワード認証は入力画面が必要ですが、
-SNS認証はボタンのみ実装できます。仮に、SNS実装が増えてもボタンをひとつ増やし、認証コントローラーにログインメソッドを実装するだけになります。
+今回のアプリケーションは、SNS認証を含め4つのサインイン方法を提供しています。
+
+//blankline
+メール/パスワード認証は入力画面が必要ですが、
+SNS認証はボタンのみ実装できます。仮に、SNS実装が増えてもボタンをひとつ増やし、認証コントローラーにログイン・メソッドを実装するだけになります。
+
 
 //blankline
 Firebase認証は、
@@ -19,9 +41,10 @@ Firebase認証は、
 今回実装する、「Twitter」、「Google」、「Apple」だけでなく「Facebook」、「GitHub」、「Microsoft」、「米Yahoo!」などの
 SNSログインに対応しています。
 
+
 //blankline
 将来的に、ログイン方法を増やすことが容易になるよう新しく「ログイン方法選択画面」を作成します。
-
+//image[03_test01-min][作成する画面][scale=0.4, pos=H]
 //blankline
 「lib/pages」フォルダに「select_signin_page.dart」ファイルを作成します。
 
@@ -189,6 +212,23 @@ class AppRoutes {
 }
 //}
 
+//blankline
+
+//list[][スプラッシュスクリーンの移動先の変更]{
+class _SplashScreenState extends State<SplashScreen> {
+  bool _isVisible = false;
+
+  AuthController authController = Get.put(AuthController());
+  _SplashScreenState(){
+
+    new Timer(const Duration(milliseconds: 2000), (){
+      setState(() {
+        Get.toNamed('/select-signin');　@<balloon>{ログイン方法選択画面へ}
+      });
+    });
+//}
+
+
 == LoginPageの修正
 ログインページの修正を行います。
 
@@ -198,8 +238,8 @@ class AppRoutes {
  * パスワード忘れのページ推移
 
 === StatelessWigdetへの変更
-LoginPage（lib/pages/login_page.dart）を開き、赤ワク部分を削除する。「extends」後の継承元を
-「StatefulWidget」から「StatelessWidget」へ変更する。
+LoginPage（lib/pages/login_page.dart）を開き、赤ワク部分を削除します。「extends」後の継承元を
+「StatefulWidget」から「StatelessWidget」へ変更します。
 
 //image[01_login01][][scale=0.7, pos=H]
 
@@ -226,8 +266,24 @@ class LoginPage extends StatelessWidget {
 === パスワード忘れへのページ推移
 ページのナビゲーションをGetXに変更します。Routeは既に追加してあります。
 
+//list[][ナビゲーションの変更]{
+  Container(
+    margin: EdgeInsets.fromLTRB(10, 0, 10, 20),
+    alignment: Alignment.topRight,
+    child: GestureDetector(
+      onTap: () {
+        Get.toNamed('/forgotpassword');
+      },
+      child: Text("パスワードを忘れましたか?",
+        style: TextStyle(color: Colors.grey,),
+      ),
+    ),
+  ),
+//}
+
+
 == ForgotPasswordPageの修正
-パスワードを忘れたページを修正します。
+パスワード・リセット要求のページを修正します。
 
  * StatelessWidgetへ変更
  * 認証コントローラーのバインドし、メールアドレス欄にコントローラーをセット
@@ -311,11 +367,43 @@ class ForgotPasswordPage extends StatelessWidget {
 
 //}
 
+//blankline
+送信ボタンへメソッドの割当をします。
+//blankline
+
+//list[][パスワード・リセット要求メソッドの割当]{
+    Container(
+      decoration: ThemeHelper().buttonBoxDecoration(context),
+      child: ElevatedButton(
+        style: ThemeHelper().buttonStyle(),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(
+              40, 10, 40, 10),
+          child: Text(
+            "送信",
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+        ),
+        onPressed: () {
+            _submit();
+        },
+      ),
+    ),
+//}
+
+
 
 == サインアウトの実装
-サインインが出来ると当然ですがサインアウトも必要です。
+サインインが出来ると当然ですがサインアウトの機能も必要です。
 
-次の号でドロワーを実装し、ドロワーにサインアウトを置きます。どのページからもサインアウトができるようになります。
+次の号でドロワーを実装し、ドロワーにサインアウトできる機能を置く予定です。
+ログイン後にアクセスする全ページにドロワーがありますので、どのページからもサインアウトができるようになります。
+
+//blankline
 それまでは、サインイン後にページ推移するプロフィールページにサインアウトボタンを置きます。
 
 サインアウト・メソッドは、認証コントローラーが持っていますので、バインドします。
@@ -329,7 +417,7 @@ class _ProfilePageState extends State<ProfilePage>{
 
 //}
 
-サインアウトボタンを追加し、サインアウト・メソッドの呼び出しを行います。
+プロフィールページ（profile_page.dart）へサインアウトボタンを追加し、サインアウト・メソッドの呼び出しを行います。
 
 //list[label][desc]{
   // 
@@ -353,6 +441,128 @@ class _ProfilePageState extends State<ProfilePage>{
           authController.singOut();
         }),
   ),
+//}
+
+
+== パスワード・リセット要求完了ページ
+
+Firebase認証で使うメール/パスワードでのサインインでのパスワード・リセットは、
+
+ 1. パスワード・リセットの要求。
+ 2. Firebaseから登録メールアドレスへリセット用リンクをメールで送信。
+ 3. リンクをクリックし表示されるページで新パスワードの登録。
+
+となります。
+
+//blankline
+パスワード・リセット要求ページは出来ましたので、要求成功時に表示されるページを用意します。
+//blankline
+元プロジェクトには、「forgot_password_valification_page.dart」がありますので、
+これを利用します。
+
+//blankline
+以下が、「forgot_password_valification_page.dart」の変更後になります。
+
+//list[][パスワード・リセット要求完了ページ]{
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:otp_text_field/otp_field.dart';
+import 'package:otp_text_field/style.dart';
+
+import 'profile_page.dart';
+import 'widgets/header_widget.dart';
+import '../../common/theme_helper.dart';
+
+class ForgotPasswordVerificationPage extends StatelessWidget {
+  const ForgotPasswordVerificationPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    double _headerHeight = 300;
+
+    return Scaffold(
+        backgroundColor: Colors.white,
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                height: _headerHeight,
+                child: HeaderWidget(
+                    _headerHeight, true, Icons.privacy_tip_outlined),
+              ),
+              SafeArea(
+                child: Container(
+                  margin: EdgeInsets.fromLTRB(25, 10, 25, 10),
+                  padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                  child: Column(
+                    children: [
+                      Container(
+                        alignment: Alignment.topLeft,
+                        margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'パスワードリセット',
+                              style: TextStyle(
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black54),
+                              // textAlign: TextAlign.center,
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              '入力したメールアドレス宛にパスワードリセットリンクを送りました。',
+                              style: TextStyle(
+                                  // fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black54),
+                              // textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 40.0),
+                      Column(
+                        children: <Widget>[
+                          SizedBox(height: 50.0),
+                          SizedBox(height: 40.0),
+                          Container(
+                            decoration: ThemeHelper().buttonBoxDecoration(
+                                context, "#AAAAAA", "#757575"),
+                            child: ElevatedButton(
+                                style: ThemeHelper().buttonStyle(),
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(40, 10, 40, 10),
+                                  child: Text(
+                                    "戻る",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                                onPressed: () {
+                                  Get.toNamed('/select-signin');
+                                }),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+        ));
+  }
+}
 //}
 
 
@@ -408,6 +618,7 @@ class _ProfilePageState extends State<ProfilePage>{
   Future<void> passwordReset() async {
     try {
       await _auth.sendPasswordResetEmail(email: emailController.text);
+      Get.offAll('./select-signin');
     } catch (error) {
       setAuthErrorMessage('パスワードリセットでエラーが発生しました。');
     }
@@ -440,3 +651,9 @@ Firebaseに登録されていないメールアドレスでエラーは表示さ
 
 
 === パスワード・リセット
+パスワード・リセットの動作確認です。問題無く動作しています。
+
+//image[passreset][パスワード・リセット][scale=0.7, pos=H]
+
+メールも届きます。
+//image[resetmail][パスワード・リセット用メール][scale=0.7, pos=H]

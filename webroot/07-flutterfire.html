@@ -6,8 +6,8 @@
     <title>Flutter側でFirebaseが使えるようにする。 | 0円で、モバイルアプリを作ってみるお〜。Vol.1</title>
     <link rel="stylesheet" type="text/css" href="css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="css/webstyle.css" />
-    <link rel="next" title="状態管理コントローラーを作る" href="08-auth-controller.html">
-    <link rel="prev" title="アプリで認証するユーザのデータ型を作成する。" href="06-usermodel.html">
+    <link rel="next" title="状態管理コントローラを作る" href="08-auth-controller.html">
+    <link rel="prev" title="アプリで認証するユーザーのデータ型を作成する。" href="06-usermodel.html">
     <meta name="generator" content="Re:VIEW Starter">
   </head>
   <body>
@@ -24,7 +24,7 @@
     <li class="toc-chapter"><a href="./03-authScreen.html">3 アプリケーション認証</a></li>
     <li class="toc-chapter"><a href="./04-project_start.html">4 プロジェクトスタート</a></li>
     <li class="toc-chapter"><a href="./05-loginapp-screens.html">5 認証関連画面の作成</a></li>
-    <li class="toc-chapter"><a href="./06-usermodel.html">6 アプリで認証するユーザのデータ型を作成する。</a></li>
+    <li class="toc-chapter"><a href="./06-usermodel.html">6 アプリで認証するユーザーのデータ型を作成する。</a></li>
     <li class="toc-chapter"><a href="./07-flutterfire.html">7 Flutter側でFirebaseが使えるようにする。</a>
       <ul class="toc toc-2">
         <li class="toc-section"><a href="#h7-1">7.1 クライアント側（Flutter）でFirebaseの設定</a></li>
@@ -32,7 +32,7 @@
         <li class="toc-section"><a href="#h7-3">7.3 テスト</a></li>
       </ul>
     </li>
-    <li class="toc-chapter"><a href="./08-auth-controller.html">8 状態管理コントローラーを作る</a></li>
+    <li class="toc-chapter"><a href="./08-auth-controller.html">8 状態管理コントローラを作る</a></li>
     <li class="toc-chapter"><a href="./09-signup.html">9 新規登録</a></li>
     <li class="toc-chapter"><a href="./10-email-signin.html">10 メール/パスワードでのサインイン</a></li>
 </ul>
@@ -43,7 +43,7 @@
         <main class="page-main">
 <h1 class="boldlines center twolines"><a id="h7"></a><span class="secno">第7章</span> <br/>Flutter側でFirebaseが使えるようにする。</h1>
 <div class="abstract">
-<p>Firebase関連のプラグインの導入と設定を行います。</p>
+<p>Firebase関連のプラグインの導入と設定をします。</p>
 </div>
 
 
@@ -57,7 +57,7 @@
 <li>Firebaseのサービス毎にプラグインのインストール
 </li>
 </ul>
-<p>が必要でした(プラグインのインストールは今でも必要)。</p>
+<p>が必要でした（プラグインのインストールは今でも必要）。</p>
 <p><br /></p>
 <p>しかし、最近は「Firebase CLI」があります。これは、ターミナルからコマンドで設定が完了する優れもので、ファイルのダウンロードやRealtime Databaseへのアクセス設定などが簡単にできます。</p>
 <p><br /></p>
@@ -88,7 +88,7 @@
 </div>
 <p>これで、プロジェクトへFirebase関連の設定のほとんどをコマンドで行うことができます。</p>
 <p><br /></p>
-<p>fluttrefireコマンドが有効になりましたので、早速使ってみます。</p>
+<p>fluttrefireコマンドが有効になりましたので、さっそく使ってみます。</p>
 <div class="cmd-code">
 <span class="caption">flutterfireコマンド</span>
 <pre class="list"> &gt; flutterfire configure
@@ -124,15 +124,15 @@ Built flutterfire_cli:flutterfire.
 Installed executable flutterfire.
 Warning: Pub installs executables into $HOME/.pub-cache/bin, which is not on your path.
 You can fix that by adding this to your shell's config file (.bashrc, .bash_profile, etc.):
-    
+
     export PATH=&quot;$PATH&quot;:&quot;$HOME/.pub-cache/bin&quot;
-    
+
 
 Activated flutterfire_cli 0.2.4.
 </pre>
 </div>
 <p><br /></p>
-<p>最後に、パスを通すように指示されましたので、エディッタで「~/.zshrc」を開き</p>
+<p>最後に、パスを通すように指示されましたので、エディッタで「~/.zshrc」を開き、</p>
 <p><br /></p>
 <p>　　　export PATH=&quot;$PATH&quot;:&quot;$HOME/.pub-cache/bin&quot;</p>
 <p><br /></p>
@@ -173,14 +173,14 @@ Changed 4 dependencies!
 </pre>
 </div>
 <p><br /></p>
-<p>「flutterfireコマンド」で設定を行います。ターミナルに「flutterfire configure」と入力しエンターキーを押します。</p>
+<p>「flutterfireコマンド」で設定します。ターミナルに「flutterfire configure」と入力しエンターキーを押します。</p>
 <p><br /></p>
 <p>コマンドが実行され、</p>
 <ul>
 <li>Firebaseコンソールに登録されたプロジェクト名が表示されるので、設定先を選択する。
 </li>
-<li></li>
 </ul>
+<p>*</p>
 <div class="cmd-code">
 <span class="caption">flutterfireコマンド</span>
 <pre class="list">❯ flutterfire configure
@@ -221,7 +221,7 @@ Learn more about using this file and next steps from the documentation:
 <ul>
 <li>アクセス情報の入った「lig/firebase_options.dart」
 </li>
-<li>Android用設定ファイル「android/app/google-services.json」
+<li>Android用設定ファイル「Android/app/google-services.json」
 </li>
 <li>iOS用設定ファイル「ios/Runner/GoogleServie-info.plist」
 </li>
@@ -230,7 +230,7 @@ Learn more about using this file and next steps from the documentation:
 </ul>
 <p>が、ダウンロードされます。</p>
 <p><br /></p>
-<p>Firebaseサービス用のFlutterプラグインをインストールする度に設定を行う必要があるので、Firebase系のプラグインは一度でインストールします。</p>
+<p>Firebaseサービス用のFlutterプラグインをインストールする度に再設定の必要があるので、Firebase系のプラグインは一度でインストールします。</p>
 
 <h2 class="grayback"><a id="h7-2"></a><span class="secno">7.2</span> Firebaseサービス用Flutterプラグインのインストール</h2>
 <p>続いて、Firebaseを使用するためのコアプラグイン、サービス毎のプラグインをインストールします。</p>
@@ -255,12 +255,13 @@ Learn more about using this file and next steps from the documentation:
 <p>です。</p>
 <p>ターミナルに、</p>
 <p><br /></p>
-<p>flutter pub add firebase_analytics firebase_auth cloud_firestore firebase_messaging firebase_storage firebase_database</p>
+<p>flutter pub add firebase_analytics firebase_auth cloud_firestore\firebase_messaging firebase_storage firebase_database</p>
 <p><br /></p>
 <p>を入力しエンターキーを押します。</p>
 <div class="cmd-code">
 <span class="caption">Firebaseサービスプラグインのインストール</span>
-<pre class="list">&gt; flutter pub add firebase_analytics firebase_auth cloud_firestore firebase_messaging firebase_storage firebase_database
+<pre class="list">&gt; flutter pub add firebase_analytics firebase_auth cloud_firestore\
+   firebase_messaging firebase_storage firebase_database
 ...
 Changed 22 dependencies!
 </pre>
@@ -275,11 +276,11 @@ Changed 22 dependencies!
 <p><br /></p>
 <p>2022年8月に「33」が正式リリースされました。古いAndoroid OSをサポートすると画面解像度の種類も膨大になるため4世代前を仕様とします。</p>
 <p><br /></p>
-<p>「android/app/src/buld.gradle」ファイルの以下の項目の下から4行目にある「minSdkVersion」を直接してします。編集は、コメントアウト・新規行の追加をおこないます。</p>
+<p>「Android/app/src/buld.gradle」ファイルの以下の項目の下から4行目にある「minSdkVersion」を直接してします。編集は、コメントアウト・新規行の追加を行ます。</p>
 <p><br /></p>
 <p>2行目の「compleSdkVersion」を「33」にします。</p>
 <div class="caption-code">
-<span class="caption">android/app/src/build.gradle</span>
+<span class="caption">Android/app/src/build.gradle</span>
 <pre class="list">  android {
     compileSdkVersion 33
     ndkVersion flutter.ndkVersion
@@ -340,7 +341,7 @@ void main() async {
 }
 </pre>
 </div>
-<p>編集が完了すると、エミュレータでデバッグします。問題無く起動しましたので次に進みます。</p>
+<p>編集が完了すると、エミュレータでデバッグします。問題なく起動しましたので次に進みます。</p>
 <div class="note">
 <h5>ここまでのソースコード</h5>
 <div class="cmd-code">

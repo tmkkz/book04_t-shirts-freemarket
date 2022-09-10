@@ -6,7 +6,7 @@
     <title>認証関連画面の作成 | 0円で、モバイルアプリを作ってみるお〜。Vol.1</title>
     <link rel="stylesheet" type="text/css" href="css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="css/webstyle.css" />
-    <link rel="next" title="アプリで認証するユーザのデータ型を作成する。" href="06-usermodel.html">
+    <link rel="next" title="アプリで認証するユーザーのデータ型を作成する。" href="06-usermodel.html">
     <link rel="prev" title="プロジェクトスタート" href="04-project_start.html">
     <meta name="generator" content="Re:VIEW Starter">
   </head>
@@ -29,9 +29,9 @@
         <li class="toc-section"><a href="#h5-2">5.2 ログインプログラム</a></li>
       </ul>
     </li>
-    <li class="toc-chapter"><a href="./06-usermodel.html">6 アプリで認証するユーザのデータ型を作成する。</a></li>
+    <li class="toc-chapter"><a href="./06-usermodel.html">6 アプリで認証するユーザーのデータ型を作成する。</a></li>
     <li class="toc-chapter"><a href="./07-flutterfire.html">7 Flutter側でFirebaseが使えるようにする。</a></li>
-    <li class="toc-chapter"><a href="./08-auth-controller.html">8 状態管理コントローラーを作る</a></li>
+    <li class="toc-chapter"><a href="./08-auth-controller.html">8 状態管理コントローラを作る</a></li>
     <li class="toc-chapter"><a href="./09-signup.html">9 新規登録</a></li>
     <li class="toc-chapter"><a href="./10-email-signin.html">10 メール/パスワードでのサインイン</a></li>
 </ul>
@@ -46,7 +46,7 @@
 <p><br /></p>
 <p>HTMLでは、&lt;div&gt;タグの中に複数のHTMLタグを入れてUIを組み立てます。入れ子になったHTMLタグもあります。</p>
 <p><br /></p>
-<p>Flutterも同じようにWidgetを組合せてUIを構築します。</p>
+<p>Flutterも同じようにWidgetを組み合わせてUIを構築します。</p>
 </div>
 
 
@@ -55,11 +55,11 @@
 <p><br /></p>
 <p>概要でも少し説明していますが、ページはWidgetと呼ぶ部品を組み合わせて作成します。Flutterの公式（SDKに含まれている）Widgetもありますし、世界中の開発者が作成したもが集めてあるサイトもあります。</p>
 <p><br /></p>
-<p>もちろん自分で作成することもできます。</p>
+<p>もちろん自分で作成し世界中へ公開できます。</p>
 <p><br /></p>
-<p>色、形、ドロップシャドウなどのデザインに関するものは、ThemeData（HTMLで言えば、全体に適用されるCSS）が適用され、個別のWidgetでもスタイルを適用できます。</p>
+<p>色、形、ドロップシャドウなどのデザインに関するものは、ThemeData（HTMLでいえば、全体に適用されるCSS）が適用され、個別のWidgetでもスタイルを適用できます。</p>
 <p><br /></p>
-<p>下記のサイト「<a href="https://flutterawesome.com/" class="link">Flutter Awesome</a>」では、UIやアプリが沢山公開されており、そのほどんどはGitHubなどでソースコードを入手できます。実際に手元で動かし、変更を加えてみればWidgetの使い方も理解が進みます。</p>
+<p>下記のサイト「<a href="https://flutterawesome.com/" class="link">Flutter Awesome</a>」では、UIやアプリがたくさん公開されており、そのほどんどはGitHubなどでソースコードを入手できます。実際に手元で動かし、変更を加えてみればWidgetの使い方も理解が進みます。</p>
 <div id="flutterawesome" class="image">
 <img src="images/05-loginapp-screens/flutterawesome.png" alt="" class="img width-070per" />
 <p class="caption">
@@ -68,14 +68,14 @@
 </div>
 
 <h2 class="grayback"><a id="h5-2"></a><span class="secno">5.2</span> ログインプログラム</h2>
-<p>今回使用するのは、上記FlutterAwesomeで見つけたログイン関連のアプリ<a href="https://flutterawesome.com/flutter-login-ui-with-splash-screen-and-multiple-color-support/" class="link">Flutter Login UI</a> です。</p>
+<p>今回使用するのは、上記FlutterAwesomeで見付け足ログイン関連のアプリ<a href="https://flutterawesome.com/flutter-login-ui-with-splash-screen-and-multiple-color-support/" class="link">Flutter Login UI</a> です。</p>
 <div id="flutterawesome02" class="image">
 <img src="images/05-loginapp-screens/flutterawesome02.png" alt="" class="img width-070per" />
 <p class="caption">
 図5.2: 
 </p>
 </div>
-<p>このサイトは、Videoチュートリアルのリンクもあり、クリックするとYoutubeで作成過程を見ることができます。YoutubeのVideoチュートリアルの詳細には、同じデザインですが別のGitHubへのリンクがありました。</p>
+<p>このサイトは、Videoチュートリアルのリンクもあり、クリックするとYouTubeで作成過程を見ることができます。YouTubeのVideoチュートリアルの詳細には、同じデザインですが別のGitHubへのリンクがありました。</p>
 <p><br /></p>
 <p>今回は、<a href="https://github.com/FlutterTutorialNet/flutter_login_ui" class="link">こちら</a>を使うことにします。</p>
 
@@ -131,7 +131,7 @@ Changed 5 dependencies!
 
 </pre>
 </div>
-<p>後は、写経するか、コピペするかでファイルを作成します。フォルダ、ファイルの位置は後々変更することとし、今は元プロジェクトと同じにしておきます。</p>
+<p>後は、写経するか、コピペするかでファイルを作成します。フォルダ、ファイルの位置はあとあと変更することとし、今は元プロジェクトと同じにしておきます。</p>
 <div id="project_files" class="image">
 <img src="images/05-loginapp-screens/project_files.png" alt="" class="img width-050per" />
 <p class="caption">
@@ -139,7 +139,7 @@ Changed 5 dependencies!
 </p>
 </div>
 <p><br /></p>
-<p>lintでWarningが沢山出ていますが、コントローラーを追加した後すべてのページを、</p>
+<p>lintでWarningがたくさん出ていますが、コントローラを追加した後すべてのページを、</p>
 <ul>
 <li>StatefulWidgetからStatelessWidgetへ変更
 </li>
@@ -149,7 +149,7 @@ Changed 5 dependencies!
 <p><br /></p>
 <p>しましので、そのときに修正します。</p>
 <p><br /></p>
-<p>エミュレータで確認すると、以下のように取り入れることが出来ました。</p>
+<p>エミュレータで確認すると、以下のように取り入れることができました。</p>
 <div id="base_project" class="image">
 <img src="images/05-loginapp-screens/base_project.png" alt="desc" class="img width-080per" />
 <p class="caption">
