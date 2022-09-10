@@ -19,7 +19,7 @@ CHAPS:
   - 07-flutterfire.re
   - 08-auth-controller.re
   - 09-signup.re
-
+  - 10-email-signin.re
 ## 付録
 APPENDIX:
 ##  - 91-compare.re

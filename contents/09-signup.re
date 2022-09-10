@@ -533,3 +533,11 @@ Firebase側も登録されています。
 
 //blankline
 //image[firebase_auth01][Firebase認証][scale=0.7, pos=H]
+
+//blankline
+//blankline
+//note[ここまでのソースコード]{
+//terminal[][GitHub]{
+　>git clone -b 05_signup https://github.com/risingforce9zz/tfreemarket.git
+//}
+//}

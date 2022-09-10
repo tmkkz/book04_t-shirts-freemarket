@@ -228,6 +228,6 @@ class AuthController extends GetxController {
 //blankline
 //note[ここまでのソースコード]{
 //terminal[][GitHub]{
-　>git clone -b 03_flutterfire_setup https://github.com/risingforce9zz/tfreemarket.git
+　>git clone -b 04_auth_controller https://github.com/risingforce9zz/tfreemarket.git
 //}
 //}
