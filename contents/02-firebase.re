@@ -46,7 +46,7 @@ Realtime Databaseでは、保存するデータが1GBまで無料です。ただ
 実際に作成してデータをみていただくと、Reatime Databaseに保存されるデータは、巨大なJSONファイルですので
 文字列で1GBとなると、相当量です。
 
-//image[firebase00-1][][scale=0.7 ,pos=H]
+//image[firebase00-2][][scale=0.7 ,pos=H]
 
 無料から有料へは、いつでも切り替えることができますし、使用量が減れば無料プランへ戻ることもできます。
 

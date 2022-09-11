@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Googleサインイン | 0円で、モバイルアプリを作ってみるお〜。Vol.1</title>
+    <link rel="stylesheet" type="text/css" href="css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="css/webstyle.css" />
+    <link rel="prev" title="Twitterアカウントでサインイン" href="11-twitter-login.html">
+    <meta name="generator" content="Re:VIEW Starter">
+  </head>
+  <body>
+    <div class="page-outer">
+      <nav class="side-content">
+                <div class="rebuild">
+          <a href="javascript:void(0)" onclick="rebuildAndReloadForcedly()">Rebuild and Reload</a>
+        </div>
+                <a class="nav-title" href="index.html">0円で、モバイルアプリを作ってみるお〜。Vol.1</a>
+<ul class="toc toc-1">
+    <li class="toc-chapter"><a href="./00-preface.html">はじめに</a></li>
+    <li class="toc-chapter"><a href="./01-what_is_getx.html">1 状態管理とは？</a></li>
+    <li class="toc-chapter"><a href="./02-firebase.html">2 Firebaseとは？</a></li>
+    <li class="toc-chapter"><a href="./03-authScreen.html">3 アプリケーション認証</a></li>
+    <li class="toc-chapter"><a href="./04-project_start.html">4 プロジェクトスタート</a></li>
+    <li class="toc-chapter"><a href="./05-loginapp-screens.html">5 認証関連画面の作成</a></li>
+    <li class="toc-chapter"><a href="./06-usermodel.html">6 アプリで認証するユーザーのデータ型を作成する。</a></li>
+    <li class="toc-chapter"><a href="./07-flutterfire.html">7 Flutter側でFirebaseが使えるようにする。</a></li>
+    <li class="toc-chapter"><a href="./08-auth-controller.html">8 状態管理コントローラを作る</a></li>
+    <li class="toc-chapter"><a href="./09-signup.html">9 新規登録</a></li>
+    <li class="toc-chapter"><a href="./10-email-signin.html">10 メール/パスワードでのサインイン</a></li>
+    <li class="toc-chapter"><a href="./11-twitter-login.html">11 Twitterアカウントでサインイン</a></li>
+    <li class="toc-chapter"><a href="./12-google-signin.html">12 Googleサインイン</a>
+      <ul class="toc toc-2">
+        <li class="toc-section"><a href="#h12-1">12.1 GoogleアカウントでFirebase認証</a></li>
+        <li class="toc-section"><a href="#h12-2">12.2 Firebaseにキーを登録</a></li>
+        <li class="toc-section"><a href="#h12-3">12.3 google_sign_inプラグインのインストール</a></li>
+        <li class="toc-section"><a href="#h12-4">12.4 iOS用の設定</a></li>
+        <li class="toc-section"><a href="#h12-5">12.5 アプリにgoogleサインイン・メソッドの実装</a></li>
+        <li class="toc-section"><a href="#h12-6">12.6 動作確認</a></li>
+      </ul>
+    </li>
+</ul>
+      </nav>
+      <div class="page-inner">
+        <header class="page-header">
+        </header>
+        <main class="page-main">
+<h1 class="boldlines center twolines"><a id="h12"></a><span class="secno">第12章</span> <br/>Googleサインイン</h1>
+<div class="abstract">
+<p>Googleアカウントを使用してアプリケーションにサインインします。</p>
+</div>
+
+
+<h2 class="grayback"><a id="h12-1"></a><span class="secno">12.1</span> GoogleアカウントでFirebase認証</h2>
+<p>TwitterのアカウントをFirebase認証に使用します。</p>
+<p>Firebase、FlutterともにGoogleが開発しているため親和性は抜群です。まずは、<a href="https://firebase.google.com/docs/auth/flutter/federated-auth#google" class="link">公式サイト</a>を確認します。</p>
+<div id="google-doc" class="image">
+<img src="images/12-google-signin/google-doc.png" alt="" class="img width-070per" />
+<p class="caption">
+図12.1: 
+</p>
+</div>
+<p><br /></p>
+<p>手順は、</p>
+<ol start="1" type="1">
+<li>Firebaseに登録したアプリにSHA1フィンガープリントを登録</li>
+<li>google_sign_inプラグインのインストール</li>
+<li>iOS用の設定</li>
+<li>アプリケーションにgoogleサインイン・メソッドの実装</li>
+</ol>
+<p>と、なります。</p>
+
+<h2 class="grayback"><a id="h12-2"></a><span class="secno">12.2</span> Firebaseにキーを登録</h2>
+<p>ターミナルに、以下のコマンドを入力してキーを取得します。</p>
+<div class="cmd-code">
+<span class="caption">SHA1キーの取得</span>
+<pre class="list">❯ keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android -keypass android
+Alias name: androiddebugkey
+Creation date: Aug. 17, 2022
+Entry type: PrivateKeyEntry
+Certificate chain length: 1
+Certificate[1]:
+Owner: C=US, O=Android, CN=Android Debug
+Issuer: C=US, O=Android, CN=Android Debug
+Serial number: 1
+Valid from: Wed Aug 17 15:58:43 PDT 2022 until: Fri Aug 09 15:58:43 PDT 2052
+Certificate fingerprints:
+         SHA1: AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA
+         SHA256: AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA
+Signature algorithm name: SHA1withRSA (weak)
+Subject Public Key Algorithm: 2048-bit RSA key
+Version: 1
+
+Warning:
+The certificate uses the SHA1withRSA signature algorithm which is considered a security risk. This algorithm will be disabled in a future update.
+
+</pre>
+</div>
+
+<h3 class="symbol"><a id="h12-2-1"></a><span class="secno">12.2.1</span> 表示されたSHA1フィンガープリントをFirebaseに登録</h3>
+<p><br /></p>
+<p>Firebaseコンソールを開き、Authenticationを選択します。「Sign-in method」タブを選択し「新しいプロバイダを追加」ボタンをクリックします。</p>
+<div id="firebase13" class="image">
+<img src="images/12-google-signin/firebase13.png" alt="ログインプロバイダの登録" class="img width-070per" />
+<p class="caption">
+図12.2: ログインプロバイダの登録
+</p>
+</div>
+<p>表示されたダイアログから、「Google」を選択します。</p>
+<div id="firebase14" class="image">
+<img src="images/12-google-signin/firebase14.png" alt="Googleを追加" class="img width-070per" />
+<p class="caption">
+図12.3: Googleを追加
+</p>
+</div>
+<p>表示されたダイアログのスイッチを有効化します。プロジェクトのサポートメールを選択し、「保存」ボタンをクリックします。</p>
+<div id="firebase15" class="image">
+<img src="images/12-google-signin/firebase15.png" alt="有効化" class="img width-070per" />
+<p class="caption">
+図12.4: 有効化
+</p>
+</div>
+<p>以上で、Googleが追加されます。</p>
+<div id="firebase16" class="image">
+<img src="images/12-google-signin/firebase16.png" alt="ログインプロバイダの登録" class="img width-070per" />
+<p class="caption">
+図12.5: ログインプロバイダの登録
+</p>
+</div>
+<p>Firebaseコンソールの「プロジェクトの概要」橫の歯車をクリックし、「プロジェクトの設定」を選択します。</p>
+<div id="key01" class="image">
+<img src="images/12-google-signin/key01.png" alt="SHA1の登録" class="img width-070per" />
+<p class="caption">
+図12.6: SHA1の登録
+</p>
+</div>
+<p>「flutterfire configure」コマンドを使ったときにアプリケーションが登録されていますので、Andoroidのアプリを選択します。「フィンガープリントを追加」をクリックします。</p>
+<div id="key02" class="image">
+<img src="images/12-google-signin/key02.png" alt="SHA1の登録" class="img width-070per" />
+<p class="caption">
+図12.7: SHA1の登録
+</p>
+</div>
+<p>フィンガープリントの登録ダイアログが表示されますので、先ほど出力したSHA1をコピペします。ついでにSHA256も登録します。</p>
+<div id="key03" class="image">
+<img src="images/12-google-signin/key03.png" alt="SHA1の登録" class="img width-070per" />
+<p class="caption">
+図12.8: SHA1の登録
+</p>
+</div>
+<p>「保存」ボタンをクリックすると登録されます。</p>
+<div id="key04" class="image">
+<img src="images/12-google-signin/key04.png" alt="SHA1の登録" class="img width-070per" />
+<p class="caption">
+図12.9: SHA1の登録
+</p>
+</div>
+<p>以上でFirebase側の設定は完了です。== google_sign_inプラグインのインストール</p>
+<p><a href="https://pub.dev/packages/google_sign_in" class="link">google_sign_inプラグイン</a>をインストールします。</p>
+<div id="plugin01" class="image">
+<img src="images/12-google-signin/plugin01.png" alt="google_sign_inプラグイン" class="img width-070per" />
+<p class="caption">
+図12.10: google_sign_inプラグイン
+</p>
+</div>
+<p>ターミナルに「flutter pub add google_sign_in」と入力しエンターキーを押します。</p>
+<div class="cmd-code">
+<pre class="emlist">❯ flutter pub add google_sign_in
+  Resolving dependencies...
+  + google_sign_in 5.4.1
+  + google_sign_in_android 6.1.0
+  + google_sign_in_ios 5.5.0
+  + google_sign_in_platform_interface 2.3.0
+  + google_sign_in_web 0.10.2
+    material_color_utilities 0.1.5 (0.2.0 available)
+  + quiver 3.1.0
+    source_span 1.9.0 (1.9.1 available)
+    test_api 0.4.12 (0.4.13 available)
+    vector_math 2.1.2 (2.1.3 available)
+  Changed 6 dependencies!
+
+</pre>
+</div>
+<p>以上でプラグインのインストールは完了です。</p>
+
+<h2 class="grayback"><a id="h12-3"></a><span class="secno">12.3</span> iOS用の設定</h2>
+<p>iOS用のに以下の設定をします。</p>
+<p>「プロジェクトフォルダ/ios/Runner/Info.plist」を開き以下を追加します。<br />「XXXXXXXXXX」の部分は、「プロジェクトフォルダ/ios/Runner/GoogleService-Info.plist」ファイル内の「REVERSED_CLIENT_ID」に書き換えます。</p>
+<div class="caption-code">
+<span class="caption">追加するコード</span>
+<pre class="list">&lt;!-- Put me in the [my_project]/ios/Runner/Info.plist file --&gt;
+&lt;!-- Google Sign-in Section --&gt;
+&lt;key&gt;CFBundleURLTypes&lt;/key&gt;
+&lt;array&gt;
+        &lt;dict&gt;
+                &lt;key&gt;CFBundleTypeRole&lt;/key&gt;
+                &lt;string&gt;Editor&lt;/string&gt;
+                &lt;key&gt;CFBundleURLSchemes&lt;/key&gt;
+                &lt;array&gt;
+                        &lt;!-- TODO Replace this value: --&gt;
+                        &lt;!-- Copied from GoogleService-Info.plist key REVERSED_CLIENT_ID --&gt;
+                        &lt;string&gt;XXXXXXXXXX&lt;/string&gt;
+                &lt;/array&gt;
+        &lt;/dict&gt;
+&lt;/array&gt;
+&lt;!-- End of the Google Sign-in Section --&gt;
+</pre>
+</div>
+<p>以上で、iOS用の設定は完了です。== アプリにgoogleサインイン・メソッドの実装</p>
+<p>アプリケーションの認証コントローラーに以下のコードを追加します。</p>
+<div class="caption-code">
+<span class="caption">googleサインイン・メソッドの追加</span>
+<pre class="list">  /// Googleサインイン
+  signInWithGoogle() async {
+    // 認証フローの開始
+    final GoogleSignInAccount? googleUser = await GoogleSignIn(
+        clientId: DefaultFirebaseOptions.currentPlatform.iosClientId)
+        .signIn();
+
+    // 認証情報詳細を取得
+    final GoogleSignInAuthentication? googleAuth =
+    await googleUser?.authentication;
+
+    // クレデンシャルの作成
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+
+    // サインインに成功するとユーザークレデンシャルが返る
+    UserCredential userCredential =
+    await FirebaseAuth.instance.signInWithCredential(credential);
+
+  }
+</pre>
+</div>
+<p>ログイン選択画面の「Googleアカウント」ボタンにメソッド呼び出しを割当ます。</p>
+<div class="caption-code">
+<span class="caption">メソッド呼び出し</span>
+<pre class="list">    Container(
+      decoration: ThemeHelper().buttonBoxDecoration(context),
+      child: ElevatedButton(
+        style: ThemeHelper().buttonStyle(),
+        child: Row(
+            children: const [
+              FaIcon(FontAwesomeIcons.google, size: 23),
+              Padding(
+                padding: EdgeInsets.fromLTRB(30, 10, 0, 10),
+                child: Text('Googleアカウント', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),),
+              ),
+            ]
+        ),
+        onPressed: (){
+          authController.signInWithGoogle();
+        },
+      ),
+    ),
+</pre>
+</div>
+<p>以上で、Googleアカウントでアプリケーションへのログインができるようになります。</p>
+
+<h2 class="grayback"><a id="h12-4"></a><span class="secno">12.4</span> 動作確認</h2>
+
+<h3 class="symbol"><a id="h12-4-1"></a><span class="secno">12.4.1</span> iPhone</h3>
+<p>iPhoneシミュレータでデバッグしようとするとエラーになりました。</p>
+<p><br /></p>
+<p>「プラットフォームが指定されていないのでiOS11を割り当てた。」<br />「CocoaPodsのリポジトリが期限切れ」</p>
+<p><br /></p>
+<p>とのことです。</p>
+<div class="cmd-code">
+<span class="caption">ビルドエラー</span>
+<pre class="list">Error output from CocoaPods:
+↳
+
+    [!] Automatically assigning platform `iOS` with version `11.0` on target `Runner` because no platform was specified. Please specify a platform for this target in your Podfile. See `https://guides.cocoapods.org/syntax/podfile.html#platform`.
+
+Error: CocoaPods's specs repository is too out-of-date to satisfy dependencies.
+To update the CocoaPods specs, run:
+  pod repo update
+
+Error running pod install
+Error launching application on iPhone 12.
+</pre>
+</div>
+<p>XCodeを開き、iOSの対象を指定します。iOS16がリリースされるので、2世代前のiOS14の最新版を仕様とします。</p>
+<div id="i02" class="image">
+<img src="images/12-google-signin/i02.png" alt="XCodeでiOSのバージョン指定" class="img width-070per" />
+<p class="caption">
+図12.11: XCodeでiOSのバージョン指定
+</p>
+</div>
+<p>ビルドエラーが発生しましたので、環境を再構築します。</p>
+<div class="cmd-code">
+<span class="caption">desc</span>
+<pre class="list">&gt; flutter clean
+Cleaning Xcode workspace...                                         4.7s
+Cleaning Xcode workspace...                                      2,860ms
+Deleting build...                                                  548ms
+Deleting .dart_tool...                                               3ms
+Deleting Generated.xcconfig...                                       0ms
+Deleting flutter_export_environment.sh...                            0ms
+Deleting Flutter.podspec...                                          0ms
+Deleting ephemeral...                                                0ms
+Deleting .flutter-plugins-dependencies...                            0ms
+Deleting .flutter-plugins...                                         0ms
+&gt; rm -Rf ios/Pods
+&gt; rm -Rf ios/.symlinks
+&gt; rm ios/Podfile
+&gt; rm ios/Podfile.lock
+&gt; cd ios
+&gt; pod install
+</pre>
+</div>
+<p>今回は無事にビルドできました。</p>
+<div id="iPhoneResult" class="image">
+<img src="images/12-google-signin/iPhoneResult.png" alt="iPhoneの動作確認" class="img width-070per" />
+<p class="caption">
+図12.12: iPhoneの動作確認
+</p>
+</div>
+
+<h3 class="symbol"><a id="h12-4-2"></a><span class="secno">12.4.2</span> Android</h3>
+<p>さすがにGoogleが全て関与しているものだと問題無く動作します。</p>
+<div id="AndroidResult" class="image">
+<img src="images/12-google-signin/AndroidResult.png" alt="Androidでの動作確認" class="img width-070per" />
+<p class="caption">
+図12.13: Androidでの動作確認
+</p>
+</div>
+<div class="note">
+<h5>ここまでのソースコード</h5>
+<div class="cmd-code">
+<span class="caption">GitHub</span>
+<pre class="list">　&gt;git clone -b 08_google_signin https://github.com/risingforce9zz/tfreemarket.git
+</pre>
+</div>
+</div>
+
+        </main>
+        <nav class="page-navi">
+          <a href="11-twitter-login.html" class="page-prev">&#9664;</a>
+        </nav>
+        <footer>
+        </footer>
+      </div>
+    </div>
+    <script>
+function rebuildAndReloadForcedly() {
+  fetch('/rebuild.js').then((resp)=>{
+    resp.text().then((text)=>{ eval(text); });
+  });
+}
+    </script>
+    <script src="/rebuild.js?file=12-google-signin.re"></script>
+  </body>
+</html>
+<!-- layout.html5.erb -->
