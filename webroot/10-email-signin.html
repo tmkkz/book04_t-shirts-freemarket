@@ -6,6 +6,7 @@
     <title>メール/パスワードでのサインイン | 0円で、モバイルアプリを作ってみるお〜。Vol.1</title>
     <link rel="stylesheet" type="text/css" href="css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="css/webstyle.css" />
+    <link rel="next" title="Twitterアカウントでサインイン" href="11-twitter-login.html">
     <link rel="prev" title="新規登録" href="09-signup.html">
     <meta name="generator" content="Re:VIEW Starter">
   </head>
@@ -39,6 +40,7 @@
         <li class="toc-section"><a href="#h10-8">10.8 動作確認</a></li>
       </ul>
     </li>
+    <li class="toc-chapter"><a href="./11-twitter-login.html">11 Twitterアカウントでサインイン</a></li>
 </ul>
       </nav>
       <div class="page-inner">
@@ -679,8 +681,8 @@ class ForgotPasswordVerificationPage extends StatelessWidget {
 <pre class="list">  ///パスワードリセット
   Future&lt;void&gt; passwordReset() async {
     try {
-      await _auth.sendPasswordResetEmail(email: emailController.text);
-      Get.offAll('./select-signin');
+      _auth.sendPasswordResetEmail(email: emailController.text);
+      Get.offAll(const SelectSignInPage());
     } catch (error) {
       setAuthErrorMessage('パスワードリセットでエラーが発生しました。');
     }
@@ -740,10 +742,19 @@ class ForgotPasswordVerificationPage extends StatelessWidget {
 図10.12: パスワード・リセット用メール
 </p>
 </div>
+<div class="note">
+<h5>ここまでのソースコード</h5>
+<div class="cmd-code">
+<span class="caption">GitHub</span>
+<pre class="list">　&gt;git clone -b 06_email_signin https://github.com/risingforce9zz/tfreemarket.git
+</pre>
+</div>
+</div>
 
         </main>
         <nav class="page-navi">
           <a href="09-signup.html" class="page-prev">&#9664;</a>
+          <a href="11-twitter-login.html" class="page-next">&#9654;</a>
         </nav>
         <footer>
         </footer>

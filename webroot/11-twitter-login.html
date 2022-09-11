@@ -1,0 +1,574 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Twitterアカウントでサインイン | 0円で、モバイルアプリを作ってみるお〜。Vol.1</title>
+    <link rel="stylesheet" type="text/css" href="css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="css/webstyle.css" />
+    <link rel="prev" title="メール/パスワードでのサインイン" href="10-email-signin.html">
+    <meta name="generator" content="Re:VIEW Starter">
+  </head>
+  <body>
+    <div class="page-outer">
+      <nav class="side-content">
+                <div class="rebuild">
+          <a href="javascript:void(0)" onclick="rebuildAndReloadForcedly()">Rebuild and Reload</a>
+        </div>
+                <a class="nav-title" href="index.html">0円で、モバイルアプリを作ってみるお〜。Vol.1</a>
+<ul class="toc toc-1">
+    <li class="toc-chapter"><a href="./00-preface.html">はじめに</a></li>
+    <li class="toc-chapter"><a href="./01-what_is_getx.html">1 状態管理とは？</a></li>
+    <li class="toc-chapter"><a href="./02-firebase.html">2 Firebaseとは？</a></li>
+    <li class="toc-chapter"><a href="./03-authScreen.html">3 アプリケーション認証</a></li>
+    <li class="toc-chapter"><a href="./04-project_start.html">4 プロジェクトスタート</a></li>
+    <li class="toc-chapter"><a href="./05-loginapp-screens.html">5 認証関連画面の作成</a></li>
+    <li class="toc-chapter"><a href="./06-usermodel.html">6 アプリで認証するユーザーのデータ型を作成する。</a></li>
+    <li class="toc-chapter"><a href="./07-flutterfire.html">7 Flutter側でFirebaseが使えるようにする。</a></li>
+    <li class="toc-chapter"><a href="./08-auth-controller.html">8 状態管理コントローラを作る</a></li>
+    <li class="toc-chapter"><a href="./09-signup.html">9 新規登録</a></li>
+    <li class="toc-chapter"><a href="./10-email-signin.html">10 メール/パスワードでのサインイン</a></li>
+    <li class="toc-chapter"><a href="./11-twitter-login.html">11 Twitterアカウントでサインイン</a>
+      <ul class="toc toc-2">
+        <li class="toc-section"><a href="#h11-1">11.1 TwitterアカウントでFirebase認証</a></li>
+        <li class="toc-section"><a href="#h11-2">11.2 Twitter Developerサイトでキー作成</a></li>
+        <li class="toc-section"><a href="#h11-3">11.3 Firebase認証でTwitter APIキーの登録</a></li>
+        <li class="toc-section"><a href="#h11-4">11.4 アプリケーションへメソッド追加</a></li>
+        <li class="toc-section"><a href="#h11-5">11.5 動作確認</a></li>
+      </ul>
+    </li>
+</ul>
+      </nav>
+      <div class="page-inner">
+        <header class="page-header">
+        </header>
+        <main class="page-main">
+<h1 class="boldlines center twolines"><a id="h11"></a><span class="secno">第11章</span> <br/>Twitterアカウントでサインイン</h1>
+<div class="abstract">
+<p>Twitterのアカウントを使用してFirebaseにサインインします。</p>
+<p>TwiiterのDeveloperアカウントが必要です。</p>
+</div>
+
+
+<h2 class="grayback"><a id="h11-1"></a><span class="secno">11.1</span> TwitterアカウントでFirebase認証</h2>
+<p>TwitterのアカウントをFirebase認証に使用します。</p>
+<p>準備さえ出来れば簡単に実装できます。ユーザのメリットは、アプリケーション提供側へパスワードの登録がなく、アプリケーション提供側にセキュリティ上の問題が発生してもパスワード漏洩が起こらないことです。</p>
+<p><br /></p>
+<p>手順は、</p>
+<ol start="1" type="1">
+<li>Twitter Developerサイトでキーを取得</li>
+<li>Firebase認証へ取得したキーを登録</li>
+<li>アプリケーションでメソッドの追加</li>
+</ol>
+<p>と、なります。</p>
+
+<h2 class="grayback"><a id="h11-2"></a><span class="secno">11.2</span> Twitter Developerサイトでキー作成</h2>
+<p>最初に、<a href="https://developer.twitter.com/" class="link">Twitter Developerサイト</a>にアクセスしキーを取得します。</p>
+<p><br /></p>
+<p>Twitter Devloperサイトにログインします。</p>
+<div id="id_04_twitterDev01" class="image">
+<img src="images/11-twitter-login/04_twitterDev01.png" alt="" class="img width-070per border" />
+<p class="caption">
+図11.1: 
+</p>
+</div>
+<p>右上のメニューから「Product」を選択します。</p>
+<div id="id_04_twitterDev02" class="image">
+<img src="images/11-twitter-login/04_twitterDev02.png" alt="" class="img width-070per border" />
+<p class="caption">
+図11.2: 
+</p>
+</div>
+<p>続いて、「Twitter API」を選択します。</p>
+<div id="id_04_twitterDev03" class="image">
+<img src="images/11-twitter-login/04_twitterDev03.png" alt="" class="img width-070per border" />
+<p class="caption">
+図11.3: 
+</p>
+</div>
+<p>下へスクロールすると、「Get Started」ボタンがあります。クリックすると管理ページにアクセスできます。</p>
+<div id="id_04_twitterDev05" class="image">
+<img src="images/11-twitter-login/04_twitterDev05.png" alt="" class="img width-070per border" />
+<p class="caption">
+図11.4: 
+</p>
+</div>
+<p>「Create App」をクリックします。</p>
+<div id="id_04_twitterDev06" class="image">
+<img src="images/11-twitter-login/04_twitterDev06.png" alt="" class="img width-070per border" />
+<p class="caption">
+図11.5: 
+</p>
+</div>
+<p>アプリケーション名を入力し、「Next」ボタンをクリックします。</p>
+<div id="id_04_twitterDev07" class="image">
+<img src="images/11-twitter-login/04_twitterDev07.png" alt="" class="img width-070per border" />
+<p class="caption">
+図11.6: 
+</p>
+</div>
+<p>各種キーが表示されますのでコピーし、テキストファイルで保存します。アプリ登録が完了すれば、何度でも再作成ができます。</p>
+<div id="id_04_twitterDev08" class="image">
+<img src="images/11-twitter-login/04_twitterDev08.png" alt="" class="img width-070per border" />
+<p class="caption">
+図11.7: 
+</p>
+</div>
+<p>アプリの登録が完了しましたら、「User authentication settings」の「Setup」をクリックします。</p>
+<div id="id_04_twitterDev09" class="image">
+<img src="images/11-twitter-login/04_twitterDev09.png" alt="" class="img width-070per border" />
+<p class="caption">
+図11.8: 
+</p>
+</div>
+<p>ここで、</p>
+<ul>
+<li>アプリケーションのタイプ
+</li>
+<li>コールバックURL
+</li>
+<li>アプリケーションのWebサイトのURL
+</li>
+</ul>
+<p>を入力し、「Save」ボタンをクリックします。「新しいプロバイダを追加」ボタンをクリックします。</p>
+<p><br /></p>
+<p>コールバックURLは、「適当な英数字://」で構いません。これは、Firebaseコンソールが指定するURLが後ほどインストールするプラグインで使えないためです。</p>
+<div id="id_04_twitterDev10" class="image">
+<img src="images/11-twitter-login/04_twitterDev10.png" alt="" class="img width-070per border" />
+<p class="caption">
+図11.9: 
+</p>
+</div>
+<p>「Client ID」、「Client Secret」が表示されますので、これもコピーして保存します。「Done」で完了です。</p>
+<div id="id_04_twitterDev11" class="image">
+<img src="images/11-twitter-login/04_twitterDev11.png" alt="" class="img width-070per border" />
+<p class="caption">
+図11.10: 
+</p>
+</div>
+
+<h2 class="grayback"><a id="h11-3"></a><span class="secno">11.3</span> Firebase認証でTwitter APIキーの登録</h2>
+<p>続いて、FirebaseコンソールのAuthenticationを開きます。</p>
+<div id="id_03_firebase16" class="image">
+<img src="images/11-twitter-login/03_firebase16.png" alt="desc" class="img width-070per border" />
+<p class="caption">
+図11.11: desc
+</p>
+</div>
+<p>表示されたダイアログから「Twitter」を選択します。</p>
+<div id="id_03_firebase17" class="image">
+<img src="images/11-twitter-login/03_firebase17.png" alt="desc" class="img width-070per border" />
+<p class="caption">
+図11.12: desc
+</p>
+</div>
+<p>表示されたダイアログのスイッチを有効にし、先ほど保存した「APIキー」、「APIシークレット」を入力し保存します。</p>
+<div id="id_03_firebase18" class="image">
+<img src="images/11-twitter-login/03_firebase18.png" alt="desc" class="img width-070per border" />
+<p class="caption">
+図11.13: desc
+</p>
+</div>
+<p>AuthenticationへTwitterが追加されています。</p>
+<div id="id_03_firebase19" class="image">
+<img src="images/11-twitter-login/03_firebase19.png" alt="desc" class="img width-070per border" />
+<p class="caption">
+図11.14: desc
+</p>
+</div>
+
+<h2 class="grayback"><a id="h11-4"></a><span class="secno">11.4</span> アプリケーションへメソッド追加</h2>
+<p>アプリケーションにTwitterアカウントを使用してのFirebaseサインインを実装します。</p>
+
+<h3 class="symbol"><a id="h11-4-1"></a><span class="secno">11.4.1</span> flutter_dotenvのインストール</h3>
+<p><br /></p>
+<p>Twitterアカウントでのサインインを実装するときに、Twitter Developperサイトで取得したキーと登録したコールバックURL、</p>
+<ul>
+<li>Twitter API Key
+</li>
+<li>Twitter API Secret
+</li>
+<li>コールバックURL
+</li>
+</ul>
+<p>をコードに書き込むことになります。</p>
+<p><br /></p>
+<p>しかし、コードに直接上記のキーを書込みすると危険です。ソールコードをGitHubなで管理している場合「公開」になっていると間違いなく悪用されますし、GitHubであれば警告メールがきます。それを回避するためには、重要な情報は、「.env」ファイルを作成して別途保存し、デバッグ時・リリース時に読み込むようにします。</p>
+<p><br /></p>
+<p>「.env」ファイルは、ローカルPCに保存し「.gitignore」へプッシュされないよう追加します。</p>
+<p><br /></p>
+<p>Flutterで「.env」を読み込むために、「flutter_dotenvパッケージ」をインストールします。</p>
+<div id="pubdev_env" class="image">
+<img src="images/11-twitter-login/pubdev_env.png" alt="" class="img width-070per" />
+<p class="caption">
+図11.15: 
+</p>
+</div>
+<div class="cmd-code">
+<span class="caption">flutter_dotenvのインストール</span>
+<pre class="list"> &gt; flutter pub add flutter_dotenv
+  Resolving dependencies...
+  + flutter_dotenv 5.0.2
+    material_color_utilities 0.1.5 (0.2.0 available)
+    source_span 1.9.0 (1.9.1 available)
+    test_api 0.4.12 (0.4.13 available)
+    vector_math 2.1.2 (2.1.3 available)
+  Changed 1 dependency!
+</pre>
+</div>
+<p>「プロジェクトフォルダ/.env」ファイルを作成します。</p>
+<div class="caption-code">
+<span class="caption">プロジェクトフォルダ/.env</span>
+<pre class="list">TWITTER_API_KEY=取得したAPI KEY
+TWITTER_API_SECRET_KEY=取得したAPI Secret Key
+TWITTER_REDIRECT_URI=設定したコールバックURL
+</pre>
+</div>
+<p><br /></p>
+<p>忘れないように、今、スグに「.gitignore」を開き「*.env」を追加します。</p>
+<p><br /></p>
+<p>次に、「.env」ファイルが読み込まれるように「pubspec.yaml」ファイルにパスを書き込みます。</p>
+<div class="caption-code">
+<span class="caption">pubspec.yaml</span>
+<pre class="list">flutter:
+
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+
+  assets:
+    - .env <span class="balloon">← ここです。</span>
+  # To add assets to your application, add an assets section, like this:
+  # assets:
+  #   - images/a_dot_burr.jpeg
+  #   - images/a_dot_ham.jpeg
+</pre>
+</div>
+<p><br /></p>
+<p>mainメソッド（lib/main.dart）で初期化します。</p>
+<div class="caption-code">
+<span class="caption">main.dart</span>
+<pre class="list">void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  await dotenv.load(fileName: &quot;.env&quot;);
+  runApp(LoginUiApp());
+}
+</pre>
+</div>
+
+<h3 class="symbol"><a id="h11-4-2"></a><span class="secno">11.4.2</span> 認証コントローラーへメソッドの追加</h3>
+
+<h4><a id="h11-4-2-1"></a>twitter_loginプラグインのインストール・設定</h4>
+<p><a href="https://firebase.google.com/docs/auth/flutter/federated-auth#twitter" class="link">FirebaseのFlutterソーシャル</a>を確認します。</p>
+<p>「twitter_login」プラグインが必要とありますので、インストールします。</p>
+<div id="pubdev_twitterlogin" class="image">
+<img src="images/11-twitter-login/pubdev_twitterlogin.png" alt="" class="img width-070per" />
+<p class="caption">
+図11.16: 
+</p>
+</div>
+<div class="cmd-code">
+<span class="caption">twitter_loginのインストール</span>
+<pre class="list">❯ flutter pub add twitter_login
+Resolving dependencies...
++ crypto 3.0.2
+  material_color_utilities 0.1.5 (0.2.0 available)
+  source_span 1.9.0 (1.9.1 available)
+  test_api 0.4.12 (0.4.13 available)
++ twitter_login 4.2.3
+  vector_math 2.1.2 (2.1.3 available)
+Changed 2 dependencies!
+
+</pre>
+</div>
+<p>上記のプラグインサイトの指示に従って設定します。</p>
+
+<h5><a id="h11-4-2-1-1"></a>Android</h5>
+<p>プラグインサイトのREADMEに従い、下記のコードを、</p>
+<p><br /></p>
+<p>　　プロジェクトフォルダ/android/app/src/main/AndroidManifest.xml<br />に追加します。</p>
+<p><br /></p>
+<p>その際に、下から3行目の「example」をTwitterに登録したコールバックURLにします。「://」は不要です。下から2行目の「gizmos」は削除して「host=&quot;&quot;」にします。</p>
+<p><br /></p>
+<div class="caption-code">
+<span class="caption">Android向け</span>
+<pre class="list">&lt;intent-filter&gt;
+  &lt;action android:name=&quot;android.intent.action.VIEW&quot; /&gt;
+  &lt;category android:name=&quot;android.intent.category.DEFAULT&quot; /&gt;
+  &lt;category android:name=&quot;android.intent.category.BROWSABLE&quot; /&gt;
+  &lt;!-- Accepts URIs that begin with &quot;example://gizmos” --&gt;
+  &lt;!-- Registered Callback URLs in TwitterApp --&gt;
+  &lt;data android:scheme=&quot;example&quot;
+        android:host=&quot;gizmos&quot; /&gt; &lt;!-- host is option --&gt;
+&lt;/intent-filter&gt;
+</pre>
+</div>
+<p>全体は、以下のようになります。</p>
+<div class="caption-code">
+<span class="caption">AndroidManifest.xml</span>
+<pre class="list">&lt;manifest xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    package=&quot;com.imakita3gyo.tfreemarket.tfreemarket&quot;&gt;
+   &lt;application
+        android:label=&quot;tfreemarket&quot;
+        android:name=&quot;${applicationName}&quot;
+        android:icon=&quot;@mipmap/ic_launcher&quot;&gt;
+        &lt;activity
+            android:name=&quot;.MainActivity&quot;
+            android:exported=&quot;true&quot;
+            android:launchMode=&quot;singleTop&quot;
+            android:theme=&quot;@style/LaunchTheme&quot;
+            android:configChanges=&quot;orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode&quot;
+            android:hardwareAccelerated=&quot;true&quot;
+            android:windowSoftInputMode=&quot;adjustResize&quot;&gt;
+            &lt;!-- Specifies an Android theme to apply to this Activity as soon as
+                 the Android process has started. This theme is visible to the user
+                 while the Flutter UI initializes. After that, this theme continues
+                 to determine the Window background behind the Flutter UI. --&gt;
+            &lt;meta-data
+              android:name=&quot;io.flutter.embedding.android.NormalTheme&quot;
+              android:resource=&quot;@style/NormalTheme&quot;
+              /&gt;
+            &lt;intent-filter&gt;
+                &lt;action android:name=&quot;android.intent.action.MAIN&quot;/&gt;
+                &lt;category android:name=&quot;android.intent.category.LAUNCHER&quot;/&gt;
+            &lt;/intent-filter&gt;
+            &lt;intent-filter&gt;
+                &lt;action android:name=&quot;android.intent.action.VIEW&quot; /&gt;
+                &lt;category android:name=&quot;android.intent.category.DEFAULT&quot; /&gt;
+                &lt;category android:name=&quot;android.intent.category.BROWSABLE&quot; /&gt;
+                &lt;!-- Accepts URIs that begin with &quot;example://gizmos” --&gt;
+                &lt;!-- Registered Callback URLs in TwitterApp --&gt;
+                &lt;data android:scheme=&quot;manatee&quot;
+                    android:host=&quot;&quot; /&gt; &lt;!-- host is option --&gt;
+            &lt;/intent-filter&gt;
+        &lt;/activity&gt;
+        &lt;!-- Don't delete the meta-data below.
+             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java --&gt;
+        &lt;meta-data
+            android:name=&quot;flutterEmbedding&quot;
+            android:value=&quot;2&quot; /&gt;
+    &lt;/application&gt;
+&lt;/manifest&gt;
+</pre>
+</div>
+
+<h5><a id="h11-4-2-1-2"></a>iOS</h5>
+<p>iOS用は、<br />　　プロジェクトフォルダ/ios/Runner/info.plist<br />に以下のコードを追加します。</p>
+<p><br /></p>
+<p>下から4行目の「&lt;string&gt;example&lt;/string&gt;」の「example」部分を先ほどと同じくコールバックURLに書き換えます。</p>
+<div class="caption-code">
+<span class="caption">iOS用設定</span>
+<pre class="list">&lt;key&gt;CFBundleURLTypes&lt;/key&gt;
+&lt;array&gt;
+  &lt;dict&gt;
+    &lt;key&gt;CFBundleTypeRole&lt;/key&gt;
+    &lt;string&gt;Editor&lt;/string&gt;
+    &lt;key&gt;CFBundleURLName&lt;/key&gt;
+    &lt;string&gt;&lt;/string&gt;
+    &lt;key&gt;CFBundleURLSchemes&lt;/key&gt;
+    &lt;array&gt;
+      &lt;!-- Registered Callback URLs in TwitterApp --&gt;
+      &lt;string&gt;example&lt;/string&gt;
+    &lt;/array&gt;
+  &lt;/dict&gt;
+&lt;/array&gt;
+</pre>
+</div>
+<p>全体は、以下のようになります。</p>
+<div class="caption-code">
+<span class="caption">iOS設定ファイル info.plist</span>
+<pre class="list">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&gt;
+&lt;plist version=&quot;1.0&quot;&gt;
+&lt;dict&gt;
+        &lt;key&gt;CFBundleDevelopmentRegion&lt;/key&gt;
+        &lt;string&gt;$(DEVELOPMENT_LANGUAGE)&lt;/string&gt;
+        &lt;key&gt;CFBundleDisplayName&lt;/key&gt;
+        &lt;string&gt;Tfreemarket&lt;/string&gt;
+        &lt;key&gt;CFBundleExecutable&lt;/key&gt;
+        &lt;string&gt;$(EXECUTABLE_NAME)&lt;/string&gt;
+        &lt;key&gt;CFBundleIdentifier&lt;/key&gt;
+        &lt;string&gt;$(PRODUCT_BUNDLE_IDENTIFIER)&lt;/string&gt;
+        &lt;key&gt;CFBundleInfoDictionaryVersion&lt;/key&gt;
+        &lt;string&gt;6.0&lt;/string&gt;
+        &lt;key&gt;CFBundleName&lt;/key&gt;
+        &lt;string&gt;tfreemarket&lt;/string&gt;
+        &lt;key&gt;CFBundlePackageType&lt;/key&gt;
+        &lt;string&gt;APPL&lt;/string&gt;
+        &lt;key&gt;CFBundleShortVersionString&lt;/key&gt;
+        &lt;string&gt;$(FLUTTER_BUILD_NAME)&lt;/string&gt;
+        &lt;key&gt;CFBundleSignature&lt;/key&gt;
+        &lt;string&gt;????&lt;/string&gt;
+        &lt;key&gt;CFBundleVersion&lt;/key&gt;
+        &lt;string&gt;$(FLUTTER_BUILD_NUMBER)&lt;/string&gt;
+        &lt;key&gt;LSRequiresIPhoneでのTwitterサインインOS&lt;/key&gt;
+        &lt;true/&gt;
+        &lt;key&gt;UILaunchStoryboardName&lt;/key&gt;
+        &lt;string&gt;LaunchScreen&lt;/string&gt;
+        &lt;key&gt;UIMainStoryboardFile&lt;/key&gt;
+        &lt;string&gt;Main&lt;/string&gt;
+        &lt;key&gt;UISupportedInterfaceOrientations&lt;/key&gt;
+        &lt;array&gt;
+                &lt;string&gt;UIInterfaceOrientationPortrait&lt;/string&gt;
+                &lt;string&gt;UIInterfaceOrientationLandscapeLeft&lt;/string&gt;
+                &lt;string&gt;UIInterfaceOrientationLandscapeRight&lt;/string&gt;
+        &lt;/array&gt;
+        &lt;key&gt;UISupportedInterfaceOrientations~ipad&lt;/key&gt;
+        &lt;array&gt;
+                &lt;string&gt;UIInterfaceOrientationPortrait&lt;/string&gt;
+                &lt;string&gt;UIInterfaceOrientationPortraitUpsideDown&lt;/string&gt;
+                &lt;string&gt;UIInterfaceOrientationLandscapeLeft&lt;/string&gt;
+                &lt;string&gt;UIInterfaceOrientationLandscapeRight&lt;/string&gt;
+        &lt;/array&gt;
+        &lt;key&gt;UIViewControllerBasedStatusBarAppearance&lt;/key&gt;
+        &lt;false/&gt;
+        &lt;key&gt;CADisableMinimumFrameDurationOnPhone&lt;/key&gt;
+        &lt;true/&gt;
+        &lt;key&gt;UIApplicationSupportsIndirectInputEvents&lt;/key&gt;
+        &lt;true/&gt;
+        &lt;key&gt;CFBundleURLTypes&lt;/key&gt;
+    &lt;array&gt;
+      &lt;dict&gt;
+        &lt;key&gt;CFBundleTypeRole&lt;/key&gt;
+        &lt;string&gt;Editor&lt;/string&gt;
+        &lt;key&gt;CFBundleURLName&lt;/key&gt;
+        &lt;string&gt;&lt;/string&gt;
+        &lt;key&gt;CFBundleURLSchemes&lt;/key&gt;
+        &lt;array&gt;
+          &lt;!-- Registered Callback URLs in TwitterApp --&gt;
+          &lt;string&gt;manatee&lt;/string&gt;
+        &lt;/array&gt;
+      &lt;/dict&gt;
+    &lt;/array&gt;
+&lt;/dict&gt;
+&lt;/plist&gt;
+
+</pre>
+</div>
+<p>以上で準備完了です。</p>
+
+<h3 class="symbol"><a id="h11-4-3"></a><span class="secno">11.4.3</span> Twitterサインイン・メソッドの追加</h3>
+<p>認証コントローラー（auth_controller.dart）へメソッドを追加します。</p>
+<div class="caption-code">
+<span class="caption">Twitterサインイン</span>
+<pre class="list">  /// Twitterログイン
+  signInWithTwitter() async {
+    // TwitterLoginのインスタンス化
+    final twitterLogin = TwitterLogin(
+        apiKey: dotenv.env['TWITTER_API_KEY']!,
+        apiSecretKey: dotenv.env['TWITTER_API_SECRET_KEY']!,
+        redirectURI: dotenv.env['TWITTER_REDIRECT_URI']!);
+
+    // Twitterサインイン　フロー開始
+    final authResult = await twitterLogin.login();
+    String accessToken = authResult.authToken!;
+    String accessTokenSecret = authResult.authTokenSecret!;
+    String screenName = authResult.user!.screenName;
+    String twitterThumbnailImage = authResult.user!.thumbnailImage;
+    String name = authResult.user!.name;
+
+    // アクセストークンからcredentialを作成
+    final twitterAuthCredential = TwitterAuthProvider.credential(
+        accessToken: accessToken, secret: accessTokenSecret);
+
+    // firebaseのcredentialを作成
+    await _auth.signInWithCredential(twitterAuthCredential);
+  }
+</pre>
+</div>
+<p>ログイン選択画面に、認証コントローラーをバインドします。</p>
+<div class="caption-code">
+<span class="caption">select_signin_page.dart</span>
+<pre class="list">  class SelectSignInPage extends StatelessWidget{
+    SelectSignInPage({Key? key}): super(key:key);
+
+    final AuthController authController = AuthController.to;
+    
+    final double _headerHeight = 250;
+</pre>
+</div>
+<p>ボタンに認証コントローラーのメソッド呼び出しを割り当てます。</p>
+<div class="caption-code">
+<span class="caption">Twitterサインイン・メソッド</span>
+<pre class="list">  Container(
+    decoration: ThemeHelper().buttonBoxDecoration(context),
+    child: ElevatedButton(
+      style: ThemeHelper().buttonStyle(),
+      child: Row(
+          children: const [
+            FaIcon(FontAwesomeIcons.twitter, size: 23, color: Colors.blue),
+            Padding(
+              padding: EdgeInsets.fromLTRB(30, 10, 0, 10),
+              child: Text('Twitterアカウント', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),),
+            ),
+          ]
+      ),
+      onPressed: (){
+          authController.signInWithTwitter();
+      },
+    ),
+  ),
+</pre>
+</div>
+
+<h2 class="grayback"><a id="h11-5"></a><span class="secno">11.5</span> 動作確認</h2>
+<p>動作確認を行います。</p>
+
+<h3 class="symbol"><a id="h11-5-1"></a><span class="secno">11.5.1</span> iOS</h3>
+<p>iPhoneシミュレータでのサインインです。Twitterアカウントのメール/パスワードでアプリにサインインできました。</p>
+<div id="ios_twitter" class="image">
+<img src="images/11-twitter-login/ios_twitter.png" alt="iPhoneでのTwitterサインイン" class="img width-070per" />
+<p class="caption">
+図11.17: iPhoneでのTwitterサインイン
+</p>
+</div>
+
+<h3 class="symbol"><a id="h11-5-2"></a><span class="secno">11.5.2</span> Android</h3>
+<p>Androidエミュレータでのサインです。同じくTwitterアカウントのメール/パスワードでサインインできました。</p>
+<div id="android_twitter" class="image">
+<img src="images/11-twitter-login/android_twitter.png" alt="AndroidでTwitterサインイン" class="img width-070per" />
+<p class="caption">
+図11.18: AndroidでTwitterサインイン
+</p>
+</div>
+
+<h3 class="symbol"><a id="h11-5-3"></a><span class="secno">11.5.3</span> Firebaseコンソール</h3>
+<p>Twitterアカウントがひとつしかないので、iPhoneでサイン後アカウント削除し、Androidでサインインしています。</p>
+<div id="firebase_twitter" class="image">
+<img src="images/11-twitter-login/firebase_twitter.png" alt="Firebaseコンソール" class="img width-070per" />
+<p class="caption">
+図11.19: Firebaseコンソール
+</p>
+</div>
+<div class="note">
+<h5>ここまでのソースコード</h5>
+<div class="cmd-code">
+<span class="caption">GitHub</span>
+<pre class="list">　&gt;git clone -b 07_twitter_signin https://github.com/risingforce9zz/tfreemarket.git
+</pre>
+</div>
+</div>
+
+        </main>
+        <nav class="page-navi">
+          <a href="10-email-signin.html" class="page-prev">&#9664;</a>
+        </nav>
+        <footer>
+        </footer>
+      </div>
+    </div>
+    <script>
+function rebuildAndReloadForcedly() {
+  fetch('/rebuild.js').then((resp)=>{
+    resp.text().then((text)=>{ eval(text); });
+  });
+}
+    </script>
+    <script src="/rebuild.js?file=11-twitter-login.re"></script>
+  </body>
+</html>
+<!-- layout.html5.erb -->

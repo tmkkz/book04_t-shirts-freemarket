@@ -617,8 +617,8 @@ class ForgotPasswordVerificationPage extends StatelessWidget {
   ///パスワードリセット
   Future<void> passwordReset() async {
     try {
-      await _auth.sendPasswordResetEmail(email: emailController.text);
-      Get.offAll('./select-signin');
+      _auth.sendPasswordResetEmail(email: emailController.text);
+      Get.offAll(const SelectSignInPage());
     } catch (error) {
       setAuthErrorMessage('パスワードリセットでエラーが発生しました。');
     }
@@ -657,3 +657,12 @@ Firebaseに登録されていないメールアドレスでエラーは表示さ
 
 メールも届きます。
 //image[resetmail][パスワード・リセット用メール][scale=0.7, pos=H]
+
+
+#@# textlint-disable
+//note[ここまでのソースコード]{
+//terminal[][GitHub]{
+　>git clone -b 06_email_signin https://github.com/risingforce9zz/tfreemarket.git
+//}
+//}
+#@# textlint-enable

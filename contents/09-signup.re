@@ -544,8 +544,8 @@ Firebase側も登録されています。
 
 //blankline
 //blankline
-//note[ここまでのソースコード]{
 #@# textlint-disable
+//note[ここまでのソースコード]{
 //terminal[][GitHub]{
 　>git clone -b 05_signup https://github.com/risingforce9zz/tfreemarket.git
 //}
