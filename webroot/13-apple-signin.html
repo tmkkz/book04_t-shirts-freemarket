@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>AppleIDでサインイン | 0円で、モバイルアプリを作ってみるお〜。Vol.1</title>
+    <link rel="stylesheet" type="text/css" href="css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="css/webstyle.css" />
+    <link rel="prev" title="Googleサインイン" href="12-google-signin.html">
+    <meta name="generator" content="Re:VIEW Starter">
+  </head>
+  <body>
+    <div class="page-outer">
+      <nav class="side-content">
+                <div class="rebuild">
+          <a href="javascript:void(0)" onclick="rebuildAndReloadForcedly()">Rebuild and Reload</a>
+        </div>
+                <a class="nav-title" href="index.html">0円で、モバイルアプリを作ってみるお〜。Vol.1</a>
+<ul class="toc toc-1">
+    <li class="toc-chapter"><a href="./00-preface.html">はじめに</a></li>
+    <li class="toc-chapter"><a href="./01-what_is_getx.html">1 状態管理とは？</a></li>
+    <li class="toc-chapter"><a href="./02-firebase.html">2 Firebaseとは？</a></li>
+    <li class="toc-chapter"><a href="./03-authScreen.html">3 アプリケーション認証</a></li>
+    <li class="toc-chapter"><a href="./04-project_start.html">4 プロジェクトスタート</a></li>
+    <li class="toc-chapter"><a href="./05-loginapp-screens.html">5 認証関連画面の作成</a></li>
+    <li class="toc-chapter"><a href="./06-usermodel.html">6 アプリで認証するユーザーのデータ型を作成する。</a></li>
+    <li class="toc-chapter"><a href="./07-flutterfire.html">7 Flutter側でFirebaseが使えるようにする。</a></li>
+    <li class="toc-chapter"><a href="./08-auth-controller.html">8 状態管理コントローラを作る</a></li>
+    <li class="toc-chapter"><a href="./09-signup.html">9 新規登録</a></li>
+    <li class="toc-chapter"><a href="./10-email-signin.html">10 メール/パスワードでのサインイン</a></li>
+    <li class="toc-chapter"><a href="./11-twitter-login.html">11 Twitterアカウントでサインイン</a></li>
+    <li class="toc-chapter"><a href="./12-google-signin.html">12 Googleサインイン</a></li>
+    <li class="toc-chapter"><a href="./13-apple-signin.html">13 AppleIDでサインイン</a>
+      <ul class="toc toc-2">
+        <li class="toc-section"><a href="#h13-1">13.1 Apple Developerサイトで「Appleでサインイン」を有効に</a></li>
+        <li class="toc-section"><a href="#h13-2">13.2 アプリケーションにAppleサインイン・メソッドの実装</a></li>
+        <li class="toc-section"><a href="#h13-3">13.3 動作確認</a></li>
+      </ul>
+    </li>
+</ul>
+      </nav>
+      <div class="page-inner">
+        <header class="page-header">
+        </header>
+        <main class="page-main">
+<h1 class="boldlines center twolines"><a id="h13"></a><span class="secno">第13章</span> <br/>AppleIDでサインイン</h1>
+<div class="abstract">
+<p>AppleIDを使ってアプリケーションにサインインします。</p>
+</div>
+
+
+<h3 class="symbol"><a id="h13-0-1"></a><span class="secno">13.0.1</span> Firebaseコンソールでログインプロバイダを追加</h3>
+<p>Firebaseコンソールを開きます。Authenticationを選択し、「新しいプロバイダを追加」ボタンをクリックします。</p>
+<div id="apple_signin2" class="image">
+<img src="images/13-apple-signin/apple_signin2.png" alt="" class="img width-070per border" />
+<p class="caption">
+図13.1: 
+</p>
+</div>
+<p>ダイアログが表示されます。追加のプロバイダから「Apple」を選択します。</p>
+<div id="apple_signin3" class="image">
+<img src="images/13-apple-signin/apple_signin3.png" alt="" class="img width-070per border" />
+<p class="caption">
+図13.2: 
+</p>
+</div>
+<p>表示されたダイアログで、Appleを有効にします。サービスIDなどは後で登録します。ここでは「保存」ボタンをクリックします。</p>
+<div id="apple_signin4" class="image">
+<img src="images/13-apple-signin/apple_signin4.png" alt="" class="img width-070per border" />
+<p class="caption">
+図13.3: 
+</p>
+</div>
+<p>ログインプロバイダにAppleが追加されているのを確認します。</p>
+<div id="apple_signin5" class="image">
+<img src="images/13-apple-signin/apple_signin5.png" alt="" class="img width-070per border" />
+<p class="caption">
+図13.4: 
+</p>
+</div>
+
+<h2 class="grayback"><a id="h13-1"></a><span class="secno">13.1</span> Apple Developerサイトで「Appleでサインイン」を有効に</h2>
+
+<h3 class="symbol"><a id="h13-1-1"></a><span class="secno">13.1.1</span> アプリケーションのIDを取得します。</h3>
+<p>アプリケーションのIDを取得します。Firebaseプロジェクト作成時に「Organaization」欄に入力したものがアプリケーションIDです。既に登録されている場合は、アプリケーションIDをクリックします。</p>
+<p><br /></p>
+<p>Apple Developerサイトにログインします。「Certificates, Identifiers &amp; Profiles」をクリックします。</p>
+<div id="apple_signin47" class="image">
+<img src="images/13-apple-signin/apple_signin47.png" alt="" class="img width-070per border" />
+<p class="caption">
+図13.5: 
+</p>
+</div>
+<p>左サイドメニューの「Identifiers」を選択し、「+」をクリックします。</p>
+<div id="apple_signin48" class="image">
+<img src="images/13-apple-signin/apple_signin48.png" alt="" class="img width-070per border" />
+<p class="caption">
+図13.6: 
+</p>
+</div>
+<p>「App IDs」を選択し、「Continue」をクリックします。</p>
+<div id="apple_signin7" class="image">
+<img src="images/13-apple-signin/apple_signin7.png" alt="" class="img width-070per border" />
+<p class="caption">
+図13.7: 
+</p>
+</div>
+<p>「App」を選択し「Continue」をクリックします。</p>
+<div id="apple_signin8" class="image">
+<img src="images/13-apple-signin/apple_signin8.png" alt="" class="img width-070per border" />
+<p class="caption">
+図13.8: 
+</p>
+</div>
+<p>「Description」欄に備考を入力し、「Bundle ID」欄にアプリケーションIDを入力します。</p>
+<div id="apple_signin9" class="image">
+<img src="images/13-apple-signin/apple_signin9.png" alt="" class="img width-070per border" />
+<p class="caption">
+図13.9: 
+</p>
+</div>
+<p>下へスクロールすると、「Sign in with Apple」がありますので、チェックをONにします。</p>
+<div id="apple_signin10" class="image">
+<img src="images/13-apple-signin/apple_signin10.png" alt="" class="img width-070per border" />
+<p class="caption">
+図13.10: 
+</p>
+</div>
+<p>「Edit」をクリックすると、「App ID Configuration」が開きますが、「Save」で閉じます。</p>
+<p><br /></p>
+<p>上にスクロールするし、「Continue」ボタンをクリックします。</p>
+<div id="apple_signin11" class="image">
+<img src="images/13-apple-signin/apple_signin11.png" alt="" class="img width-070per border" />
+<p class="caption">
+図13.11: 
+</p>
+</div>
+<p>以上でアプリケーションIDの取得が完了しました。</p>
+
+<h3 class="symbol"><a id="h13-1-2"></a><span class="secno">13.1.2</span> XCodeでAppleでサインインを有効にする</h3>
+<p>プロジェクトフォルダ内のiosフォルダをXCodeで開きます。</p>
+<p><br /></p>
+<p>「Target」-「Signing &amp; Capabilites」で「＋」をクリックします。</p>
+<div id="apple_signin49" class="image">
+<img src="images/13-apple-signin/apple_signin49.png" alt="" class="img width-070per border" />
+<p class="caption">
+図13.12: 
+</p>
+</div>
+<p>「Sign in with Apple」をダブル・クリックします。</p>
+<div id="apple_signin12" class="image">
+<img src="images/13-apple-signin/apple_signin12.png" alt="" class="img width-070per border" />
+<p class="caption">
+図13.13: 
+</p>
+</div>
+<p>アプリケーションに「Sign in with Apple」が追加されました。</p>
+<div id="apple_signin13" class="image">
+<img src="images/13-apple-signin/apple_signin13.png" alt="" class="img width-070per border" />
+<p class="caption">
+図13.14: 
+</p>
+</div>
+
+<h3 class="symbol"><a id="h13-1-3"></a><span class="secno">13.1.3</span> Appleの匿名E-mailサービスの設定</h3>
+<p>Apple IDでサインインするときに、「メールを非公開」を選択するとサービス提供者には、「anonymous@privaterelay.appleid.com（anonymous部分がランダムな文字列になる）」のアドレスが渡されます。</p>
+<p><br /></p>
+<p>サービス提供者がユーザにメールを送ると、AppleはAppleIDのメールアドレスへ転送してくれます。その場合、登録してある差出人からのメールのみ転送します。ここで、差出人からのメールアドレスを登録します。</p>
+<p><br /></p>
+<p>再度、Apple Developerサイトへログインします。左サイドメニューからサービスを選択し、「Sign in with Apple for Email Communication」の「configure」ボタンをクリックします。</p>
+<div id="apple_signin14" class="image">
+<img src="images/13-apple-signin/apple_signin14.png" alt="" class="img width-070per border" />
+<p class="caption">
+図13.15: 
+</p>
+</div>
+<p>「Email Sources」の「+」をクリックします。</p>
+<div id="apple_signin15" class="image">
+<img src="images/13-apple-signin/apple_signin15.png" alt="" class="img width-070per border" />
+<p class="caption">
+図13.16: 
+</p>
+</div>
+<p>差出人のメールアドレスの「ドメイン」、「サブドメイン」、「メールアドレス」を登録し、「Next」ボタンをクリックします。</p>
+<div id="apple_signin16" class="image">
+<img src="images/13-apple-signin/apple_signin16.png" alt="" class="img width-070per border" />
+<p class="caption">
+図13.17: 
+</p>
+</div>
+<p>確認ダイアログが表示されますので、「Register」ボタンをクリックします。</p>
+<div id="apple_signin17" class="image">
+<img src="images/13-apple-signin/apple_signin17.png" alt="" class="img width-070per border" />
+<p class="caption">
+図13.18: 
+</p>
+</div>
+<p>登録完了のダイアログが表示されます。</p>
+<div id="apple_signin18" class="image">
+<img src="images/13-apple-signin/apple_signin18.png" alt="" class="img width-070per border" />
+<p class="caption">
+図13.19: 
+</p>
+</div>
+<p>差出人メールアドレスが登録されました。</p>
+<div id="apple_signin19" class="image">
+<img src="images/13-apple-signin/apple_signin19.png" alt="" class="img width-070per border" />
+<p class="caption">
+図13.20: 
+</p>
+</div>
+
+<h3 class="symbol"><a id="h13-1-4"></a><span class="secno">13.1.4</span> Android用のサービスID、キーIDを取得する</h3>
+
+<h4><a id="h13-1-4-1"></a>サービスIDの取得</h4>
+<p>AndroidからAppleでサインインするために、サービスID、キーIDを取得します。Apple Developerサイトにログインし,「Certificates, Identifiers &amp; Profiles」をクリックします。</p>
+<div id="apple_signin25" class="image">
+<img src="images/13-apple-signin/apple_signin25.png" alt="" class="img width-070per border" />
+<p class="caption">
+図13.21: 
+</p>
+</div>
+<p>左サイドメニューから「Itentifiers」をクリックします。</p>
+<div id="apple_signin26" class="image">
+<img src="images/13-apple-signin/apple_signin26.png" alt="" class="img width-070per border" />
+<p class="caption">
+図13.22: 
+</p>
+</div>
+<p>「Service IDｓ」をクリックし、「Continue」ボタンをクリックします。</p>
+<div id="apple_signin27" class="image">
+<img src="images/13-apple-signin/apple_signin27.png" alt="" class="img width-070per border" />
+<p class="caption">
+図13.23: 
+</p>
+</div>
+<p>「Description」欄と「Identifier」欄に入力します。「Identifier」欄に入力するものは、他で使っていないユニークなものになります。「Continue」ボタンをクリックします。</p>
+<div id="apple_signin28" class="image">
+<img src="images/13-apple-signin/apple_signin28.png" alt="" class="img width-070per border" />
+<p class="caption">
+図13.24: 
+</p>
+</div>
+<p>確認ダイアログが表示されますので、「Register」ボタンをクリックします。</p>
+<div id="apple_signin29" class="image">
+<img src="images/13-apple-signin/apple_signin29.png" alt="" class="img width-070per border" />
+<p class="caption">
+図13.25: 
+</p>
+</div>
+<p>ServiceIDが登録されました。登録された「NAME」がリンクになっていますので、クリックします。</p>
+<div id="apple_signin30" class="image">
+<img src="images/13-apple-signin/apple_signin30.png" alt="" class="img width-070per border" />
+<p class="caption">
+図13.26: 
+</p>
+</div>
+<p>「Sign in with Apple」のチェックボックスをONにし、「Configure」ボタンをクリックします。</p>
+<div id="apple_signin31" class="image">
+<img src="images/13-apple-signin/apple_signin31.png" alt="" class="img width-070per border" />
+<p class="caption">
+図13.27: 
+</p>
+</div>
+<p>ダイアログが表示されますので、登録したアプリケーションIDを選択し、Return URLsにFirebase AuthenticationでAppleを追加したログインプロバイダ登録時の認証コールバックURLを追加します。</p>
+<div id="apple_signin32" class="image">
+<img src="images/13-apple-signin/apple_signin32.png" alt="" class="img width-070per border" />
+<p class="caption">
+図13.28: 
+</p>
+</div>
+<p>Firebase AuthenticationでApple追加時に表示されています。</p>
+<div id="apple_signin51" class="image">
+<img src="images/13-apple-signin/apple_signin51.png" alt="" class="img width-070per border" />
+<p class="caption">
+図13.29: 
+</p>
+</div>
+<p>確認ダイアログが表示されますので、「Done」をクリックします。</p>
+<div id="apple_signin33" class="image">
+<img src="images/13-apple-signin/apple_signin33.png" alt="" class="img width-070per border" />
+<p class="caption">
+図13.30: 
+</p>
+</div>
+<p>ダイアログが消えますので、「Continue」ボタンをクリックします。</p>
+<div id="apple_signin34" class="image">
+<img src="images/13-apple-signin/apple_signin34.png" alt="" class="img width-070per border" />
+<p class="caption">
+図13.31: 
+</p>
+</div>
+<p>確認が表示あｓれますので、「Save」ボタンをクリックします。</p>
+<div id="apple_signin35" class="image">
+<img src="images/13-apple-signin/apple_signin35.png" alt="" class="img width-070per border" />
+<p class="caption">
+図13.32: 
+</p>
+</div>
+<p>サービスIDの取得が完了しました。</p>
+<div id="apple_signin36" class="image">
+<img src="images/13-apple-signin/apple_signin36.png" alt="" class="img width-070per border" />
+<p class="caption">
+図13.33: 
+</p>
+</div>
+
+<h4><a id="h13-1-4-2"></a>キーの取得</h4>
+<p>左サイドメニューから「Keys」を選択し、「+」をクリックします。</p>
+<div id="apple_signin37" class="image">
+<img src="images/13-apple-signin/apple_signin37.png" alt="" class="img width-070per border" />
+<p class="caption">
+図13.34: 
+</p>
+</div>
+<p>「Register a New Key」の画面で、「Key Name」にユニークなものを入力し、「Sign in with Apple」のチェックボックスをONにし、「Configure」ボタンをクリックします。</p>
+<div id="apple_signin38" class="image">
+<img src="images/13-apple-signin/apple_signin38.png" alt="" class="img width-070per border" />
+<p class="caption">
+図13.35: 
+</p>
+</div>
+<p>紐付けるアプリケーションIDを選択し、「Save」ボタンをクリックします。</p>
+<div id="apple_signin39" class="image">
+<img src="images/13-apple-signin/apple_signin39.png" alt="" class="img width-070per border" />
+<p class="caption">
+図13.36: 
+</p>
+</div>
+<p>確認画面になりますので、「Register」ボタンをクリックします。</p>
+<div id="apple_signin40" class="image">
+<img src="images/13-apple-signin/apple_signin40.png" alt="" class="img width-070per border" />
+<p class="caption">
+図13.37: 
+</p>
+</div>
+<p>キーIDを控え、「Download」ボタンをクリックします。一度しかダウンロードできません。</p>
+<div id="apple_signin41" class="image">
+<img src="images/13-apple-signin/apple_signin41.png" alt="" class="img width-070per border" />
+<p class="caption">
+図13.38: 
+</p>
+</div>
+
+<h3 class="symbol"><a id="h13-1-5"></a><span class="secno">13.1.5</span> Firebaseへキーを登録</h3>
+<p>FirebaseコンソールのAuthenticationを選択し、「Sign-in method」でAppleの編集ボタンをクリックします。</p>
+<div id="apple_signin42" class="image">
+<img src="images/13-apple-signin/apple_signin42.png" alt="" class="img width-070per border" />
+<p class="caption">
+図13.39: 
+</p>
+</div>
+<p>「サービスID」、「AppleチームID」、「キーID」、ダウンロードしたファイルをテキストエディタで開き、秘密鍵をコピペします。</p>
+<div id="apple_signin43" class="image">
+<img src="images/13-apple-signin/apple_signin43.png" alt="" class="img width-070per border" />
+<p class="caption">
+図13.40: 
+</p>
+</div>
+<p>以上で準備は完了です。</p>
+
+<h2 class="grayback"><a id="h13-2"></a><span class="secno">13.2</span> アプリケーションにAppleサインイン・メソッドの実装</h2>
+<p><a href="https://firebase.google.com/docs/auth/flutter/federated-auth?hl=ja&amp;authuser=0#apple" class="link">Firebaseのサイト</a>にあるコードそのままです。</p>
+<div id="apple_signin52" class="image">
+<img src="images/13-apple-signin/apple_signin52.png" alt="Firebaseドキュメント" class="img width-070per" />
+<p class="caption">
+図13.41: Firebaseドキュメント
+</p>
+</div>
+<div class="caption-code">
+<span class="caption">認証コントローラーへメソッド追加</span>
+<pre class="list">  /// AppleIDでサインイン
+  signInWithApple() async {
+    final appleProvider = AppleAuthProvider();
+    if (kIsWeb) {
+      await _auth.signInWithPopup(appleProvider);
+    } else {
+      await _auth.signInWithAuthProvider(appleProvider);
+    }
+  }
+</pre>
+</div>
+<p>ログイン選択画面の「Appleアカウント」にメソッドを割り当てます。</p>
+<div class="caption-code">
+<span class="caption">ログイン選択画面のAppleアカウント</span>
+<pre class="list">    Container(
+      decoration: ThemeHelper().buttonBoxDecoration(context),
+      child: ElevatedButton(
+        style: ThemeHelper().buttonStyle(),
+        child: Row(
+            children: const [
+              FaIcon(FontAwesomeIcons.apple, size: 23),
+              Padding(
+                padding: EdgeInsets.fromLTRB(30, 10, 0, 10),
+                child: Text('Appleアカウント', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),),
+              ),
+            ]
+        ),
+        onPressed: (){
+          authController.signInWithApple();
+        },
+      ),
+    ),
+</pre>
+</div>
+<p>以上で完了です。</p>
+
+<h2 class="grayback"><a id="h13-3"></a><span class="secno">13.3</span> 動作確認</h2>
+
+<h4><a id="h13-3-0-1"></a>iPhoneで確認</h4>
+<p>iPhoneシミュレータで動作確認しましたが、AppleIDでサインインは実機でないと動作しないとのことです。実機を繋いでデバッグしましたところ動作しました。</p>
+<div id="iPhoneResult" class="image">
+<img src="images/13-apple-signin/iPhoneResult.png" alt="iPhoneシミュレータで確認" class="img width-070per" />
+<p class="caption">
+図13.42: iPhoneシミュレータで確認
+</p>
+</div>
+
+<h4><a id="h13-3-0-2"></a>Androidで確認</h4>
+<div id="androidResult2" class="image">
+<img src="images/13-apple-signin/androidResult2.png" alt="Androidエミュレータで確認" class="img width-070per" />
+<p class="caption">
+図13.43: Androidエミュレータで確認
+</p>
+</div>
+
+<h4><a id="h13-3-0-3"></a>Firebaseで登録確認</h4>
+<p>Firebaseコンソールでも確認</p>
+<div id="apple_signin59" class="image">
+<img src="images/13-apple-signin/apple_signin59.png" alt="Firebaseコンソール" class="img width-070per" />
+<p class="caption">
+図13.44: Firebaseコンソール
+</p>
+</div>
+
+        </main>
+        <nav class="page-navi">
+          <a href="12-google-signin.html" class="page-prev">&#9664;</a>
+        </nav>
+        <footer>
+        </footer>
+      </div>
+    </div>
+    <script>
+function rebuildAndReloadForcedly() {
+  fetch('/rebuild.js').then((resp)=>{
+    resp.text().then((text)=>{ eval(text); });
+  });
+}
+    </script>
+    <script src="/rebuild.js?file=13-apple-signin.re"></script>
+  </body>
+</html>
+<!-- layout.html5.erb -->

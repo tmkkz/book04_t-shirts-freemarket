@@ -22,6 +22,7 @@ CHAPS:
   - 10-email-signin.re
   - 11-twitter-login.re
   - 12-google-signin.re
+  - 13-apple-signin.re
 ## 付録
 APPENDIX:
 ##  - 91-compare.re
