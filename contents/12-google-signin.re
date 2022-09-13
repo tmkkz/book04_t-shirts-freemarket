@@ -30,22 +30,22 @@ Firebase、FlutterともにGoogleが開発しているため親和性は抜群�
 ターミナルに、以下のコマンドを入力してキーを取得します。
 
 //terminal[][SHA1キーの取得]{
-❯ keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android -keypass android
-Alias name: androiddebugkey
-Creation date: Aug. 17, 2022
-Entry type: PrivateKeyEntry
-Certificate chain length: 1
-Certificate[1]:
-Owner: C=US, O=Android, CN=Android Debug
-Issuer: C=US, O=Android, CN=Android Debug
-Serial number: 1
-Valid from: Wed Aug 17 15:58:43 PDT 2022 until: Fri Aug 09 15:58:43 PDT 2052
-Certificate fingerprints:
-         SHA1: AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA
-         SHA256: AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA
-Signature algorithm name: SHA1withRSA (weak)
-Subject Public Key Algorithm: 2048-bit RSA key
-Version: 1
+ > keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android -keypass android
+  Alias name: androiddebugkey
+  Creation date: Aug. 17, 2022
+  Entry type: PrivateKeyEntry
+  Certificate chain length: 1
+  Certificate[1]:
+  Owner: C=US, O=Android, CN=Android Debug
+  Issuer: C=US, O=Android, CN=Android Debug
+  Serial number: 1
+  Valid from: Wed Aug 17 15:58:43 PDT 2022 until: Fri Aug 09 15:58:43 PDT 2052
+  Certificate fingerprints:
+          SHA1: AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA
+          SHA256: AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA:AA
+  Signature algorithm name: SHA1withRSA (weak)
+  Subject Public Key Algorithm: 2048-bit RSA key
+  Version: 1
 
 Warning:
 The certificate uses the SHA1withRSA signature algorithm which is considered a security risk. This algorithm will be disabled in a future update.
@@ -64,12 +64,14 @@ Firebaseコンソールを開き、Authenticationを選択します。「Sign-in
 表示されたダイアログから、「Google」を選択します。
 //image[firebase14][Googleを追加][scale=0.7, pos=H]
 
+//clearpage
 表示されたダイアログのスイッチを有効化します。プロジェクトのサポートメールを選択し、「保存」ボタンをクリックします。
 //image[firebase15][有効化][scale=0.7, pos=H]
 
 以上で、Googleが追加されます。
 //image[firebase16][ログインプロバイダの登録][scale=0.7, pos=H]
 
+//clearpage
 Firebaseコンソールの「プロジェクトの概要」橫の歯車をクリックし、「プロジェクトの設定」を選択します。
 //image[key01][SHA1の登録][scale=0.7, pos=H]
 
@@ -83,6 +85,7 @@ Firebaseコンソールの「プロジェクトの概要」橫の歯車をクリ
 //image[key04][SHA1の登録][scale=0.7, pos=H]
 
 以上でFirebase側の設定は完了です。
+
 == google_sign_inプラグインのインストール
 
 @<href>{https://pub.dev/packages/google_sign_in, google_sign_inプラグイン}をインストールします。
@@ -92,7 +95,7 @@ Firebaseコンソールの「プロジェクトの概要」橫の歯車をクリ
 ターミナルに「flutter pub add google_sign_in」と入力しエンターキーを押します。
 
 //terminal[][]{
-❯ flutter pub add google_sign_in
+ > flutter pub add google_sign_in
   Resolving dependencies...
   + google_sign_in 5.4.1
   + google_sign_in_android 6.1.0
@@ -138,9 +141,10 @@ iOS用のに以下の設定をします。
 //}
 
 以上で、iOS用の設定は完了です。
+
 == アプリにgoogleサインイン・メソッドの実装
 
-アプリケーションの認証コントローラーに以下のコードを追加します。
+アプリケーションの認証コントローラに以下のコードを追加します。
 
 //list[][googleサインイン・メソッドの追加]{
   /// Googleサインイン
@@ -163,11 +167,10 @@ iOS用のに以下の設定をします。
     // サインインに成功するとユーザークレデンシャルが返る
     UserCredential userCredential =
     await FirebaseAuth.instance.signInWithCredential(credential);
-
   }
 //}
 
-ログイン選択画面の「Googleアカウント」ボタンにメソッド呼び出しを割当ます。
+ログイン選択画面の「Googleアカウント」ボタンにメソッド呼び出しを割り当てます。
 
 //list[][メソッド呼び出し]{
     Container(
@@ -190,20 +193,20 @@ iOS用のに以下の設定をします。
     ),
 //}
 
-以上で、Googleアカウントでアプリケーションへのログインができるようになります。
+以上で、Googleアカウントでアプリケーションへのログインができます。
 
 == 動作確認
 === iPhone
 iPhoneシミュレータでデバッグしようとするとエラーになりました。
 //blankline
-「プラットフォームが指定されていないのでiOS11を割り当てた。」
+「プラットフォームが指定されていないのでiOS 11を割り当てた。」
 @<br>{}「CocoaPodsのリポジトリが期限切れ」
 //blankline
 とのことです。
 
 //terminal[][ビルドエラー]{
 Error output from CocoaPods:
-↳
+
 
     [!] Automatically assigning platform `iOS` with version `11.0` on target `Runner` because no platform was specified. Please specify a platform for this target in your Podfile. See `https://guides.cocoapods.org/syntax/podfile.html#platform`.
 
@@ -215,9 +218,9 @@ Error running pod install
 Error launching application on iPhone 12.
 //}
 
-XCodeを開き、iOSの対象を指定します。iOS16がリリースされるので、2世代前のiOS14の最新版を仕様とします。
+Xcodeを開き、iOSの対象を指定します。iOS 16がリリースされるので、2世代前のiOS 14の最新版を仕様とします。
 
-//image[i02][XCodeでiOSのバージョン指定][scale=0.7, pos=H]
+//image[i02][XcodeでiOSのバージョン指定][scale=0.7, pos=H]
 
 ビルドエラーが発生しましたので、環境を再構築します。
 
@@ -245,16 +248,17 @@ Deleting .flutter-plugins...                                         0ms
 
 //image[iPhoneResult][iPhoneの動作確認][scale=0.7, pos=H]
 
+//clearpage
 === Android
 
-さすがにGoogleが全て関与しているものだと問題無く動作します。
+さすがにGoogleがすべて関与しているものだと問題なく動作します。
 
 //image[AndroidResult][Androidでの動作確認][scale=0.7, pos=H]
 
 #@# textlint-disable
 //note[ここまでのソースコード]{
 //terminal[][GitHub]{
-　>git clone -b 08_google_signin https://github.com/risingforce9zz/tfreemarket.git
+　> git clone -b 08_google_signin https://github.com/risingforce9zz/tfreemarket.git
 //}
 //}
 #@# textlint-enable

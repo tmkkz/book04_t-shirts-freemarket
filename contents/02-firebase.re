@@ -14,13 +14,14 @@
 //blankline
 Googleは、さらにサービスを追加しモバイル・バックエンド・サービス、サーバレス・アーキテクチャの勝者となります。
 //}
-
+//image[0201][][scale=0.7, pos=H]
 //makechaptitlepage[toc=on]
 
-== Firebaeを使ってみる
+== Firebaseを使ってみる
 
 Firebaseは、個別にたくさんのサービスを提供しています。いきなりFirebaseを使うと言っても、どのサービスを使ってよいものかもわかりません。
 
+//image[0202][][scale=0.9, pos=H]
 //blankline
 使い方は、
 
@@ -33,6 +34,8 @@ Firebaseは、個別にたくさんのサービスを提供しています。い
 Googleアカウントがあれば、スグに使い始めることができますし、ある程度の使用量は無償です。
 
 //image[firebase00][][scale=0.7 ,pos=H]
+//clearpage
+
 
 料金については、
 
@@ -40,6 +43,8 @@ Firebase Authentication（認証）では、以下のようにアクティブユ
 
 //image[firebase00-1][][scale=0.7 ,pos=H]
 
+//image[0203][][scale=0.7, pos=H]
+//clearpage
 Realtime Databaseでは、保存するデータが1GBまで無料です。ただし、ダウンロードされるデータは10GBまです。
 
 //blankline
@@ -50,11 +55,18 @@ Realtime Databaseでは、保存するデータが1GBまで無料です。ただ
 
 無料から有料へは、いつでも切り替えることができますし、使用量が減れば無料プランへ戻ることもできます。
 
+//image[0204][][scale=0.7, pos=H]
+//clearpage
+
 === Firebaseコンソールへ
 
 「コンソールへ移動」をクリックすると、Firebaseコンソールトップへ移動します。ここで「+プロジェクトを追加」をクリックして新規プロジェクトを作成します。
 
 //image[03_firebase02][][scale=0.7 ,pos=H]
+
+//image[0205][][scale=0.7, pos=H]
+//clearpage
+
 #@# textlint-disable
 最初にプロジェクトの名前を付けます。使える文字は半角英数、スペース、-!'"の記号4つです。[続行]ボタンをクリックします。
 #@# textlint-enable
@@ -66,13 +78,15 @@ Googleアナリティクスの画面になります。使う場合にはAndorid�
 //image[03_firebase04][][scale=0.7 ,pos=H]
 
 アナリティクスのアカウントを選択するか、作成します。[プロジェクトを作成]ボタンをクリックすると作成開始します。
-//image[03_firebase05][][scale=0.7 ,pos=H]
+//image[03_firebase05][][scale=0.6 ,pos=H]
 
 作成中です。
-//image[03_firebase06][][scale=0.7 ,pos=H]
+//image[03_firebase06][][scale=0.6 ,pos=H]
 
 プロジェクトができあがりました。
-//image[03_firebase07][][scale=0.7 ,pos=H]
+//image[03_firebase07][][scale=0.6 ,pos=H]
+
+//clearpage
 
 サイドバーにある[構築]ドロップダウンを開くと、追加できるサービスが表示されます。
 //image[03_firebase08][][scale=0.7 ,pos=H]
@@ -80,12 +94,15 @@ Googleアナリティクスの画面になります。使う場合にはAndorid�
 最初に、「Authentication」をクリックし認証サービスを追加します。
 //image[03_firebase09][][scale=0.7 ,pos=H]
 
+//clearpage
+
 認証サービスのトップ画面に移動します。[始める]ボタンをクリックします。
 //image[03_firebase10][][scale=0.7 ,pos=H]
 
 ログイン方法（ログインプロバイダ）の選択画面になります。最初は、「メール/パスワード」を選択します。
 //image[03_firebase11][][scale=0.7 ,pos=H]
 
+//clearpage
 「メール/パスワード」を有効にし[保存]ボタンをクリックします。
 //image[03_firebase12][][scale=0.7 ,pos=H]
 
@@ -94,6 +111,7 @@ Googleアナリティクスの画面になります。使う場合にはAndorid�
 
 以上で「メール/パスワード」での認証が可能になりました。
 
+//clearpage
 
 === Firebase認証とは？
 
@@ -105,7 +123,10 @@ Googleアナリティクスの画面になります。使う場合にはAndorid�
 
 ができます。
 
+//blankline
 ログイン状態になると、そのプロジェクトに追加したサービスの細かなアクセス制限ができます。
+
+//image[0206][][scale=0.7, pos=H]
 
 //blankline
 通常のアプリケーションで認証サービスを実現しようとすると、セキュリティが問題になりますが
@@ -113,5 +134,5 @@ Firebase Authenticationで解放されます。
 
 //blankline
 また、クライアントプログラムも各言語用のライブラリが提供されています。
-
+//blankline
 次の章からは、オンライン・フリーマーケットの認証部分を作成していきます。

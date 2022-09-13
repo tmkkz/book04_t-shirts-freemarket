@@ -1,8 +1,9 @@
-= Flutter側でFirebaseが使えるようにする。
+= FlutterでFirebaseを使う
 
 //abstract{
   Firebase関連のプラグインの導入と設定をします。
 
+//image[0701][][scale=0.7, pos=H]
 //}
 
 //makechaptitlepage[toc=on]
@@ -19,7 +20,7 @@
 
 //blankline
 しかし、最近は「Firebase CLI」があります。これは、ターミナルからコマンドで設定が完了する優れもので、
-ファイルのダウンロードやRealtime Databaseへのアクセス設定などが簡単にできます。
+アプリ登録やAndoroid、iOS用設定ファイルのダウンロードも自動化されています。
 
 //blankline
 公式サイト
@@ -51,7 +52,7 @@ https://firebase.google.com/docs/flutter/setup?platform=ios#available-plugins
 
 これで、プロジェクトへFirebase関連の設定のほとんどをコマンドで行うことができます。
 
-//blankline
+//clearpage
 fluttrefireコマンドが有効になりましたので、さっそく使ってみます。
 
 //terminal[][flutterfireコマンド]{
@@ -96,14 +97,13 @@ Activated flutterfire_cli 0.2.4.
 //}
 
 //blankline
-最後に、パスを通すように指示されましたので、エディッタで「~/.zshrc」を開き、
-//blankline
+最後に、パスを通すように指示されましたので、エディッタで「~/.zshrc」を開き、@<br>{}
 #@# textlint-disable
-　　　export PATH="$PATH":"$HOME/.pub-cache/bin"
+　　　@<strong>{export PATH="$PATH":"$HOME/.pub-cache/bin"}@<br>{}
 #@# textlint-enable
-//blankline
 を追加して保存してください。
 
+パスの設定が完了しましたら、
 //terminal[][pathの設定]{
  > source ~/.zshrc
 //}
@@ -143,17 +143,18 @@ Changed 4 dependencies!
 コマンドが実行され、
 
  * Firebaseコンソールに登録されたプロジェクト名が表示されるので、設定先を選択する。
- *
+
+//clearpage
 
 //terminal[][flutterfireコマンド]{
-❯ flutterfire configure
-i Found 3 Firebase projects.
+ > flutterfire configure
+ i Found 3 Firebase projects.
 
 @<balloon>{ここにプロジェクトが表示されるので、上下矢印キーで選択しエンターキーで決定}
 
-✔ Select a Firebase project to configure your Flutter application with · プロジェクト名 (プロジェクト名)
+x Select a Firebase project to configure your Flutter application with · プロジェクト名 (プロジェクト名)
 
-✔ Which platforms should your configuration support (use arrow keys & space to select)? · ios, macos, web, android
+x Which platforms should your configuration support (use arrow keys & space to select)? · ios, macos, web, android
 
 @<balloon>{ここに設定するプラットフォームが表示される。チェックマークで選択}
 
@@ -189,14 +190,16 @@ Learn more about using this file and next steps from the documentation:
 
 が、ダウンロードされます。
 
-//blankline
+//clearpage
 Firebaseサービス用のFlutterプラグインをインストールする度に再設定の必要があるので、Firebase系のプラグインは一度でインストールします。
 
+//image[0702][][scale=0.7, pos=H]
 == Firebaseサービス用Flutterプラグインのインストール
-続いて、Firebaseを使用するためのコアプラグイン、サービス毎のプラグインをインストールします。
+続いて、Firebaseの各サービスを使用するために、サービス毎のプラグインをインストールします。
 
 //blankline
-Flutterで使用できるFirebase関連プラグイン一覧
+//noindent
+Flutterで使用できるFirebase関連プラグイン一覧@<br>{}
 https://firebase.google.com/docs/flutter/setup?platform=ios#available-plugins
 
 
@@ -212,9 +215,9 @@ https://firebase.google.com/docs/flutter/setup?platform=ios#available-plugins
 
 です。
 
-ターミナルに、
 //blankline
- flutter pub add firebase_analytics firebase_auth cloud_firestore\
+ターミナルに、@<br>{}
+ flutter pub add firebase_analytics firebase_auth cloud_firestore
   firebase_messaging firebase_storage firebase_database
 //blankline
 を入力しエンターキーを押します。
@@ -226,12 +229,13 @@ https://firebase.google.com/docs/flutter/setup?platform=ios#available-plugins
 Changed 22 dependencies!
 //}
 
-お約束の「flutterfire configure」を行います。ターミナルには前回と同じ表示が出ます。同じように選択しエンターキーを押します。
+Firebase関連のプラグインをインストールした場合には、お約束の「flutterfire configure」を行います。ターミナルには前回と同じ表示が出ます。同じように選択しエンターキーを押します。
 
 //blankline
 以上で、Firebaseのサービスを使う準備ができました。
 
-//blankline
+//clearpage
+
 最後に、Firebaseアナリティクスを使うためには、AndoroidのSDKの最低バージョンが19以上でないとコンパイルが通りません。
 ここで最低のSDKバージョンを29に指定します。
 
@@ -243,7 +247,7 @@ Changed 22 dependencies!
 4世代前を仕様とします。
 
 //blankline
-「Android/app/src/buld.gradle」ファイルの以下の項目の下から4行目にある「minSdkVersion」を直接してします。
+「Android/app/src/buld.gradle」ファイルの以下の項目の下から4行目にある「minSdkVersion」にバージョン番号を指定してします。
 編集は、コメントアウト・新規行の追加を行ます。
 
 //blankline
@@ -316,3 +320,5 @@ void main() async {
 //}
 //}
 #@# textlint-enable
+
+//image[0703][][scale=0.7, pos=H]

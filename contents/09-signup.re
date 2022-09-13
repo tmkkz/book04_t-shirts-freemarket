@@ -1,10 +1,14 @@
-= 新規登録
+= 新規アカウント登録
 
 //abstract{
-  アカウントの新規作成ができるようにします。
+  Firebase認証の新規アカウント作成ができるようにします。
 
-//blankline
-新規登録画面から成功すればプロフィール画面へ移動します。
+　ストア情報コントローラができれば、Firebase認証に新規登録と同時にストア登録も行います。
+
+なぜ、アカウントを別々に管理するのかと言えば、Firebase Authのユーザ管理では指定された項目しか管理できないこと
+Firebase Authユーザ情報にアクセスするには、Admin権限が必要になるためです。
+
+//image[0901][][scale=0.7, pos=H]
 //}
 
 //makechaptitlepage[toc=on]
@@ -83,22 +87,25 @@
 //blankline
 それでは、始めましょう。
 
+//image[0902][][scale=0.7, pos=H]
+
+//clearpage
+
 ==== 1. StatefulWidgetからStatelessWidgetへ
 まずは、ページ全体に対し、「StatefuleWidget」から「StatelessWidget」へ変更します。
-
-===== StatefullWidget -> StatelessWidgetへ
+//blankline
 下図のように、
 
  * extends の後ろにある「StatefulWidget」を「StatelessWidget」へ変更。
  * 赤ワク部分を削除。
 
-//image[to_stateless][][scale=0.7, pos=H]
+//image[to_stateless][][scale=1.0, pos=H]
 
 //blankline
 #@# textlint-disable
 これを行うと、_formKey、setState（(）{})部分がエラーになるので削除します。
 #@# textlint-enable
-//image[to_stateless001][][scale=0.7, pos=H]
+//image[to_stateless001][][scale=1.0, pos=H]
 
 Android Studio上でlintの出すエラーがなくなれば、動作確認を行います。新規登録画面を開くことができれば問題ありません。
 
@@ -141,35 +148,33 @@ class RegistrationPage extends StatelessWidget {
 テキストフィールドを「TextFormField」から「TextField」へ変更し、「controller:」プロパティへ
 それぞれのコントローラをバインドします。フィールド名、ヒントを日本語にします。
 
-//image[text_field01][変更前][scale=0.7, pos=H]
-//image[text_field02][変更後][scale=0.7, pos=H]
+//image[text_field01][変更前][scale=1.0, pos=H]
+//image[text_field02][変更後][scale=1.0, pos=H]
 
 //blankline
 残りのフィールドにも同じ作業をします。
 
-//blankline
+//clearpage
 メールアドレス入力欄、電話番号の入力欄、パスワードの入力欄には、入力時のエラーチェック「validator」プロパティがありますが、
 入力値検証は一ヵ所にまとめるため削除します。
 
-//image[text_field03][][scale=0.7, pos=H]
+//image[text_field03][][scale=1.0, pos=H]
 
+//image[0903][][scale=0.7, pos=H]
 //blankline
-登録ボタンの後ろへソーシャルログインボタンがありますが、これも削除します。
+登録ボタンの後ろへソーシャルログインボタンがありますが、Row Widgetごと削除します。
 
 //image[text_field04][desc][scale=0.7, pos=H]
 
 //blankline
 続いて、新規登録メソッドが実行される前に、入力されたデータが有効なのかをチェックする関数を作成します。
 
-===== 入力値検証
-登録ボタンがクリックされコントローラの新規登録メソッド前に、入力値の検証をします。
+===== エラー表示用のSnackBarを作成
+登録ボタンがクリックされコントローラの新規登録メソッド前に、入力値の検証をし
+エラーが出た場合は、SnackBarを使って表示します。@<br>{}GetXは、SnackBarを簡単に出すことができます。
 
 //blankline
-エラーは、SnackBarを使って表示します。@<br>{}
-GetXは、簡単にSnackBarを出すことができます。
-
-//blankline
-今後増えて行く画面のことを考慮し、SnackBarを出す便利クラスを作成します。「lib/helper」フォルダを作成し
+エラー表示用のSnackBarを出す便利クラスを作成します。「lib/helper」フォルダを作成し
 「utility.dart」ファイルを作成します。
 
 //list[][lib/helper/utility.dart]{
@@ -224,12 +229,13 @@ class Utility {
 }
 //}
 
+//clearpage
 @<B>{入力値検証}
 
-新規登録ページ（registration_page.dart）へ以下のコードを追加します。
+新規登録ページ（registration_page.dart）へ以下のバリデーション・コードを追加します。
 
 //blankline
-GetXには、データのValidation機能もあります。ここでは、メールアドレスの検証をGetXのValidation機能で行っています。
+GetXには、データのValidation機能もあります。
 
 
 //list[][入力値検証]{
@@ -277,10 +283,19 @@ GetXには、データのValidation機能もあります。ここでは、メー
 
 //}
 
-//blankline
-利用規約同意のチェックボックスの値が更新されたときにチェックボックスWidgetが再描画されるように、
-チェックボックスの値の「checkboxValue」をGetXを使って監視対象にします。
+==== ページ上のデータ変更に伴う再描画
+利用規約同意のチェックボックスの値が更新されたときは、チェックボックの値を持つ変数「checkboxValue」に格納されます。
+しかし、変数の値が更新されても再描画はされません。
 
+//blankline
+元は、ページがStatefulWidgetでしたので変数の値の変更を「setState関数」で行い、「setState関数」がStatefulWidgetに
+再描画を指示していました。
+
+//blankline
+現在は、StatelessWidgetへ変更しましたので、チェックボックスの値の「checkboxValue」をGetXを使って監視対象にします。
+
+//blankline
+//noindent
 「bool checkboxValue = false;」
 #@# textlint-disable
 @<br>{}　　　　　↓@<br>{}
@@ -290,12 +305,16 @@ GetXには、データのValidation機能もあります。ここでは、メー
 に変更します。
 
 //blankline
-変更しますと、checkboxValueの値は、「checkboxValue.value」でアクセスします。lintがエラーを出している部分を修正します。
+「obs」は、GetXの提供するオブザーバーです。表示部分をGetXのWidgetで囲うことで
+値の変化があれば、再描画の通知がされます。
+
+//blankline
+「obs」、「Rx<T>」などのGetXのオブザーバーに変更しますと、checkboxValueの値は、「checkboxValue.value」でアクセスします。lintがエラーを出している部分を修正します。
 
 //blankline
 チェックボックスの値が変更されたときに再描画されるように、GetXのWidgetで「Checkbox」を囲みます。
 
-//image[chckbox][][scale=0.7, pos=H]
+//image[chckbox][][scale=1.0, pos=H]
 
 @<B>{GetXのValidator}
 
@@ -318,6 +337,7 @@ GetXのUtilityクラスでは、
 @<href>{https://github.com/jonataslaw/getx/blob/master/lib/get_utils/src/get_utils/get_utils.dart, ソースコード}
 を見て決めてください。
 
+//blankline
 @<b>{登録ボタン}
 
 入力値検証後、認証コントローラの新規登録メソッドを呼ぶようにします。認証コントローラの「signup」メソッドは未作成ですので、現時点ではエラーになります。
@@ -333,10 +353,12 @@ GetXのUtilityクラスでは、
 //blankline
 最後に、ボタンに上記関数を呼ぶように変更します。
 
-//image[submit][][scale=0.7, pos=H]
+//image[submit][][scale=1.0, pos=H]
 
 
 以上で新規登録画面の修正は完了です。
+
+//clearpage
 
 === スプラッシュスクリーンで認証コントローラを初期化
 アプリケーション起動時に表示されるページの「スプラッシュスクリーン」へ認証コントローラ（AuthController）のインスタンス化を行うようコードを追加します。
@@ -353,12 +375,15 @@ GetXのパッケージ、auth_controller.dartのインポートを行い、
 //blankline
 で、インスタンス化を行います。一度インスタンス化を行うと、ほかのページからは「to」に指定した「Get.find()」でインスタンスにアクセスできます。
 
-//image[authcontroller_instance][][scale=0.7, pos=H]
+//image[0904][][scale=0.7, pos=H]
+
+//image[authcontroller_instance][][scale=1.0, pos=H]
 
 
+//clearpage
 スプラッシュスクリーンでは、「accentColor」に取り消し線がついています。これは、近い将来のバージョンで消えるプロパティを意味します。
 
-//image[accentColor][accentcolorに取り消し線][scale=0.7, pos=H]
+//image[accentColor][accentcolorに取り消し線][scale=1.0, pos=H]
 
 
 @<href>{https://docs.flutter.dev/release/breaking-changes/theme-data-accent-properties, 公式サイト}に対処法があります。
@@ -383,15 +408,14 @@ GetXのパッケージ、auth_controller.dartのインポートを行い、
       ),
 //}
 
-//blankline
+
 スプラッシュスクリーン側は、
 //blankline
 #@# textlint-disable
-　　　　　colors:[Theme.of（context）.accentColor, Theme.of（context）.primaryColor],
-
-@<br>{}　　　　　　　　↓@<br>{}
-
-　　　　　colors:[Theme.of（context）.colorScheme.secondary, Theme.of（context）.primaryColor],
+//noindent
+　　　colors:[Theme.of（context）.accentColor, Theme.of（context）.primaryColor],@<br>{}
+  　　　　　　　　↓@<br>{}
+    　　　colors:[Theme.of（context）.colorScheme.secondary, Theme.of（context）.primaryColor],
 #@# textlint-enable
 //blankline
 に変更します。そのほかのファイルにも「accentColor」が使われていますので同じく修正してください。
@@ -407,9 +431,8 @@ Firebase認証でのメール/パスワードでログインを行うために�
 @<href>{https://firebase.google.com/docs/auth/flutter/password-auth?hl=ja&authuser=0, 公式サイト}を確認してください。
 
 公式サイトにあるコードをそのままですが、以下のように「singup()」メソッドを実装します。
-//image[singup][][scale=0.7, pos=H]
+//image[singup][Firebaseのドキュメント][scale=1.0, pos=H]
 
-//blankline
 認証コントローラ（auth_controller.dart）へ以下のコードを追加します。
 
 //list[][signupメソッド]{
@@ -463,6 +486,8 @@ class AppRoutes {
 //blankline
 ここで作成したRoutesをGetMaterialAppに登録します。
 
+//clearpage
+
 //list[][main.dart]{
     @override
   Widget build(BuildContext context) {
@@ -511,7 +536,7 @@ class _SplashScreenState extends State<SplashScreen> {
     });
 //}
 
-//blankline
+//clearpage
 ログインページをRouteへ登録します。
 
 
@@ -526,7 +551,8 @@ class AppRoutes {
 }
 //}
 
-
+//image[0905][][scale=0.7, pos=H]
+//clearpage
 === 動作確認
 
 実装が完了しましたので、動作確認を行います。メールアドレスは確認されませんので、テスト目的ならメールアドレスの書式さえ合っていれば

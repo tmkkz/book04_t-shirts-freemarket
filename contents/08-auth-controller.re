@@ -3,6 +3,7 @@
 //abstract{
   認証状態を管理する状態コントローラを作成します。
 
+//image[0801][][scale=0.7, pos=H]
 //blankline
 コントローラには、管理するデータとデータを変更するメソッドがあります。
 //}
@@ -36,7 +37,7 @@ https://github.com/jonataslaw/getx
 GetXは、状態管理以外にもできることが多くあります。その機能が必要になった時点で個別に説明しますが、
 
  * State management 状態管理
- * dependency_anagement 依存管理
+ * dependency management 依存管理
  * route management ルート管理
 
 が、大きな機能です。
@@ -44,6 +45,7 @@ GetXは、状態管理以外にもできることが多くあります。その�
 //blankline
 そのほかにも、国際化対応、検証（validation）などがあります。
 
+//blankline
 GetXの特徴は、下図のように、
 
  * コントローラは、データとデータ更新用メソッドをもつ。
@@ -61,6 +63,9 @@ GetXの特徴は、下図のように、
 
 //image[getx_flow][][scale=0.5, pos=H]
 
+//blankline
+//image[0802][][scale=0.7, pos=H]
+
 == 認証コントローラの作成
 
 認証コントローラ（authController）は、以下のようなフローで動作します。
@@ -73,6 +78,8 @@ GetXの特徴は、下図のように、
  * コールバックで表示ページを切り替える。
 
 //image[auth_controller01][][scale=0.7, pos=H]
+
+//clearpage
 
 === GetXControllerについて
 GetXController作成前に、もう少しGetXControllerについて知っておくことがあります。
@@ -106,6 +113,8 @@ GetXコントローラがもつデータは、監視対象（更新されると�
 //}
 
 では、いよいよ認証コントローラの作成に入ります。
+
+//clearpage
 
 === AuthControllerの作成
 コントローラは今後もアプリ内で増えていきますので、lib/controllersフォルダを作成し、
@@ -233,3 +242,5 @@ class AuthController extends GetxController {
 //}
 //}
 #@# textlint-enable
+
+//image[0803][][scale=0.7, pos=H]

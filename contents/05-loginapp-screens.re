@@ -9,6 +9,7 @@ HTMLでは、<div>タグの中に複数のHTMLタグを入れてUIを組み立�
 //blankline
 Flutterも同じようにWidgetを組み合わせてUIを構築します。
 
+//image[0501][][scale=0.7, pos=H]
 //}
 
 //makechaptitlepage[toc=on]
@@ -37,7 +38,7 @@ Flutterも同じようにWidgetを組み合わせてUIを構築します。
 今回使用するのは、上記FlutterAwesomeで見付け足ログイン関連のアプリ
 @<href>{https://flutterawesome.com/flutter-login-ui-with-splash-screen-and-multiple-color-support/, Flutter Login UI} です。
 
-//image[flutterawesome02][][scale=0.7, pos=H]
+//image[flutterawesome02][][scale=0.6, pos=H]
 
 このサイトは、Videoチュートリアルのリンクもあり、クリックするとYouTubeで作成過程を見ることができます。
 YouTubeのVideoチュートリアルの詳細には、同じデザインですが別のGitHubへのリンクがありました。
@@ -46,11 +47,13 @@ YouTubeのVideoチュートリアルの詳細には、同じデザインです�
 今回は、
 @<href>{https://github.com/FlutterTutorialNet/flutter_login_ui, こちら}を使うことにします。
 
+//image[0502][][scale=0.6, pos=H]
 
+//clearpage
 === 元プロジェクトの確認
 //blankline
-クローンして魔改造しても良いのですが、勉強も兼ねて写経することにします。Android Studioでコードを書くと、
-linterがエラー（インストールされていないパッケージのWidgetなど）がでます。そのため、元プロジェクトの「pubspec.yaml」を開き
+クローンして魔改造しても良いのですが、勉強も兼ねて写経することにします。Android Studioで写経すると、
+linterがエラー（インストールされていないパッケージのWidgetなど）やWarningを出します。。少しでもエラーや警告を減らすため、元プロジェクトの「pubspec.yaml」を開き
 インストールされているパッケージを確認します。
 
 //list[][pubspec.yaml]{
@@ -76,6 +79,9 @@ dependencies:
 
 の3つです。
 
+//image[0503][][scale=1.0, pos=H]
+
+//clearpage
 === プロジェクトへ適用
 
 それでは、元プロジェクトをパクっていきましょう。
@@ -102,6 +108,8 @@ Changed 5 dependencies!
 
 後は、写経するか、コピペするかでファイルを作成します。フォルダ、ファイルの位置はあとあと変更することとし、今は元プロジェクトと同じにしておきます。
 
+//image[0505][][scale=0.7, pos=H]
+//clearpage
 //image[project_files][][scale=0.5, pos=H]
 
 
@@ -112,9 +120,11 @@ lintでWarningがたくさん出ていますが、コントローラを追加し
  * タイトル、入力フィールドなどの文字を日本語化
 
 //blankline
-しましので、そのときに修正します。
+します。その修正時にキレイにします。
 
-//blankline
+//image[0506][][scale=0.7, pos=H]
+
+//clearpage
 エミュレータで確認すると、以下のように取り入れることができました。
 //image[base_project][desc][scale=0.8, pos=H]
 
@@ -128,3 +138,5 @@ lintでWarningがたくさん出ていますが、コントローラを追加し
 //}
 //}
 #@# textlint-enable
+
+//image[0504][][scale=0.7, pos=H]

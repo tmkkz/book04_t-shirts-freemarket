@@ -1,0 +1,1 @@
+これはAA Storyboardのテンプレート用ファイルを置くフォルダです。アプリで指定している「スレフォルダ」に自動で作成されます。aalist.txtはOrinrinEditorと同じ形式です。

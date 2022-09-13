@@ -5,6 +5,7 @@
 
   また、前章で新規登録画面からSNSサインインのボタンを削除したため、新たにログイン方法選択画面を作成します。
   サインイン成功時にページ推移するプロフィール画面には、サインアウトボタンを作成します。
+//image[1000][][scale=0.7, pos=H]
 //}
 
 //makechaptitlepage[toc=on]
@@ -27,12 +28,14 @@
 また、サンプルアプリケーションとしての拡張を考え、SNS認証の種類を増やせるように
 ログイン方法選択画面を追加します。
 
+//image[1001][][scale=0.7, pos=H]
+
 == サインイン選択画面を作成
 今回のアプリケーションは、SNS認証を含め4つのサインイン方法を提供しています。
 
 //blankline
 メール/パスワード認証は入力画面が必要ですが、
-SNS認証はボタンのみ実装できます。仮に、SNS実装が増えてもボタンをひとつ増やし、認証コントローラーにログイン・メソッドを実装するだけになります。
+SNS認証はボタンのみ実装できます。仮に、SNS実装が増えてもボタンをひとつ増やし、認証コントローラにログイン・メソッドを実装するだけになります。
 
 
 //blankline
@@ -60,7 +63,7 @@ import 'widgets/header_widget.dart';
 class SelectSignInPage extends StatelessWidget{
   const LoginPage({Key? key}): super(key:key);
 
-  
+
   final double _headerHeight = 250;
 
   @override
@@ -190,7 +193,7 @@ class SelectSignInPage extends StatelessWidget{
 }
 //}
 
-//blankline
+//clearpage
 Routeに、「SelectSignInPage」を加え、スプラッシュスクリーンから「SelectSignInPage」へ推移するよう変更します。
 また、「LoginPage」、「ForgotPasswordPage」、「ForgotPasswordVerificationPage」もRouteへ追加します。
 
@@ -230,10 +233,10 @@ class _SplashScreenState extends State<SplashScreen> {
 
 
 == LoginPageの修正
-ログインページの修正を行います。
+ログインページを修正します。
 
  * StatelessWidgetへの変更
- * 入力フィールドと認証コントローラーのTextEditingControllerの結びつけ
+ * 入力フィールドと認証コントローラのTextEditingControllerの結び付け
  * 日本語化
  * パスワード忘れのページ推移
 
@@ -241,12 +244,12 @@ class _SplashScreenState extends State<SplashScreen> {
 LoginPage（lib/pages/login_page.dart）を開き、赤ワク部分を削除します。「extends」後の継承元を
 「StatefulWidget」から「StatelessWidget」へ変更します。
 
-//image[01_login01][][scale=0.7, pos=H]
+//image[01_login01][][scale=1.0, pos=H]
 
-=== 入力フィールドと認証コントローラーの結びつけ
-認証コントローラーをLoginPageにバインドします。
+=== 入力フィールドと認証コントローラの結び付け
+認証コントローラをLoginPageにバインドします。
 
-//list[][LoginPageへ認証コントローラーをバインド]{
+//list[][LoginPageへ認証コントローラをバインド]{
 class LoginPage extends StatelessWidget {
   LoginPage({Key? key}) : super(key: key);
 
@@ -256,15 +259,16 @@ class LoginPage extends StatelessWidget {
 //}
 
 
-メールアドレス、パスワード入力欄の「TextFieldのcontroller」プロパティに認証コントローラーのTextEditingControllerを指定します。
+メールアドレス、パスワード入力欄の「TextFieldのcontroller」プロパティに認証コントローラのTextEditingControllerを指定します。
 日本語化も同時に行います。
 
 //image[01_login02][変更前][scale=0.7, pos=H]
 
 //image[01_login03][変更後][scale=0.7, pos=H]
 
-=== パスワード忘れへのページ推移
-ページのナビゲーションをGetXに変更します。Routeは既に追加してあります。
+//clearpage
+=== パスワード・リセットページへの推移
+ページのナビゲーションをGetXに変更します。Routeはすでに追加してあります。
 
 //list[][ナビゲーションの変更]{
   Container(
@@ -283,23 +287,23 @@ class LoginPage extends StatelessWidget {
 
 
 == ForgotPasswordPageの修正
-パスワード・リセット要求のページを修正します。
+パスワード・リセットページを修正します。
 
  * StatelessWidgetへ変更
- * 認証コントローラーのバインドし、メールアドレス欄にコントローラーをセット
+ * 認証コントローラのバインドし、メールアドレス欄にコントローラをセット
  * 日本語化
  * ログインページ戻るナビゲーションをGetXに
- * 送信ボタンに認証コントローラーのパスワードリセットをバインド
+ * 送信ボタンに認証コントローラのパスワードリセットをバインド
  * メールアドレス欄の入力検証
 
 === StatelessWidgetへ変更
 
 赤ワク内を削除し、「StatefulWidget」を「StatelessWidget」へ変更します。
-//image[02_forgotpass01][StatelessWidgetへ][scale=0.7, pos=H]
+//image[02_forgotpass01][StatelessWidgetへ][scale=1.0, pos=H]
 
-=== 認証コントローラーのバンドル
+=== 認証コントローラのバンドル
 
-//list[][認証コントローラーのバンドル]{
+//list[][認証コントローラのバンドル]{
 class ForgotPasswordPage extends StatelessWidget {
   ForgotPasswordPage({Key? key}) : super(key: key);
 
@@ -314,12 +318,13 @@ class ForgotPasswordPage extends StatelessWidget {
 //}
 
 
-メールアドレス欄に認証コントローラーのTextEditingControllerをバインド。
-//image[02_forgotpass02][][scale=0.7, pos=H]
+メールアドレス欄に認証コントローラのTextEditingControllerをバインド。
+//image[02_forgotpass02][][scale=1.0, pos=H]
 
+//clearpage
 === LoginPageへ戻るナビゲーション
 
-戻るリンクのナビゲーションをGetXにします。Routeには既にあります。
+戻るリンクのナビゲーションをGetXにします。Routeにはすでにあります。
 
 //list[][ナビゲーションリンク]{
   Text.rich(
@@ -343,7 +348,7 @@ class ForgotPasswordPage extends StatelessWidget {
 
 === 送信ボタンへパスワードリセットメソッドをバインド
 
-メールアドレス欄に入力された値を検証し、問題なければ認証コントローラーの「パスワードリセット」メソッドを実行します。
+メールアドレス欄に入力された値を検証し、問題なければ認証コントローラの「パスワードリセット」メソッドを実行します。
 
 //list[][入力欄の検証とメソッド実行]{
 
@@ -367,11 +372,10 @@ class ForgotPasswordPage extends StatelessWidget {
 
 //}
 
-//blankline
-送信ボタンへメソッドの割当をします。
+送信ボタンへメソッドの割り当てをします。
 //blankline
 
-//list[][パスワード・リセット要求メソッドの割当]{
+//list[][パスワード・リセット要求メソッドの割り当て]{
     Container(
       decoration: ThemeHelper().buttonBoxDecoration(context),
       child: ElevatedButton(
@@ -398,17 +402,17 @@ class ForgotPasswordPage extends StatelessWidget {
 
 
 == サインアウトの実装
-サインインが出来ると当然ですがサインアウトの機能も必要です。
+サインインができると当然ですがサインアウトの機能も必要です。
 
 次の号でドロワーを実装し、ドロワーにサインアウトできる機能を置く予定です。
-ログイン後にアクセスする全ページにドロワーがありますので、どのページからもサインアウトができるようになります。
+ログイン後にアクセスする全ページにドロワーがありますので、どのページからもサインアウトができます。
 
 //blankline
-それまでは、サインイン後にページ推移するプロフィールページにサインアウトボタンを置きます。
+それまでは、サインイン後にページ推移するプロフィールページへサインアウトボタンを置きます。
 
-サインアウト・メソッドは、認証コントローラーが持っていますので、バインドします。
+サインアウト・メソッドは、認証コントローラが持っていますので、バインドします。
 
-//list[][認証コントローラーのバインド]{
+//list[][認証コントローラのバインド]{
 class _ProfilePageState extends State<ProfilePage>{
 
   AuthController authController = AuthController.to;
@@ -417,10 +421,10 @@ class _ProfilePageState extends State<ProfilePage>{
 
 //}
 
-プロフィールページ（profile_page.dart）へサインアウトボタンを追加し、サインアウト・メソッドの呼び出しを行います。
+プロフィールページ（profile_page.dart）へサインアウトボタンを追加し、サインアウト・メソッドの呼び出します。
 
 //list[label][desc]{
-  // 
+  //
   Container(
     decoration:
     ThemeHelper().buttonBoxDecoration(context),
@@ -446,7 +450,7 @@ class _ProfilePageState extends State<ProfilePage>{
 
 == パスワード・リセット要求完了ページ
 
-Firebase認証で使うメール/パスワードでのサインインでのパスワード・リセットは、
+Firebase認証で使うメール/パスワードでのパスワード・リセットは、
 
  1. パスワード・リセットの要求。
  2. Firebaseから登録メールアドレスへリセット用リンクをメールで送信。
@@ -455,7 +459,7 @@ Firebase認証で使うメール/パスワードでのサインインでのパ�
 となります。
 
 //blankline
-パスワード・リセット要求ページは出来ましたので、要求成功時に表示されるページを用意します。
+パスワード・リセット要求ページはできましたので、要求成功時に表示されるページを用意します。
 //blankline
 元プロジェクトには、「forgot_password_valification_page.dart」がありますので、
 これを利用します。
@@ -566,8 +570,8 @@ class ForgotPasswordVerificationPage extends StatelessWidget {
 //}
 
 
-== 認証コントローラーにメソッドの実装
-上記の修正で必要になりましたメソッドを、認証コントローラーに、
+== 認証コントローラにメソッドの実装
+上記の修正で必要になりましたメソッドを、認証コントローラに、
 
  * メール/パスワードでのサインイン・メソッド
  * サインアウト・メソッド
@@ -576,7 +580,7 @@ class ForgotPasswordVerificationPage extends StatelessWidget {
 実装します。
 
 === メール/パスワードサインイン・メソッド
-認証コントローラーに、メール/パスワードでサインインするメソッドを追加します。
+認証コントローラに、メール/パスワードでサインインするメソッドを追加します。
 
 //list[][サインイン・メソッド]{
   /// Email, passwordでサインイン
@@ -599,7 +603,7 @@ class ForgotPasswordVerificationPage extends StatelessWidget {
 
 === サインアウト・メソッド
 
-認証コントローラーに、サインインアウトするメソッドを追加します。
+認証コントローラに、サインインアウトするメソッドを追加します。
 
 //list[][サインアウト・メソッド]{
  /// サインアウト
@@ -609,9 +613,10 @@ class ForgotPasswordVerificationPage extends StatelessWidget {
   }
 //}
 
+//clearpage
 === パスワードリセット・メソッド
 
-認証コントローラーに、パスワードリセットメソッドを追加します。
+認証コントローラに、パスワードリセットメソッドを追加します。
 
 //list[][パスワードリセット・メソッド]{
   ///パスワードリセット
@@ -634,35 +639,39 @@ class ForgotPasswordVerificationPage extends StatelessWidget {
 
 //image[route][ナビゲーションテスト][scale=0.7, pos=H]
 
+//clearpage
 === メール/パスワードでのサインイン
 
 Firebaseに登録されていないメールアドレスでエラーは表示されるか？
 
 //image[03_test05-min][登録メールアドレスなしテスト][scale=0.4, pos=H]
 
+//clearpage
 正常にログインできるか？
 
 //image[test_login][ログインテスト][scale=0.7, pos=H]
 
+//clearpage
 === サインアウト
 「サインアウト」ボタンで、サインアウトし「ログイン選択画面」へ戻るか？
 
 //image[signout][サインアウトテスト][scale=0.7, pos=H]
 
-
+//clearpage
 === パスワード・リセット
-パスワード・リセットの動作確認です。問題無く動作しています。
+パスワード・リセットの動作確認です。問題なく動作しています。
 
 //image[passreset][パスワード・リセット][scale=0.7, pos=H]
 
 メールも届きます。
 //image[resetmail][パスワード・リセット用メール][scale=0.7, pos=H]
 
+//clearpage
 
 #@# textlint-disable
 //note[ここまでのソースコード]{
 //terminal[][GitHub]{
-　>git clone -b 06_email_signin https://github.com/risingforce9zz/tfreemarket.git
+　> git clone -b 06_email_signin https://github.com/risingforce9zz/tfreemarket.git
 //}
 //}
 #@# textlint-enable
