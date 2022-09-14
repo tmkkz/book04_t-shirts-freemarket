@@ -5,8 +5,8 @@
 
 　ストア情報コントローラができれば、Firebase認証に新規登録と同時にストア登録も行います。
 
-なぜ、アカウントを別々に管理するのかと言えば、Firebase Authのユーザ管理では指定された項目しか管理できないこと
-Firebase Authユーザ情報にアクセスするには、Admin権限が必要になるためです。
+なぜ、アカウントを別々に管理するのかといえば、Firebase Authのユーザー管理では指定された項目しか管理できないこと
+Firebase Authユーザー情報にアクセスするには、Admin権限が必要になるためです。
 
 //image[0901][][scale=0.7, pos=H]
 //}
@@ -284,7 +284,7 @@ GetXには、データのValidation機能もあります。
 //}
 
 ==== ページ上のデータ変更に伴う再描画
-利用規約同意のチェックボックスの値が更新されたときは、チェックボックの値を持つ変数「checkboxValue」に格納されます。
+利用規約同意のチェックボックスの値が更新されたときは、チェックボックの値をもつ変数「checkboxValue」に格納されます。
 しかし、変数の値が更新されても再描画はされません。
 
 //blankline
@@ -305,11 +305,11 @@ GetXには、データのValidation機能もあります。
 に変更します。
 
 //blankline
-「obs」は、GetXの提供するオブザーバーです。表示部分をGetXのWidgetで囲うことで
+「obs」は、GetXの提供するオブザーバです。表示部分をGetXのWidgetで囲うことで
 値の変化があれば、再描画の通知がされます。
 
 //blankline
-「obs」、「Rx<T>」などのGetXのオブザーバーに変更しますと、checkboxValueの値は、「checkboxValue.value」でアクセスします。lintがエラーを出している部分を修正します。
+「obs」、「Rx<T>」などのGetXのオブザーバに変更しますと、checkboxValueの値は、「checkboxValue.value」でアクセスします。lintがエラーを出している部分を修正します。
 
 //blankline
 チェックボックスの値が変更されたときに再描画されるように、GetXのWidgetで「Checkbox」を囲みます。

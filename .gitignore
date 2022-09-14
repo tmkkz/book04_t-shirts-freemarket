@@ -13,3 +13,4 @@ images_all/*
 images_orig/*
 tmp/*
 node_module/*
+*.pdf

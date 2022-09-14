@@ -188,7 +188,7 @@ FirebaseコンソールのAuthenticationを選択し、「Sign-in method」でAp
 //image[apple_signin52][Firebaseドキュメント][scale=1.0, pos=H]
 
 
-認証コントローラーへAppleでサインイン・メソッドを割り当てます。
+認証コントローラへAppleでサインイン・メソッドを割り当てます。
 //list[][認証コントローラへメソッド追加]{
   /// AppleIDでサインイン
   signInWithApple() async {
